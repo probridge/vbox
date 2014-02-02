@@ -1,0 +1,42 @@
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./winCourseList"?>
+<window apply="com.probridge.vbox.zk.CourseManagementController"
+	id="winCourseList" title="课程管理" border="normal" width="100%"
+	vflex="true">
+	<toolbar>
+		<toolbarbutton label="新增课程" id="btnAddCourse" />
+		<toolbarbutton label="修改课程" id="btnEditCourse" />
+		<toolbarbutton label="删除课程" id="btnDeleteCourse" />
+		<toolbarbutton label="管理学生名单" id="btnEditPreApprovalList" />
+	</toolbar>
+	<listbox model="@{winCourseList$composer.courseList}"
+		id="lbCourseList" mold="paging" pageSize="15">
+		<listhead>
+			<listheader label="课程编码" width="100px" />
+			<listheader label="课程名称" width="180px" />
+			<listheader label="课程描述" />
+			<listheader label="过期日" width="150px" />
+			<listheader label="课程vBox配置" width="160px" />
+			<listheader label="母盘映像" width="160px" />
+			<listheader label="预批准名单人数" width="120px" />
+		</listhead>
+		<listitem self="@{each='course'}" value="@{course}">
+			<listcell label="@{course.courseId}" />
+			<listcell label="@{course.courseName}" />
+			<listcell label="@{course.courseDescription}" />
+			<listcell
+				label="@{course.courseExpiration, converter='org.zkoss.zkplus.databind.DateFormatConverter'}"
+				self="@{format(yyyy-MM-dd)}" />
+			<listcell>
+				<label
+					value="@{course.courseVmCores, converter='com.probridge.vbox.zk.converter.VboxCoresConverter'}" />
+				<label
+					value="@{course.courseVmMemory, converter='com.probridge.vbox.zk.converter.VboxMemoryConverter'}" />
+				<label
+					value="@{course.courseVmNetwork, converter='com.probridge.vbox.zk.converter.VboxNetworkTypeConverter'}" />
+			</listcell>
+			<listcell label="@{course.courseVmGoldenMaster}" />
+			<listcell
+				label="@{course.coursePreapproveList, converter='com.probridge.vbox.zk.converter.CoursePreapprovalListConverter'}" />
+		</listitem>
+	</listbox>
+</window>

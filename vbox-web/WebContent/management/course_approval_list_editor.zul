@@ -1,0 +1,31 @@
+<window title="学生列表" border="normal" width="400px" position="center"
+	apply="com.probridge.vbox.zk.CourseApprovalListEditorController"
+	height="500px" mode="overlapped" id="courseApprovalListWin">
+	<grid vflex="true">
+		<columns>
+			<column label="预批准学生列表" />
+		</columns>
+		<rows>
+			<row>
+				<div>
+					<hlayout>
+						用户名：
+						<textbox id="tbAddUser" tabindex="1" hflex="1" />
+						<button label="增加" id="btnAddUser"/>
+					</hlayout>
+				</div>
+			</row>
+			<row>
+				<div>
+					<hlayout>
+						<button label="保存" id="btnSave" tabindex="15" />
+						<button label="取消" id="btnCancel" tabindex="16" />
+					</hlayout>
+				</div>
+			</row>
+			<row vflex="true" valign="top" style="overflow:auto;">
+				<div id="divApprovedList"></div>
+			</row>
+		</rows>
+	</grid>
+</window>

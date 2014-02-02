@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</Pattern>
+		</layout>
+	</appender>
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>../logs/vbox.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>../logs/vbox.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.apache.shiro" level="INFO" />
+	<logger name="com.probridge.vbox" level="DEUBG" />
+	<logger name="com.probridge.vbox.dao" level="INFO" />
+	<logger name="com.probridge.vbox.fileupload" level="DEBUG" />
+	<logger name="com.probridge.vbox.vmm" level="DEBUG" />
+	<logger name="org.apache.ibatis" level="WARN" />
+	<root level="DEBUG">
+		<appender-ref ref="FILE" />
+	</root>
+</configuration>

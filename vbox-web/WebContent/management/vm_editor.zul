@@ -1,0 +1,205 @@
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./editorWin"?>
+<window title="vBox设置" border="normal" width="500px" position="center"
+	mode="overlapped" apply="com.probridge.vbox.zk.VboxEditorController"
+	id="editorWin">
+	<grid>
+		<columns>
+			<column label="" width="100px" />
+			<column label="设置" />
+		</columns>
+		<rows>
+			<row>
+				内部代码
+				<hlayout>
+					<textbox value="@{editorWin$composer.VM.vmId}"
+						tabindex="1" id="vmID" hflex="1" readonly="true" />
+				</hlayout>
+			</row>
+			<row>
+				内部名称
+				<textbox value="@{editorWin$composer.VM.vmName}"
+					tabindex="2" id="vmName" hflex="1" readonly="true" />
+			</row>
+			<row>
+				标题
+				<textbox value="@{editorWin$composer.VM.vmTitle}"
+					tabindex="2" id="vmTitle" hflex="1" />
+			</row>
+			<row>
+				类型
+				<radiogroup
+					selectedItem="@{editorWin$composer.VM.vmType}">
+					<radio label="课程" tabindex="8" id="vmCourse"
+						value="0" />
+					<radio label="个人" tabindex="7" id="vmPersonal"
+						value="1" />
+					<radio label="维护" tabindex="9" id="vmSystem"
+						value="2" />
+				</radiogroup>
+			</row>
+			<row>
+				课程代码
+				<bandbox id="vmCourseCode" buttonVisible="true"
+					tabindex="9" mold="rounded" autodrop="true"
+					value="@{editorWin$composer.VM.vmCourseCode}" width="250px">
+					<bandpopup>
+						<listbox width="250px" mold="default"
+							tabindex="9" model="${editorWin$composer.courseList}"
+							id="lbCourseList">
+							<listhead>
+								<listheader label="选择课程" sort="auto" />
+							</listhead>
+							<template name="model">
+								<listitem>
+									<listcell
+										label="${each.courseName}(${each.courseId})"
+										tooltiptext="${each.courseDescription}" />
+								</listitem>
+							</template>
+						</listbox>
+					</bandpopup>
+				</bandbox>
+			</row>
+			<row>
+				启用
+				<radiogroup
+					selectedItem="@{editorWin$composer.VM.vmDisabled}">
+					<radio label="启用" tabindex="7" id="vmEnabled"
+						value="0" />
+					<radio label="禁用" tabindex="8" id="vmDisabled"
+						value="1" />
+				</radiogroup>
+			</row>
+			<row>
+				配置
+				<hlayout>
+					<spinner id="vmCores" tabindex="3"
+						value="@{editorWin$composer.VM.vmCores}" />
+					核
+					<spinner id="vmMemory" tabindex="3"
+						value="@{editorWin$composer.VM.vmMemory}" step="512" />
+					MB
+				</hlayout>
+			</row>
+			<row>
+				资源分配
+				<radiogroup
+					selectedItem="@{editorWin$composer.VM.vmPersistance}">
+					<radio label="动态" tabindex="5" id="vmOnDemand"
+						value="1" checked="false" />
+					<radio label="固定" tabindex="6" id="vmAlwaysOn"
+						value="0" />
+				</radiogroup>
+			</row>
+			<row>
+				网络接入
+				<radiogroup
+					selectedItem="@{editorWin$composer.VM.vmNetworkType}"
+					id="vmNetworkType">
+					<radio label="外网" tabindex="7" id="vmExtNet"
+						value="1" />
+					<radio label="内网" tabindex="8" id="vmIntNet"
+						value="0" />
+				</radiogroup>
+			</row>
+			<row>
+				所属节点
+				<spinner id="vmHypervisorId"
+					value="@{editorWin$composer.VM.vmHypervisorId}" step="1"
+					readonly="true" disabled="true" />
+			</row>
+			<row>
+				用户
+				<bandbox id="vmOwner" buttonVisible="true" tabindex="9"
+					mold="rounded" autodrop="true"
+					value="@{editorWin$composer.VM.vmOwner}">
+					<bandpopup>
+						<listbox width="150px" mold="default"
+							tabindex="9" model="${editorWin$composer.userList}"
+							id="lbUserList">
+							<listhead>
+								<listheader label="选择用户" sort="auto" />
+							</listhead>
+							<template name="model">
+								<listitem>
+									<listcell label="${each.userName}" />
+								</listitem>
+							</template>
+						</listbox>
+					</bandpopup>
+				</bandbox>
+			</row>
+			<row>
+				用户数据文件
+				<hlayout>
+					<textbox tabindex="10" id="vmVHDUserFileName"
+						hflex="1" readonly="true"
+						value="@{editorWin$composer.VM.vmVhdUserFilename}" />
+				</hlayout>
+			</row>
+			<row>
+				母盘映象
+				<bandbox id="vmGoldenImage" buttonVisible="true"
+					readonly="true" tabindex="11" mold="rounded" autodrop="true"
+					width="250px" value="@{editorWin$composer.VM.vmVhdGmImage}">
+					<bandpopup>
+						<listbox mold="paging" autopaging="true"
+							tabindex="10" width="250px"
+							model="${editorWin$composer.imageList}" id="lbImageList">
+							<listhead>
+								<listheader label="选择母盘映象" />
+							</listhead>
+							<template name="model">
+								<listitem>
+									<listcell
+										label="${each.gmImageFilename}"
+										tooltiptext="${each.gmImageDescription}" />
+								</listitem>
+							</template>
+						</listbox>
+					</bandpopup>
+				</bandbox>
+			</row>
+			<row>
+				母盘使用方式
+				<radiogroup
+					selectedItem="@{editorWin$composer.VM.vmVhdGmType}"
+					id="vmVhdGmType">
+					<radio label="差异链接" tabindex="12"
+						id="vmLinkedCopyGM" value="0" />
+					<radio label="克隆" tabindex="13" id="vmFullClonedGM"
+						value="1" />
+					<radio label="直接链接(危险)" tabindex="13" id="vmDirect"
+						value="2" />
+				</radiogroup>
+			</row>
+			<row>
+				描述
+				<vlayout>
+					<textbox rows="3"
+						value="@{editorWin$composer.VM.vmDescription}" hflex="1"
+						tabindex="14" id="vmDescription" style="overflow: auto" />
+				</vlayout>
+			</row>
+			<row id="progressRow" visible="false">
+				<cell colspan="2" style="text-align: center">
+					<vlayout>
+						<label id="progressInfo" hflex="true"
+							value="准备开始" />
+						<progressmeter id="progressBar" hflex="100%" />
+					</vlayout>
+				</cell>
+			</row>
+			<row>
+				<cell colspan="2" style="text-align: center">
+					<hlayout>
+						<button label="保存" id="btnSave" tabindex="15" />
+						<button label="取消" id="btnCancel" tabindex="16" />
+					</hlayout>
+				</cell>
+			</row>
+		</rows>
+	</grid>
+	<timer id="timer" delay="2000" repeats="true" running="false">
+	</timer>
+</window>

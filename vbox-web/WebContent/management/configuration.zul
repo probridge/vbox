@@ -1,0 +1,37 @@
+<div id="divSystemConfiguration" width="100%" vflex="true"
+	apply="com.probridge.vbox.zk.SystemConfigurationController">
+	<vlayout>
+		<tabbox>
+			<tabs>
+				<tab label="当前设置" />
+				<tab label="系统配置" />
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<grid>
+						<columns>
+							<column label="参数" width="200px" />
+							<column label="设置" />
+						</columns>
+						<rows id="CurrentSettings" />
+					</grid>
+				</tabpanel>
+				<tabpanel>
+					<toolbar>
+						<toolbarbutton label="保存设置"
+							id="btnSaveSettings" />
+						<toolbarbutton label="取消修改"
+							id="btnRevertSettings" />
+					</toolbar>
+					<grid>
+						<columns>
+							<column label="参数" width="200px" />
+							<column label="设置" />
+						</columns>
+						<rows id="ConfigSettings" />
+					</grid>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+	</vlayout>
+</div>

@@ -1,0 +1,47 @@
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./winUserList"?>
+<window apply="com.probridge.vbox.zk.UserManagementController"
+	id="winUserList" title="用户管理" border="normal" width="100%"
+	vflex="true">
+	<toolbar>
+		<toolbarbutton id="btnNewUser" label="新建用户" />
+		<toolbarbutton id="btnEditUser" label="编辑" />
+		<toolbarbutton id="btnDeleteUser" label="删除" />
+	</toolbar>
+	<vlayout>
+		<listbox model="@{winUserList$composer.userList}"
+			id="lbUserList" mold="paging" pageSize="15">
+			<listhead>
+				<listheader label="用户名" width="150px" />
+				<listheader label="分组" width="180px" />
+				<listheader label="角色" width="100px" />
+				<listheader label="认证方式" width="100px" />
+				<listheader label="用户过期日" width="120px" />
+				<listheader label="密码过期于" width="120px" />
+				<listheader label="节点" width="50px" />
+				<listheader label="个人数据文件" width="120px" />
+				<listheader label="配额(GB)" width="80px" />
+				<listheader label="激活" width="60px" />
+			</listhead>
+			<listitem self="@{each='user'}" value="@{user}">
+				<listcell label="@{user.userName}"
+					tooltiptext="@{user.userDescription}" />
+				<listcell label="@{user.userGroup}" />
+				<listcell
+					label="@{user.userRole, converter='com.probridge.vbox.zk.converter.UserRoleConverter'}" />
+				<listcell
+					label="@{user.userType, converter='com.probridge.vbox.zk.converter.UserTypeConverter'}" />
+				<listcell
+					label="@{user.userExpiration, converter='org.zkoss.zkplus.databind.DateFormatConverter'}"
+					self="@{format(yyyy-MM-dd)}" />
+				<listcell
+					label="@{user.userPwdExpire, converter='org.zkoss.zkplus.databind.DateFormatConverter'}"
+					self="@{format(yyyy-MM-dd)}" />
+				<listcell label="@{user.userHypervisorId}" />	
+				<listcell label="@{user.userVhdName}" />
+				<listcell label="@{user.userVhdQuota}" />
+				<listcell
+					label="@{user.userEnabled, converter='com.probridge.vbox.zk.converter.UserDisabledConverter'}" />
+			</listitem>
+		</listbox>
+	</vlayout>
+</window>

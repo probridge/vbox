@@ -1,0 +1,100 @@
+.title-divider {
+	text-align: left;
+	margin-bottom: 0.1em;
+	background: #ffffff url(../imgs/bg_divider.png) left center repeat-x;
+	padding: 0;
+}
+
+.title-divider span {
+	background: #ffffff;
+	padding-right: 0.5em;
+	font-size: 27px;
+}
+
+.title-divider small {
+	display: block;
+	color: rgba(51, 51, 51, 0.6);
+	font-size: 14px;
+}
+
+.block .title {
+	font-size: 18px;
+	text-transform: uppercase;
+	margin: 0 0 0.5em 0;
+	line-height: 1;
+}
+
+.de-em {
+	font-weight: normal;
+	color: rgba(51, 51, 51, 0.8);
+}
+
+a .de-em {
+	font-weight: normal;
+	color: rgba(85, 167, 154, 0.8);
+}
+/* --------------------------------------------------
+ * Features
+ *-------------------------------------------------- */
+.features .title {
+	margin-top: 10px;
+	color: #55a79a;
+}
+
+.features .feature {
+	margin-bottom: 2em;
+	padding: 25px;
+}
+
+.features .feature:before,.features .feature:after {
+	content: " ";
+	/* 1 */
+	display: table;
+	/* 2 */
+}
+
+.features .feature:after {
+	clear: both;
+}
+
+.features .feature img {
+	background-image: -webkit-gradient(linear, left 0%, left 100%, from(#fafafa),
+		to(#ebebeb));
+	background-image: -webkit-linear-gradient(top, #fafafa, 0%, #ebebeb, 100%);
+	background-image: -moz-linear-gradient(top, #fafafa 0%, #ebebeb 100%);
+	background-image: linear-gradient(to bottom, #fafafa 0%, #ebebeb 100%);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffafafa',
+		endColorstr='#ffebebeb', GradientType=0);
+	border: 1px solid #e6e6e6;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
+.features .feature img:hover {
+	background-image: -webkit-gradient(linear, left 0%, left 100%, from(#f5f5f5),
+		to(#e0e0e0));
+	background-image: -webkit-linear-gradient(top, #f5f5f5, 0%, #e0e0e0, 100%);
+	background-image: -moz-linear-gradient(top, #f5f5f5 0%, #e0e0e0 100%);
+	background-image: linear-gradient(to bottom, #f5f5f5 0%, #e0e0e0 100%);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5',
+		endColorstr='#ffe0e0e0', GradientType=0);
+}
+
+@media ( min-width : 768px) {
+	.features .feature {
+		margin-bottom: 1em;
+	}
+	.features .feature.tab-pane {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+	.features .feature.tab-pane img {
+		min-width: 260px;
+	}
+}
+
+@media ( min-width : 992px) {
+}

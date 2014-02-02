@@ -1,0 +1,23 @@
+<window id="winApproval" title="审核和批准" border="normal" width="100%"
+	vflex="true">
+	<vlayout>
+		<tabbox>
+			<tabs>
+				<tab label="课程申请" />
+				<tab label="用户申请" />
+				<tab label="用户预批准管理" />
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<include src="course_approval_mgmt.zul" />
+				</tabpanel>
+				<tabpanel>
+					<include src="user_approval_mgmt.zul" />
+				</tabpanel>
+				<tabpanel>
+					<include src="user_preapproval_mgmt.zul" />
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+	</vlayout>
+</window>

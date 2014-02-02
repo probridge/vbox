@@ -1,0 +1,30 @@
+<window border="normal" hflex="1" vflex="1" contentStyle="overflow:auto"
+	title="控制台连接" apply="com.probridge.vbox.zk.ConsoleAccessController"
+	id="winConsole" xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<vlayout vflex="1">
+		<script src="../js/console.js" type="text/javascript" />
+		<hlayout>
+			选择连接的vBox:
+			<selectbox model="${winConsole$composer.vmLists}"
+				id="selectVbox">
+				<template name="model">${each.vmName}</template>
+			</selectbox>
+			<checkbox id="cbUseAdmin" label="管理员登录" checked="true" />
+			<checkbox id="cbFullScreen" label="全屏" />
+			<button label="连接" id="btnConnect" />
+			<button label="重新开始" id="btnRestart"
+				w:onClick="window.location.reload();" />
+		</hlayout>
+		<div id="space" vflex="1">
+			<h:div id="screenArea"
+				style="display: none;
+				height: 100%">
+				<h:object id="MsRdpClient"
+					classid="CLSID:4eb89ff4-7f78-4a0f-8b8d-2bf02e94e4b2" width="100%"
+					height="100%">
+				</h:object>
+			</h:div>
+		</div>
+	</vlayout>
+</window>

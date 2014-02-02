@@ -1,0 +1,6 @@
+<zk>
+<zscript>
+    org.apache.shiro.SecurityUtils.getSubject().logout();
+    execution.sendRedirect("./index.zul");
+</zscript>
+</zk>

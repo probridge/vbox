@@ -1,0 +1,25 @@
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./winVboxFix"?>
+<window title="vBox重置" border="normal" width="300px" position="center"
+	mode="overlapped" apply="com.probridge.vbox.zk.VboxFixController"
+	id="winVboxFix">
+	<grid>
+		<rows>
+			<row>确定要重置这个vBox吗？</row>
+			<row id="progressRow" visible="false"
+				style="text-align: center">
+				<vlayout>
+					<label id="progressInfo" hflex="true" value="准备开始" />
+					<progressmeter id="progressBar" hflex="100%" />
+				</vlayout>
+			</row>
+			<row style="text-align: center">
+				<hlayout>
+					<button label="确定" id="btnFix" tabindex="15" />
+					<button label="取消" id="btnCancel" tabindex="16" />
+				</hlayout>
+			</row>
+		</rows>
+	</grid>
+	<timer id="timer" delay="2000" repeats="true" running="false">
+	</timer>
+</window>

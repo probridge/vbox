@@ -1,0 +1,2 @@
+C:\Windows\System32\cscript.exe
+C:\VBoxUtil\vmsetup.vbs //Nologo //B

@@ -1,0 +1,70 @@
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./winVboxList"?>
+<window apply="com.probridge.vbox.zk.VboxManagementController"
+	id="winVboxList" title="vBox管理" border="normal" width="100%"
+	vflex="true">
+	<toolbar>
+		<toolbarbutton label="新建vBox" id="btnNewVM" />
+		<toolbarbutton label="修改配置" id="btnEditVM" />
+		<toolbarbutton label="删除" id="btnDeleteVM" />
+		<toolbarbutton label="修复" id="btnFixVM" />
+		<toolbarbutton label="关闭" id="btnShutdownVM" />
+		<toolbarbutton label="查看密码" id="btnShowPassword" />
+		<toolbarbutton label="刷新" id="btnRefresh" />
+	</toolbar>
+	<vlayout>
+		<listbox model="@{winVboxList$composer.vmLists}" id="lbVMLists"
+			mold="paging" pageSize="15" emptyMessage="没有定义任何vBox。">
+			<listhead>
+				<listheader label="内部名称" />
+				<listheader label="标题" width="140px" />
+				<listheader label="用户" width="90px" />
+				<listheader label="课程代码" width="80px" />
+				<listheader label="类型" width="60px" />
+				<listheader label="激活" width="60px" />
+				<listheader label="创建日期" width="80px" />
+				<listheader label="系统配置" width="100px" />
+				<listheader label="节点" width="50px" />
+				<listheader label="网络" width="50px" />
+				<listheader label="分配" width="50px" />
+				<listheader label="状态" width="90px" />
+				<listheader label="心跳" width="60px" />
+				<listheader label="IP地址" width="90px" />
+				<listheader label="最后更新" width="130px" />
+			</listhead>
+			<listitem self="@{each='vm'}" value="@{vm}">
+				<listcell label="@{vm.vmName}"
+					tooltiptext="@{vm.vmName}" />
+				<listcell label="@{vm.vmTitle }"
+					tooltiptext="@{vm.vmDescription}" />
+				<listcell label="@{vm.vmOwner}" />
+				<listcell label="@{vm.vmCourseCode}" />
+				<listcell
+					label="@{vm.vmType, converter='com.probridge.vbox.zk.converter.VboxTypeConverter'}" />
+				<listcell
+					label="@{vm.vmDisabled converter='com.probridge.vbox.zk.converter.VboxDisabledConverter'}" />
+				<listcell
+					label="@{vm.vmCreationTimestamp, converter='org.zkoss.zkplus.databind.DateFormatConverter'}"
+					self="@{format(yyyy-MM-dd)}" />
+				<listcell>
+					<label value="@{vm.vmCores}" />
+					核 /
+					<label value="@{vm.vmMemory}" />
+					MB
+				</listcell>
+				<listcell label="@{vm.vmHypervisorId}" />
+				<listcell
+					label="@{vm.vmNetworkType, converter='com.probridge.vbox.zk.converter.VboxNetworkTypeConverter'}" />
+				<listcell
+					label="@{vm.vmPersistance, converter='com.probridge.vbox.zk.converter.VboxPersistanceConverter'}" />
+				<listcell
+					label="@{vm.vmStatus, converter='com.probridge.vbox.zk.converter.VboxStatusConverter'}" />
+				<listcell
+					label="@{vm.vmHeartbeat, converter='com.probridge.vbox.zk.converter.VboxHeartbeatConverter'}" />
+				<listcell label="@{vm.vmIpAddress}" />
+				<listcell
+					label="@{vm.vmLastUpdateTimestamp, converter='org.zkoss.zkplus.databind.DateFormatConverter'}"
+					self="@{format('yyyy-MM-dd HH:mm:ss')}" />
+			</listitem>
+		</listbox>
+	</vlayout>
+</window>

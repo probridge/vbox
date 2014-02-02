@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+<!--
+    Guacamole - Clientless Remote Desktop
+    Copyright (C) 2010  Michael Jumper
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+    <head>
+        <link rel="icon" type="image/png" href="images/guacamole-logo-64.png"/>
+        <link rel="apple-touch-icon" type="image/png" href="images/guacamole-logo-144.png"/>
+        <link rel="stylesheet" type="text/css" href="styles/ui.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi"/>
+        <title>Guacamole ${project.version}</title>
+    </head>
+
+    <body>
+
+        <div id="logout-panel">
+            <button id="back">Back</button>
+            <button id="logout">Logout</button>
+        </div>
+           
+        <h2>Administration</h2>
+        <div class="settings section">
+
+            <h3 class="require-manage-users">Users</h3>
+            <div class="require-manage-users" id="users">
+
+                <p>
+                    Click or tap on a user below to manage that user. Depending
+                    on your access level, users can be added and deleted, and their
+                    passwords can be changed.
+                </p>
+               
+                <div id="user-add-form">
+                    <div class="icon user add"/><input type="text" class="name" id="username" placeholder="Add user"/><button id="add-user">Add</button>
+                </div>
+                
+                <div id="user-list">
+                </div>
+                    
+                <div id="user-list-buttons">
+                </div>
+                    
+            </div>
+
+            <h3 class="require-manage-connections">Connections</h3>
+            <div class="require-manage-connections" id="connections">
+
+                <p>
+                    Click or tap on a connection below to manage that connection.
+                    Depending on your access level, connections can be added and
+                    deleted, and their properties (protocol, hostname, port, etc.)
+                    can be changed.
+                </p>
+
+                <div id="connection-add-form">
+                    <button id="add-connection">New Connection</button><button id="add-connection-group">New Group</button>
+                </div>
+                
+                <div id="connection-list">
+                </div>
+                    
+                <div id="connection-list-buttons">
+                </div>
+                    
+            </div>
+
+        </div>
+
+        <div id="version-dialog">
+            Guacamole ${project.version}
+        </div>
+
+        <script type="text/javascript" src="scripts/session.js"></script>
+        <script type="text/javascript" src="scripts/guac-ui.js"></script>
+        <script type="text/javascript" src="scripts/service.js"></script>
+        <script type="text/javascript" src="scripts/history.js"></script>
+        <script type="text/javascript" src="scripts/admin-ui.js"></script>
+
+    </body>
+
+</html>

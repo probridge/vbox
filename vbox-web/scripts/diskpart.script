@@ -1,0 +1,4 @@
+select disk=1
+select partition=1
+extend
+exit

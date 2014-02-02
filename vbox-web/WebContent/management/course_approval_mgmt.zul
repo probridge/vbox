@@ -1,0 +1,37 @@
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./divCourseApproval"?>
+<div id="divCourseApproval"
+	apply="com.probridge.vbox.zk.CourseRequestApprovalController">
+	<toolbar>
+		<toolbarbutton label="处理审核" id="btnProcess" />
+		<toolbarbutton label="删除申请" id="btnDelete" />
+	</toolbar>
+	<vlayout>
+		<listbox model="@{divCourseApproval$composer.requestList}"
+			id="lbRequestList" mold="paging" pageSize="15">
+			<listhead>
+				<listheader label="用户" width="100px" />
+				<listheader label="课程编号" width="100px" />
+				<listheader label="申请理由" />
+				<listheader label="申请状态" width="80px" />
+				<listheader label="申请时间" width="140px" />
+				<listheader label="管理员备注" />
+				<listheader label="处理时间" width="140px" />
+			</listhead>
+			<listitem self="@{each='request'}" value="@{request}">
+				<listcell label="@{request.vboxRequestOwner}" />
+				<listcell label="@{request.vboxRequestCode}" />
+				<listcell label="@{request.vboxRequestJustification}" />
+				<listcell
+					label="@{request.vboxRequestStatus, converter='com.probridge.vbox.zk.converter.CourseApprovalStatusConverter'}" />
+				<listcell
+					label="@{request.vboxRequestTimestamp, converter='org.zkoss.zkplus.databind.DateFormatConverter'}"
+					self="@{format('yyyy-MM-dd HH:mm')}" />
+				<listcell label="@{request.vboxRequestApprovalInfo}" />
+				<listcell
+					label="@{request.vboxRequestApprovalTimestamp, converter='org.zkoss.zkplus.databind.DateFormatConverter'}"
+					self="@{format('yyyy-MM-dd HH:mm')}" />
+			</listitem>
+		</listbox>
+		<separator />
+	</vlayout>
+</div>
