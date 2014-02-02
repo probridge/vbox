@@ -70,6 +70,11 @@
 			<version>6.5.2</version>
 		</dependency>
 		<dependency>
+			<groupId>org.zkoss.addon</groupId>
+			<artifactId>flashchart</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>
 			<version>1.2.2</version>
@@ -162,9 +167,9 @@
 			<version>4.2</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>javax.servlet.jsp.jstl</artifactId>
+			<version>1.2.1</version>
 		</dependency>
 	</dependencies>
 </project>
