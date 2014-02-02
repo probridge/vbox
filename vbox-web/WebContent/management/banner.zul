@@ -1,0 +1,10 @@
+<div hflex="1" vflex="1" sclass="banner" apply="com.probridge.vbox.zk.BannerController">
+	<hbox hflex="1" vflex="1" align="center">
+		<div width="600px">
+			<label value="vBox管理控制台" sclass="banner-head" />
+		</div>
+		<hbox hflex="1" vflex="1" pack="end" align="end">
+			<label id="userID">Anonymous</label>
+		</hbox>
+	</hbox>
+</div>

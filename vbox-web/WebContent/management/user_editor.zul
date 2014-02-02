@@ -1,0 +1,139 @@
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./userEditorWin"?>
+<window title="Create User" border="normal" width="500px"
+	position="center" mode="overlapped"
+	apply="com.probridge.vbox.zk.UserEditorController"
+	id="userEditorWin">
+	<grid>
+		<columns>
+			<column label="" width="100px" />
+			<column label="设置" />
+		</columns>
+		<rows>
+			<row>
+				用户标识
+				<hlayout>
+					<textbox
+						value="@{userEditorWin$composer.User.userName}" tabindex="1"
+						hflex="1" readonly="true" id="tbUserName" />
+				</hlayout>
+			</row>
+			<row>
+				密码
+				<hlayout>
+					<textbox
+						value="@{userEditorWin$composer.User.userPassword}" tabindex="1"
+						hflex="1" />
+				</hlayout>
+			</row>
+			<row>
+				状态
+				<radiogroup
+					selectedItem="@{userEditorWin$composer.User.userEnabled}">
+					<radio label="启用" tabindex="6" value="1" />
+					<radio label="禁用" tabindex="5" value="0" />
+				</radiogroup>
+			</row>
+			<row>
+				用户类型
+				<radiogroup
+					selectedItem="@{userEditorWin$composer.User.userType}">
+					<radio label="本地用户" tabindex="7" value="0" />
+					<radio label="统一认证用户" tabindex="8" value="1" />
+				</radiogroup>
+			</row>
+			<row>
+				所属组
+				<bandbox id="bdUserGroup" buttonVisible="true"
+					tabindex="9" mold="rounded" autodrop="true"
+					value="@{userEditorWin$composer.User.userGroup}">
+					<bandpopup>
+						<listbox width="150px" mold="default"
+							tabindex="9" model="${userEditorWin$composer.groupList}"
+							id="lbGroupList">
+							<listhead>
+								<listheader label="选择组" sort="auto" />
+							</listhead>
+							<template name="model">
+								<listitem>
+									<listcell label="${each}" />
+								</listitem>
+							</template>
+						</listbox>
+					</bandpopup>
+				</bandbox>
+			</row>
+			<row>
+				角色
+				<radiogroup
+					selectedItem="@{userEditorWin$composer.User.userRole}">
+					<radio label="用户" tabindex="7" value="ROLE_USER" />
+					<radio label="系统管理员" tabindex="8"
+						value="ROLE_ADMIN" />
+				</radiogroup>
+			</row>
+			<row>
+				数据空间配额
+				<hlayout>
+					<spinner tabindex="3"
+						value="@{userEditorWin$composer.User.userVhdQuota}" step="1" id="userVhdQuota"/>
+					GB (创建后只可增加)
+				</hlayout>
+			</row>
+			<row>
+				用户数据文件
+				<textbox
+					value="@{userEditorWin$composer.User.userVhdName}" tabindex="2"
+					hflex="1" readonly="true" id="tbUserVhdName" />
+			</row>
+			<row>
+				所在节点
+				<hlayout>
+					<spinner tabindex="3"
+						value="@{userEditorWin$composer.User.userHypervisorId}" step="1"
+						id="userHypervisorId" readonly="true" disabled="true" />
+					(设置后不可修改)
+				</hlayout>
+			</row>
+			<row>
+				有效期
+				<datebox
+					value="@{userEditorWin$composer.User.userExpiration}"
+					width="150px" />
+			</row>
+			<row>
+				密码过期
+				<radiogroup id="rgUserPwdExpire">
+					<radio id="rNormal" label="每三个月" />
+					<radio id="rNever" label="永不过期" />
+					<radio id="rNow" label="立刻" />
+				</radiogroup>
+			</row>
+			<row>
+				描述
+				<vlayout>
+					<textbox rows="3"
+						value="@{userEditorWin$composer.User.userDescription}" hflex="1"
+						tabindex="14" style="overflow: auto" />
+				</vlayout>
+			</row>
+			<row id="progressRow" visible="false">
+				<cell colspan="2" style="text-align: center">
+					<vlayout>
+						<label id="progressInfo" hflex="true"
+							value="准备开始" />
+						<progressmeter id="progressBar" hflex="100%" />
+					</vlayout>
+				</cell>
+			</row>
+			<row>
+				<cell colspan="2" style="text-align: center">
+					<hlayout>
+						<button label="保存" id="btnSave" tabindex="15" />
+						<button label="取消" id="btnCancel" tabindex="16" />
+					</hlayout>
+				</cell>
+			</row>
+		</rows>
+	</grid>
+	<timer id="timer" delay="2000" repeats="true" running="false" />
+</window>

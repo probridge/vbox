@@ -1,0 +1,61 @@
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./winImageDup"?>
+<window title="母盘维护" border="normal" width="450px" position="center"
+	mode="overlapped"
+	apply="com.probridge.vbox.zk.GoldenMasterImageDuplicateController"
+	id="winImageDup">
+	<grid>
+		<columns>
+			<column width="100px" />
+			<column />
+		</columns>
+		<rows>
+			<row>
+				<cell colspan="2">本操作将新建一个所选母盘的完整克隆。</cell>
+			</row>
+			<row>
+				<cell colspan="2">
+					稍等复制完成后，可以将其置为维护状态，安装新软件等。新生成的母盘与原母盘没有链接关系完全独立。
+				</cell>
+			</row>
+			<row>
+				<cell colspan="2">操作时间根据母盘大小一般需要几分钟到几十分钟不等，请耐心等待。</cell>
+			</row>
+			<row>
+				<cell colspan="2">
+					<hlayout>
+						请输入新的VHD文件名：
+						<textbox hflex="true" id="tbNewImageFileName" />
+					</hlayout>
+				</cell>
+			</row>
+			<row>
+				<cell colspan="2">
+					<hlayout>
+						请输入新的母盘描述：
+						<textbox hflex="true" id="tbNewImageDescription" />
+					</hlayout>
+				</cell>
+			</row>
+			<row id="progressRow" visible="false"
+				style="text-align: center">
+				<cell colspan="2">
+					<vlayout>
+						<label id="progressInfo" hflex="true"
+							value="准备开始" />
+						<progressmeter id="progressBar" hflex="100%" />
+					</vlayout>
+				</cell>
+			</row>
+			<row style="text-align: center">
+				<cell colspan="2">
+					<hlayout>
+						<button label="克隆" id="btnClone" tabindex="15" />
+						<button label="关闭" id="btnCancel" tabindex="16" />
+					</hlayout>
+				</cell>
+			</row>
+		</rows>
+	</grid>
+	<timer id="timer" delay="2000" repeats="true" running="false">
+	</timer>
+</window>

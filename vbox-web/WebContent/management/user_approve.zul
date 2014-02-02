@@ -1,0 +1,106 @@
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./winUserApproval"?>
+<window title="用户批准操作" border="normal" width="450px" position="center"
+	mode="overlapped" apply="com.probridge.vbox.zk.UserApproveController"
+	id="winUserApproval">
+	<grid>
+		<columns>
+			<column width="150px" />
+			<column />
+		</columns>
+		<rows>
+			<row>
+				<cell colspan="2">批准动作会根据以下参数分配该用户的数据空间和个人vBox</cell>
+			</row>
+			<row>
+				处理器
+				<hlayout>
+					<spinner id="vmCores" tabindex="3"
+						value="@{winUserApproval$composer.approvalInfo.preapproveVmCores}" />
+					核
+				</hlayout>
+			</row>
+			<row>
+				内存
+				<hlayout>
+					<spinner id="vmMemory" tabindex="3"
+						value="@{winUserApproval$composer.approvalInfo.preapproveVmMemory}"
+						step="512" />
+					MB
+				</hlayout>
+			</row>
+			<row>
+				网络接入
+				<radiogroup
+					selectedItem="@{winUserApproval$composer.approvalInfo.preapproveVmNetwork}"
+					id="vmNetworkType">
+					<radio label="外网" tabindex="7" id="vmExtNet"
+						value="1" />
+					<radio label="内网" tabindex="8" id="vmIntNet"
+						value="0" />
+				</radiogroup>
+			</row>
+			<row>
+				个人空间(申请值)
+				<hlayout>
+					<spinner tabindex="3" step="1" id="userVhdQuota"
+						value="@{winUserApproval$composer.approvalInfo.preapproveVhdQuota}" />
+					GB
+				</hlayout>
+			</row>
+			<row>
+				母盘映象
+				<bandbox id="vmGoldenImage" buttonVisible="true"
+					readonly="true" tabindex="11" mold="rounded" autodrop="true"
+					width="250px"
+					value="@{winUserApproval$composer.approvalInfo.preapproveVmGoldenMaster}">
+					<bandpopup>
+						<listbox mold="paging" autopaging="true"
+							tabindex="10" width="250px"
+							model="${winUserApproval$composer.imageList}" id="lbImageList">
+							<listhead>
+								<listheader label="选择母盘映象" />
+							</listhead>
+							<template name="model">
+								<listitem>
+									<listcell
+										label="${each.gmImageFilename}"
+										tooltiptext="${each.gmImageDescription}" />
+								</listitem>
+							</template>
+						</listbox>
+					</bandpopup>
+				</bandbox>
+			</row>
+			<row>
+				节点
+				<hlayout>
+					<spinner id="userHypervisor" tabindex="3"
+						value="@{winUserApproval$composer.approvalInfo.preapproveHypervisorId}"
+						step="1" />(创建后不可更改)	
+				</hlayout>
+			</row>
+			<row id="progressRow" visible="false"
+				style="text-align: center">
+				<cell colspan="2">
+					<vlayout>
+						<label id="progressInfo" hflex="true"
+							value="准备开始" />
+						<progressmeter id="progressBar" hflex="100%" />
+					</vlayout>
+				</cell>
+			</row>
+			<row style="text-align: center">
+				<cell colspan="2">
+					<hlayout>
+						<button label="批准" id="btnApprove"
+							tabindex="15" />
+						<button label="退回" id="btnDeny" tabindex="15" />
+						<button label="关闭" id="btnCancel" tabindex="16" />
+					</hlayout>
+				</cell>
+			</row>
+		</rows>
+	</grid>
+	<timer id="timer" delay="2000" repeats="true" running="false">
+	</timer>
+</window>

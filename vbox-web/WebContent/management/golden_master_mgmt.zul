@@ -1,0 +1,59 @@
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./divGoldenMasterImage"?>
+<window
+	apply="com.probridge.vbox.zk.GoldenMasterImageManagementController"
+	id="divGoldenMasterImage" title="母盘管理" border="normal" width="100%"
+	vflex="true">
+	<toolbar>
+		<toolbarbutton label="删除" id="btnDeleteImage" />
+		<toolbarbutton label="克隆" id="btnDuplicateImage" />
+		<toolbarbutton label="维护" id="btnMaint" />
+		<toolbarbutton label="就绪" id="btnReady" />
+	</toolbar>
+	<listbox model="@{divGoldenMasterImage$composer.imageList}"
+		id="lbImageList">
+		<listhead>
+			<listheader label="母盘映象文件名" width="200px" />
+			<listheader label="描述" />
+			<listheader label="创建日期" width="100px" />
+			<listheader label="就绪状态" width="80px" />
+		</listhead>
+		<listitem self="@{each='image'}" value="@{image}">
+			<listcell label="@{image.gmImageFilename}" />
+			<listcell label="@{image.gmImageDescription}" />
+			<listcell
+				label="@{image.gmImageCreationDate, converter='org.zkoss.zkplus.databind.DateFormatConverter'}"
+				self="@{format(yyyy-MM-dd)}" />
+			<listcell
+				label="@{image.gmImageLock, converter='com.probridge.vbox.zk.converter.GoldenMasterReadyStatusConverter'}" />
+		</listitem>
+		<listfoot>
+			<listfooter>
+				<bandbox id="bdNewImageFileName" buttonVisible="true"
+					readonly="true" tabindex="11" mold="rounded" autodrop="true"
+					hflex="true">
+					<bandpopup>
+						<listbox mold="paging" pageSize="8"
+							tabindex="10" width="300px"
+							model="${divGoldenMasterImage$composer.imageFileList}"
+							id="lbImageFiles">
+							<listhead>
+								<listheader label="选择文件" />
+							</listhead>
+							<template name="model">
+								<listitem>
+									<listcell label="${each}" />
+								</listitem>
+							</template>
+						</listbox>
+					</bandpopup>
+				</bandbox>
+			</listfooter>
+			<listfooter>
+				<textbox id="tbNewImageDescription" hflex="true" />
+			</listfooter>
+			<listfooter>
+				<button label="新增" id="btnAddImage" />
+			</listfooter>
+		</listfoot>
+	</listbox>
+</window>

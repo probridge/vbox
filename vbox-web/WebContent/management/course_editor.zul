@@ -1,0 +1,112 @@
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./courseEditorWin"?>
+<window title="课程设置" border="normal" width="400px" position="center"
+	mode="overlapped"
+	apply="com.probridge.vbox.zk.CourseEditorController"
+	id="courseEditorWin">
+	<grid>
+		<columns>
+			<column label="" width="100px" />
+			<column label="设置" />
+		</columns>
+		<rows>
+			<row>
+				课程编号
+				<hlayout>
+					<textbox
+						value="@{courseEditorWin$composer.Course.courseId}" tabindex="1"
+						width="80px" id="tbCourseId" readonly="true" />
+					<a label="自动生成" id="generateCourseId" visible="false"/>
+				</hlayout>
+			</row>
+			<row>
+				课程名称
+				<textbox
+					value="@{courseEditorWin$composer.Course.courseName}" tabindex="1"
+					hflex="1" />
+			</row>
+			<row>
+				有效期
+				<datebox
+					value="@{courseEditorWin$composer.Course.courseExpiration}"
+					width="150px" />
+			</row>
+			<row>
+				课程描述
+				<vlayout>
+					<textbox rows="3"
+						value="@{courseEditorWin$composer.Course.courseDescription}"
+						hflex="1" tabindex="14" style="overflow: auto" />
+				</vlayout>
+			</row>
+			<row>
+				<cell colspan="2" style="text-align: center">
+					课程vBox模板设置
+				</cell>
+			</row>
+			<row>
+				处理器
+				<hlayout>
+					<spinner id="vmCores" tabindex="3"
+						value="@{courseEditorWin$composer.Course.courseVmCores}" />
+					核
+					<checkbox label="默认" id="defaultCores" />
+				</hlayout>
+			</row>
+			<row>
+				内存
+				<hlayout>
+					<spinner id="vmMemory" tabindex="3"
+						value="@{courseEditorWin$composer.Course.courseVmMemory}"
+						step="512" />
+					MB
+					<checkbox label="默认" id="defaultMemory" />
+				</hlayout>
+			</row>
+			<row>
+				网络接入
+				<radiogroup
+					selectedItem="@{courseEditorWin$composer.Course.courseVmNetwork}"
+					id="vmNetworkType">
+					<radio label="外网" tabindex="7" id="vmExtNet"
+						value="1" />
+					<radio label="内网" tabindex="8" id="vmIntNet"
+						value="0" />
+					<radio label="默认" tabindex="8" id="vmDefaultNet"
+						value="" />
+				</radiogroup>
+			</row>
+			<row>
+				母盘映像
+				<bandbox id="vmGoldenImage" buttonVisible="true"
+					readonly="true" tabindex="11" mold="rounded" autodrop="true"
+					width="250px"
+					value="@{courseEditorWin$composer.Course.courseVmGoldenMaster}">
+					<bandpopup>
+						<listbox mold="paging" autopaging="true"
+							tabindex="10" width="250px"
+							model="@{courseEditorWin$composer.imageList}" id="lbImageList">
+							<listhead>
+								<listheader label="选择母盘映象" />
+							</listhead>
+							<template name="model">
+								<listitem>
+									<listcell
+										label="${each.gmImageFilename}"
+										tooltiptext="${each.gmImageDescription}" />
+								</listitem>
+							</template>
+						</listbox>
+					</bandpopup>
+				</bandbox>
+			</row>
+			<row>
+				<cell colspan="2" style="text-align: center">
+					<hlayout>
+						<button label="保存" id="btnSave" tabindex="15" />
+						<button label="取消" id="btnCancel" tabindex="16" />
+					</hlayout>
+				</cell>
+			</row>
+		</rows>
+	</grid>
+</window>

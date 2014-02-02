@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+  <classPathEntry location="C:\\PennyGe\\binary\\mysql-connector-java-5.1.26.jar" />
+
+  <context id="MySQLTables" targetRuntime="MyBatis3">
+	<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        connectionURL="jdbc:mysql://localhost:3307/vbox_db"
+        userId="vbox"
+        password="vBox!2#4%">
+    </jdbcConnection>
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+    <javaModelGenerator targetPackage="com.probridge.vbox.model" targetProject=".\vbox-web\src">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+
+    <sqlMapGenerator targetPackage="com.probridge.vbox.sqlmap.xml"  targetProject=".\vbox-web\src">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
+
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.probridge.vbox.dao"  targetProject=".\vbox-web\src">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
+
+    <table schema="vbox_db" tableName="virtual_machines" domainObjectName="VM" >
+      <property name="useActualColumnNames" value="false"/>
+      <!-- <generatedKey column="vm_id" sqlStatement="MySQL" identity="false" /> -->
+      <columnRenamingRule searchString="^vm_" replaceString="VM_" />
+    </table>
+    
+    <table schema="vbox_db" tableName="users" domainObjectName="Users" >
+      <property name="useActualColumnNames" value="false"/>
+    </table>
+    
+    <table schema="vbox_db" tableName="golden_master_images" domainObjectName="GMImage" >
+      <property name="useActualColumnNames" value="false"/>
+    </table>
+
+    <table schema="vbox_db" tableName="vbox_request" domainObjectName="VboxRequest" >
+      <property name="useActualColumnNames" value="false"/>
+	  <generatedKey column="vbox_request_id" sqlStatement="MySQL" identity="true" />
+	 </table>
+
+    <table schema="vbox_db" tableName="course_list" domainObjectName="Course" >
+      <property name="useActualColumnNames" value="false"/>
+	 </table>
+
+    <table schema="vbox_db" tableName="preapprove_user" domainObjectName="PreApprovedUser" >
+      <property name="useActualColumnNames" value="false"/>
+	</table>
+
+    <table schema="vbox_db" tableName="vbox_sysparam" domainObjectName="SysParam" >
+      <property name="useActualColumnNames" value="false"/>
+	</table>
+
+    <table schema="vbox_db" tableName="vbox_wofd" domainObjectName="WordOfTheDay" >
+      <property name="useActualColumnNames" value="false"/>
+	  <generatedKey column="wofd_id" sqlStatement="MySQL" identity="true" />
+	 </table>
+  </context>
+</generatorConfiguration>

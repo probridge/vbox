@@ -1,0 +1,33 @@
+<?page title="控制台登录"?>
+<window id="loginwin" title="vBox管理控制台" border="normal" width="350px"
+	position="center" mode="overlapped">
+	<!-- this form-login-page form is also used as the
+		form-error-page to ask for a login again. -->
+	<html style="color:red"
+		if="${not empty requestScope.loginFailure}">
+		<![CDATA[ 登录失败，请重试！<br/> ]]>				
+    </html>
+	<groupbox>
+		<caption>登录</caption>
+		<h:form id="f" name="loginform" action="" method="POST"
+			xmlns:h="native">
+			<grid>
+				<rows>
+					<row>
+						用户名:
+						<textbox id="u" name="user" />
+					</row>
+					<row>
+						密码:
+						<textbox id="p" type="password" name="pass" />
+					</row>
+					<row spans="2">
+						<hbox >
+							<h:input type="submit" value="登录" />
+						</hbox>
+					</row>
+				</rows>
+			</grid>
+		</h:form>
+	</groupbox>
+</window>

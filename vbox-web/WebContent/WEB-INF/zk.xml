@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+	<device-config>
+		<device-type>ajax</device-type>
+		<timeout-uri></timeout-uri>
+	</device-config>
+	<library-property>
+		<name>org.zkoss.zul.progressbox.position</name>
+		<value>center,center</value>
+	</library-property>
+	<session-config>
+		<timer-keep-alive>true</timer-keep-alive>
+	</session-config>
+</zk>

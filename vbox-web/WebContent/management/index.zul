@@ -1,0 +1,6 @@
+<?page title="vBox管理控制台" contentType="text/html;charset=UTF-8"?>
+<?link rel="stylesheet" type="text/css" href="../css/zk_style.css"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul"?>
+<zk>
+	<include id="mainInclude" self="@define(content)" src="dashboard.zul"/>
+</zk>

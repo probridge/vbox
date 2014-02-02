@@ -1,0 +1,46 @@
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./winCourseApproval"?>
+<window title="课程批准操作" border="normal" width="450px" position="center"
+	mode="overlapped" apply="com.probridge.vbox.zk.CourseApproveController"
+	id="winCourseApproval">
+	<grid>
+		<columns>
+			<column width="100px" />
+			<column />
+		</columns>
+		<rows>
+			<row>
+				<cell colspan="2">
+					请填写批准备注(用户可见)，然后选择相应的操作。
+					<separator />
+					批准动作会自动分配该用户的课程vBox，请稍候。
+				</cell>
+			</row>
+			<row>
+				备注(可选)：
+				<textbox hflex="true" id="tbApprovalInfo" />
+			</row>
+			<row id="progressRow" visible="false"
+				style="text-align: center">
+				<cell colspan="2">
+					<vlayout>
+						<label id="progressInfo" hflex="true"
+							value="准备开始" />
+						<progressmeter id="progressBar" hflex="100%" />
+					</vlayout>
+				</cell>
+			</row>
+			<row style="text-align: center">
+				<cell colspan="2">
+					<hlayout>
+						<button label="批准" id="btnApprove"
+							tabindex="15" />
+						<button label="退回" id="btnDeny" tabindex="15" />
+						<button label="关闭" id="btnCancel" tabindex="16" />
+					</hlayout>
+				</cell>
+			</row>
+		</rows>
+	</grid>
+	<timer id="timer" delay="2000" repeats="true" running="false">
+	</timer>
+</window>
