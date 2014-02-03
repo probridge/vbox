@@ -23,6 +23,12 @@
 	<listener>
 		<listener-class>org.glyptodon.guacamole.net.basic.WebSocketSupportLoader</listener-class>
 	</listener>
+	<listener>
+		<description>
+		Used to cleanup when a session is destroyed</description>
+		<display-name>ZK Session cleaner</display-name>
+		<listener-class>org.zkoss.zk.ui.http.HttpSessionListener</listener-class>
+	</listener>
 	<filter>
 		<filter-name>ShiroFilter</filter-name>
 		<filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
