@@ -6,7 +6,6 @@
 		<button label="检查冗余的数据文件"/>
 		<button label="压缩磁盘"/>
 		<separator/>
-		<label id="txtOutput" value="empty"/>
 		<button id="btnRefresh" label="刷新"/>
 	</vlayout>
 </div>

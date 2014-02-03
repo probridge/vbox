@@ -12,12 +12,6 @@
 			<name>ZK CE Repository</name>
 			<url>http://mavensync.zkoss.org/maven2</url>
 		</repository>
-		<repository>
-			<id>jsonrpc4j-webdav-maven-repo</id>
-			<name>jsonrpc4j maven repository</name>
-			<url>http://jsonrpc4j.googlecode.com/svn/maven/repo/</url>
-			<layout>default</layout>
-		</repository>
 	</repositories>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -95,11 +89,6 @@
 			<version>1.1.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.googlecode</groupId>
-			<artifactId>jsonrpc4j</artifactId>
-			<version>0.28</version>
-		</dependency>
-		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>2.0.2</version>
@@ -169,7 +158,17 @@
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
 			<artifactId>javax.servlet.jsp.jstl</artifactId>
-			<version>1.2.1</version>
+			<version>1.2.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>servlet-api</artifactId>
+					<groupId>javax.servlet</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jsp-api</artifactId>
+					<groupId>javax.servlet.jsp</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 </project>
