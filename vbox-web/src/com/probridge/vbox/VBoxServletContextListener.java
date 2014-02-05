@@ -8,8 +8,6 @@ import java.util.Set;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import jcifs.Config;
-
 import org.jinterop.dcom.core.JISession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +16,6 @@ import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 import com.probridge.vbox.vmm.ResourceMonitor;
 import com.probridge.vbox.vmm.VMMDaemon;
 import com.probridge.vbox.vmm.wmi.HyperVVMM;
-import com.probridge.vbox.vmm.wmi.WeakHyperVVMM;
 
 public class VBoxServletContextListener implements ServletContextListener {
 
@@ -68,11 +65,6 @@ public class VBoxServletContextListener implements ServletContextListener {
 		waitTermination(daemonThread);
 		for (Thread eachResMgrThd : resMgrThread)
 			waitTermination(eachResMgrThd);
-		//
-		logger.info("Shutting down VMM manager");
-		WeakHyperVVMM.shutdownHook.start();
-		logger.info("Wait for VMM manager to finish.");
-		waitTermination(WeakHyperVVMM.shutdownHook);
 		//
 		logger.info("Shutting down WMI sessions");
 		JISession.requestShutdown();

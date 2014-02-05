@@ -141,8 +141,6 @@ public class HyperVVMM extends NotifierAdapter<HyperVVMM, UpdateServiceEvent> im
 		} catch (JIException | UnknownHostException e) {
 			throw new VirtualServiceException(e, "Initializing VMM failed.");
 		}
-		WeakHyperVVMM tmp = new WeakHyperVVMM(this);
-		addNotifierListener(tmp);
 	}
 
 	/**
@@ -219,7 +217,7 @@ public class HyperVVMM extends NotifierAdapter<HyperVVMM, UpdateServiceEvent> im
 	 * 
 	 * @throws VirtualServiceException
 	 */
-	public void testServiceOld() throws VirtualServiceException {
+	private void testService() throws VirtualServiceException {
 		try {
 			service.execQuery("SELECT * FROM Msvm_ComputerSystem WHERE ProcessID = NULL");
 			return;
@@ -258,8 +256,5 @@ public class HyperVVMM extends NotifierAdapter<HyperVVMM, UpdateServiceEvent> im
 	 */
 	public void updateServiceRequest() throws VirtualServiceException {
 		testService();
-	}
-
-	private void testService() {
 	}
 }

@@ -57,6 +57,8 @@ public class LandingAction implements Action {
 			return EXPIRED;
 		}
 		//
+		logger.info("User " + identity + " logged in.");
+		//
 		VMMapper mapper = session.getMapper(VMMapper.class);
 		VMExample exp = new VMExample();
 		exp.createCriteria().andVmOwnerEqualTo(identity);

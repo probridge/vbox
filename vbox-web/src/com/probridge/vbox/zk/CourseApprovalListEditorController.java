@@ -66,7 +66,6 @@ public class CourseApprovalListEditorController extends SelectorComposer<Window>
 	@Listen("onClick = #btnAddUser")
 	public void addUser(Event e) {
 		String val = tbAddUser.getValue();
-		System.out.println(val);
 		if (!Utility.isEmptyOrNull(val)) {
 			List<Component> list = divApprovedList.getChildren();
 			for (Component eachExisting : list)

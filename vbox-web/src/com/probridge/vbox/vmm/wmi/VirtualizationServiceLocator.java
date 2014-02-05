@@ -27,7 +27,7 @@ public class VirtualizationServiceLocator extends AbstractServiceLocator {
 	private static final String METHOD_INSTANCES_OF = "InstancesOf";
 	private static final String METHOD_EXEC_QUERY = "ExecQuery";
 
-	// private static final int RETURN_IMMEDIATE = 0x10;
+	private static final int RETURN_IMMEDIATE = 0x10;
 	private static final int FORWARD_ONLY = 0x20;
 
 	private MsvmVirtualSystemManagementService virtualSystemManagementService = null;
@@ -41,7 +41,8 @@ public class VirtualizationServiceLocator extends AbstractServiceLocator {
 	 * @throws UnknownHostException
 	 * @throws JIException
 	 */
-	public VirtualizationServiceLocator(String url) throws UnknownHostException, JIException {
+	public VirtualizationServiceLocator(String url)
+			throws UnknownHostException, JIException {
 		super(url);
 	}
 
@@ -56,9 +57,10 @@ public class VirtualizationServiceLocator extends AbstractServiceLocator {
 	 * @throws JIException
 	 */
 	public JIVariant[] instancesOf(String type) throws JIException {
-		IJIDispatch servicesDispatch = (IJIDispatch) JIObjectFactory.narrowObject(service
-				.queryInterface(IJIDispatch.IID));
-		return servicesDispatch.callMethodA(METHOD_INSTANCES_OF, new Object[] { new JIVariant(new JIString(type)) });
+		IJIDispatch servicesDispatch = (IJIDispatch) JIObjectFactory
+				.narrowObject(service.queryInterface(IJIDispatch.IID));
+		return servicesDispatch.callMethodA(METHOD_INSTANCES_OF,
+				new Object[] { new JIVariant(new JIString(type)) });
 	}
 
 	/**
@@ -70,8 +72,9 @@ public class VirtualizationServiceLocator extends AbstractServiceLocator {
 	 * @throws JIException
 	 */
 	public IJIDispatch get(String instance) throws JIException {
-		return (IJIDispatch) JIObjectFactory.narrowObject(service.callMethodA("Get", new Object[] { new JIString(
-				instance) })[0].getObjectAsComObject().queryInterface(IJIDispatch.IID));
+		return (IJIDispatch) JIObjectFactory.narrowObject(service.callMethodA(
+				"Get", new Object[] { new JIString(instance) })[0]
+				.getObjectAsComObject().queryInterface(IJIDispatch.IID));
 	}
 
 	/**
@@ -83,8 +86,9 @@ public class VirtualizationServiceLocator extends AbstractServiceLocator {
 	 * @throws JIException
 	 */
 	public JIVariant[] execQuery(String wql) throws JIException {
-		Object[] params = new Object[] { new JIString(wql), JIVariant.OPTIONAL_PARAM(),
-				new JIVariant(new Integer(FORWARD_ONLY)) };
+		Object[] params = new Object[] { new JIString(wql),
+				JIVariant.OPTIONAL_PARAM(),
+				new JIVariant(new Integer(RETURN_IMMEDIATE + FORWARD_ONLY)) };
 		return service.callMethodA(METHOD_EXEC_QUERY, params);
 	}
 
@@ -94,12 +98,14 @@ public class VirtualizationServiceLocator extends AbstractServiceLocator {
 	 * @return the wanted virtual system management service
 	 * @throws JIException
 	 */
-	public MsvmVirtualSystemManagementService getVirtualSystemManagementService() throws JIException {
+	public MsvmVirtualSystemManagementService getVirtualSystemManagementService()
+			throws JIException {
 		if (virtualSystemManagementService == null) {
 			JIVariant[] tmp = instancesOf("Msvm_VirtualSystemManagementService");
 			JIVariant[][] instances = enumToJIVariantArray(tmp);
 			IJIDispatch virtualSystemManagementServiceDispatch = (IJIDispatch) JIObjectFactory
-					.narrowObject(instances[0][0].getObjectAsComObject().queryInterface(IJIDispatch.IID));
+					.narrowObject(instances[0][0].getObjectAsComObject()
+							.queryInterface(IJIDispatch.IID));
 			virtualSystemManagementService = new MsvmVirtualSystemManagementService(
 					virtualSystemManagementServiceDispatch, this);
 		}
@@ -112,14 +118,17 @@ public class VirtualizationServiceLocator extends AbstractServiceLocator {
 	 * @return the wanted image management service
 	 * @throws JIException
 	 */
-	public MsvmImageManagementService getImageManagementService() throws JIException {
+	public MsvmImageManagementService getImageManagementService()
+			throws JIException {
 		if (imageManagementService == null) {
-			JIVariant[] tmp = execQuery("Select * From Msvm_ImageManagementService");
+			JIVariant[] tmp = instancesOf("Msvm_ImageManagementService");
 			JIVariant[][] imageManagementServiceSet = enumToJIVariantArray(tmp);
 			IJIDispatch imageManagementServiceDispatch = (IJIDispatch) JIObjectFactory
-					.narrowObject(imageManagementServiceSet[0][0].getObjectAsComObject()
-							.queryInterface(IJIDispatch.IID));
-			imageManagementService = new MsvmImageManagementService(imageManagementServiceDispatch, this);
+					.narrowObject(imageManagementServiceSet[0][0]
+							.getObjectAsComObject().queryInterface(
+									IJIDispatch.IID));
+			imageManagementService = new MsvmImageManagementService(
+					imageManagementServiceDispatch, this);
 		}
 		return imageManagementService;
 	}
@@ -130,13 +139,15 @@ public class VirtualizationServiceLocator extends AbstractServiceLocator {
 	 * @return the wanted virtual switch management service
 	 * @throws JIException
 	 */
-	public MsvmVirtualSwitchManagementService getVirtualSwitchManagementService() throws JIException {
+	public MsvmVirtualSwitchManagementService getVirtualSwitchManagementService()
+			throws JIException {
 		if (virtualSwitchManagementService == null) {
-			JIVariant[] tmp = execQuery("Select * From Msvm_VirtualSwitchManagementService");
+			JIVariant[] tmp = instancesOf("Msvm_VirtualSwitchManagementService");
 			JIVariant[][] virtualSwitchManagementServiceSet = enumToJIVariantArray(tmp);
 			IJIDispatch virtualSwitchManagementServiceDispatch = (IJIDispatch) JIObjectFactory
-					.narrowObject(virtualSwitchManagementServiceSet[0][0].getObjectAsComObject().queryInterface(
-							IJIDispatch.IID));
+					.narrowObject(virtualSwitchManagementServiceSet[0][0]
+							.getObjectAsComObject().queryInterface(
+									IJIDispatch.IID));
 			virtualSwitchManagementService = new MsvmVirtualSwitchManagementService(
 					virtualSwitchManagementServiceDispatch);
 		}
@@ -148,14 +159,20 @@ public class VirtualizationServiceLocator extends AbstractServiceLocator {
 	 */
 	@Override
 	protected void connectServerImpl() throws UnknownHostException, JIException {
-		JIComServer comServer = new JIComServer(JIClsid.valueOf(wbemLocator), this.url, session);
+		JIComServer comServer = new JIComServer(JIClsid.valueOf(wbemLocator),
+				this.url, session);
 		IJIComObject wimObject = comServer.createInstance();
-		IJIDispatch locatorDispatch = (IJIDispatch) JIObjectFactory.narrowObject((IJIComObject) wimObject
-				.queryInterface(IJIDispatch.IID));
-		Object[] params = new Object[] { new JIString(this.url), new JIString(namespace), JIVariant.OPTIONAL_PARAM(),
-				JIVariant.OPTIONAL_PARAM(), JIVariant.OPTIONAL_PARAM(), JIVariant.OPTIONAL_PARAM(), new Integer(0),
+		IJIDispatch locatorDispatch = (IJIDispatch) JIObjectFactory
+				.narrowObject((IJIComObject) wimObject
+						.queryInterface(IJIDispatch.IID));
+		Object[] params = new Object[] { new JIString(this.url),
+				new JIString(namespace), JIVariant.OPTIONAL_PARAM(),
+				JIVariant.OPTIONAL_PARAM(), JIVariant.OPTIONAL_PARAM(),
+				JIVariant.OPTIONAL_PARAM(), new Integer(0),
 				JIVariant.OPTIONAL_PARAM() };
-		JIVariant[] res = locatorDispatch.callMethodA(METHOD_CONNECT_SERVER, params);
-		service = (IJIDispatch) JIObjectFactory.narrowObject(res[0].getObjectAsComObject());
+		JIVariant[] res = locatorDispatch.callMethodA(METHOD_CONNECT_SERVER,
+				params);
+		service = (IJIDispatch) JIObjectFactory.narrowObject(res[0]
+				.getObjectAsComObject());
 	}
 }
