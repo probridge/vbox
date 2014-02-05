@@ -43,8 +43,9 @@ public class VMMonitor implements Runnable {
 			VMState previousState = VMState.Unknown;
 			VMGuestStatus previousGuestState = null;
 			while (true) {
-				VMGuestStatus guestState = vm.getVMGuestStatus();
+				vm.reloadStatus();
 				state = vm.getState();
+				VMGuestStatus guestState = vm.getVMGuestStatus();
 				//
 				if (!state.equals(previousState) || !guestState.equals(previousGuestState)) {
 					logger.info("Status change detected for " + vmid + " (" + vmName + ")");
@@ -76,8 +77,8 @@ public class VMMonitor implements Runnable {
 			}
 		} catch (InterruptedException e) {
 			logger.info("Monitor for VM" + vmName + "[" + vmid + "] interrupted.");
-		} catch (Exception e) {
-			logger.error("error while monitoring vm " + vmName, e);
+		} catch (VirtualServiceException e) {
+			logger.error("error while monitoring vm " + vmName + ", re-establishing the service dispatch.", e);
 		} finally {
 			daemon.unregisterMonitor(vmid);
 			logger.info("Monitor for VM" + vmName + "[" + vmid + "] exiting");

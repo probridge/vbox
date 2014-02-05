@@ -14,7 +14,7 @@ public class LoginAction implements Action {
 	private static final Logger logger = LoggerFactory.getLogger(LoginAction.class);
 
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
-		logger.debug("LoginAction: " + request.getMethod() + "remembered: " + SecurityUtils.getSubject().isRemembered());
+		logger.debug("LoginAction: " + request.getMethod() + " remembered: " + SecurityUtils.getSubject().isRemembered());
 		String email = request.getParameter("inputEmail");
 		if (!Utility.isEmptyOrNull(email))
 			request.setAttribute("email", email);
