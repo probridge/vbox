@@ -158,6 +158,7 @@ public class HyperVVM implements VirtualMachine,
 		try {
 			int waitTimer = 0;
 			while (waitTimer < timeout) {
+				reloadStatus();
 				if (getState() == expectedState) {
 					stateReached = true;
 					break;
