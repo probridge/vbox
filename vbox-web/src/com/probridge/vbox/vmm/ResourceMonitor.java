@@ -146,27 +146,29 @@ public class ResourceMonitor implements Runnable {
 				//
 			} catch (JIException e) {
 				logger.error("error polling information.", e);
-				logger.info("Resource Monitor waiting for 60sec to retry connection");
+				logger.warn("Resource Monitor waiting for 15sec to retry connection");
 				while (true) {
+					if (win != null)
+						win.destroySession();
 					try {
-						Utils.sleepCheck(60, isInterruptted);
+						Utils.sleepCheck(15, isInterruptted);
 						win = new WindowsManagementServiceLocator(vmm.url);
 						cpuInfo = win.getCpuInformation();
 						osInfo = win.getOsInformation();
 						sysInfo = VBoxConfig.systemVersion;
 						break;
 					} catch (UnknownHostException | JIException e1) {
-						logger.error("error polling information again.", e1);
+						logger.error("Error retreiving monitor data again.", e1);
 						logger.info("Next attempt to retry in 60s...");
 					} catch (InterruptedException e1) {
-						logger.info("Interruptted, resource Monitor exiting.");
+						logger.warn("Interruptted, resource Monitor exiting.");
 						break;
 					}
 				}
 				if (isInterruptted.get())
 					break;
 			} catch (InterruptedException e) {
-				logger.info("Interruptted, resource Monitor exiting.");
+				logger.warn("Interruptted, resource Monitor exiting.");
 				break;
 			}
 		}
