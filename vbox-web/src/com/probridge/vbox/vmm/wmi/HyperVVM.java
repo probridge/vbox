@@ -118,6 +118,7 @@ public class HyperVVM implements VirtualMachine,
 	 * @throws JIException
 	 */
 	public void reloadStatus() throws VirtualServiceException {
+		testService();
 		try {
 			JIVariant[] tmp = this.service
 					.execQuery("Select * From Msvm_ComputerSystem Where Name='"
