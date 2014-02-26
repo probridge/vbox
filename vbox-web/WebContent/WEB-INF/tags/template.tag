@@ -43,9 +43,9 @@
 				<div class="navbar-collapse collapse navbar-responsive-collapse">
 					<ul class="nav navbar-nav">
 						<li><a href="home.do">工作空间</a></li>
-						<li><a href="#">使用方法</a></li>
-						<li><a href="#">联系我们</a></li>
-						<li><a href="#">关于</a></li>
+						<li><a href="tutorial.do">使用方法</a></li>
+						<li><a href="contact.do">联系我们</a></li>
+						<li><a href="about.do">关于</a></li>
 					</ul>
 					<shiro:authenticated>
 						<ul class="nav navbar-nav navbar-right">

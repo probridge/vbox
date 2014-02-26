@@ -28,6 +28,9 @@ public class ActionFactory {
 		urimap.put("myfiles", new MyFileAction());
 		urimap.put("login", new LoginAction());
 		urimap.put("logout", new LogoutAction());
+		urimap.put("tutorial", new TutorialAction());
+		urimap.put("about", new AboutAction());
+		urimap.put("contact", new ContactAction());
 	}
 
 	public static Action getAction(HttpServletRequest request) {
