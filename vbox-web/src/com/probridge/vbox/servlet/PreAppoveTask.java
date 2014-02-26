@@ -1,6 +1,5 @@
 package com.probridge.vbox.servlet;
 
-import java.net.UnknownHostException;
 import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;

@@ -1,9 +1,6 @@
 package com.probridge.vbox.servlet;
 
-import java.net.UnknownHostException;
-
 import org.apache.ibatis.session.SqlSession;
-import org.jinterop.dcom.common.JIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

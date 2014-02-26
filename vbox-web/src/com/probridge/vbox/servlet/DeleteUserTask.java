@@ -1,10 +1,8 @@
 package com.probridge.vbox.servlet;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.jinterop.dcom.common.JIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +14,8 @@ import com.probridge.vbox.model.VM;
 import com.probridge.vbox.model.VMExample;
 import com.probridge.vbox.vmm.wmi.HyperVVM;
 import com.probridge.vbox.vmm.wmi.HyperVVMM;
-import com.probridge.vbox.vmm.wmi.WindowsManagementServiceLocator;
 import com.probridge.vbox.vmm.wmi.VirtualMachine.VMState;
+import com.probridge.vbox.vmm.wmi.WindowsManagementServiceLocator;
 import com.probridge.vbox.vmm.wmi.utils.VirtualServiceException;
 import com.probridge.vbox.zk.AdminTaskManager;
 
@@ -47,12 +45,11 @@ public class DeleteUserTask extends VMTask {
 			exp.createCriteria().andVmOwnerEqualTo(user.getUserName());
 			List<VM> relatedVMList = mapper.selectByExample(exp);
 			//
-			String vmmUrl = null;
+
 			for (VM eachVM : relatedVMList) {
 				ops.setMsg("正在停止：" + eachVM.getVmName());
 				logger.debug("Stopping " + eachVM.getVmId());
 				HyperVVM vm = HyperVVMM.locateVM(eachVM.getVmId());
-				vmmUrl = vm.parent.url;
 				vm.powerOff();
 				boolean stateReached = vm.waitFor(VMState.PoweredOff);
 				if (!stateReached)
