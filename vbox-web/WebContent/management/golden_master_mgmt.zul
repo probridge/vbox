@@ -8,14 +8,15 @@
 		<toolbarbutton label="克隆" id="btnDuplicateImage" />
 		<toolbarbutton label="维护" id="btnMaint" />
 		<toolbarbutton label="就绪" id="btnReady" />
+		<toolbarbutton label="同步" id="btnSync" />
 	</toolbar>
 	<listbox model="@{divGoldenMasterImage$composer.imageList}"
-		id="lbImageList">
+		id="lbImageList" mold="paging" pageSize="5">
 		<listhead>
-			<listheader label="母盘映象文件名" width="200px" />
+			<listheader label="母盘映象文件名" width="250px" />
 			<listheader label="描述" />
 			<listheader label="创建日期" width="100px" />
-			<listheader label="就绪状态" width="80px" />
+			<listheader label="状态" width="80px" />
 		</listhead>
 		<listitem self="@{each='image'}" value="@{image}">
 			<listcell label="@{image.gmImageFilename}" />

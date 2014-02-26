@@ -13,6 +13,7 @@ public class GoldenMasterReadyStatusConverter implements TypeConverter {
 	static {
 		mapping.put("0", "就绪");
 		mapping.put("1", "维护");
+		mapping.put("2", "未同步");
 	}
 
 	@Override

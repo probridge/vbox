@@ -13,9 +13,9 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Progressmeter;
-import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timer;
+import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
 import com.probridge.vbox.model.GMImage;
@@ -33,7 +33,7 @@ public class GoldenMasterImageDuplicateController extends SelectorComposer<Windo
 	Button btnClone, btnCancel;
 
 	@Wire
-	Row progressRow;
+	Vlayout progressRow;
 
 	@Wire
 	Timer timer;
