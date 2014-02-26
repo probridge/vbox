@@ -1,6 +1,6 @@
 <zk>
 	<borderlayout hflex="1" vflex="1">
-		<north height="50px" border="none">
+		<north height="70px" border="none">
 			<include src="banner.zul" />
 		</north>
 		<west width="200px" border="none" collapsible="true"

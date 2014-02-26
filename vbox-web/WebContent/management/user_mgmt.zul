@@ -9,16 +9,16 @@
 	</toolbar>
 	<vlayout>
 		<listbox model="@{winUserList$composer.userList}"
-			id="lbUserList" mold="paging" pageSize="15">
+			id="lbUserList" mold="paging" pageSize="10">
 			<listhead>
-				<listheader label="用户名" width="150px" />
-				<listheader label="分组" width="180px" />
+				<listheader label="用户名" width="200px" />
+				<listheader label="分组" width="100px" />
 				<listheader label="角色" width="100px" />
 				<listheader label="认证方式" width="100px" />
-				<listheader label="用户过期日" width="120px" />
-				<listheader label="密码过期于" width="120px" />
+				<listheader label="用户过期" width="100px" />
+				<listheader label="密码过期" width="100px" />
 				<listheader label="节点" width="50px" />
-				<listheader label="个人数据文件" width="120px" />
+				<listheader label="个人数据文件" />
 				<listheader label="配额(GB)" width="80px" />
 				<listheader label="激活" width="60px" />
 			</listhead>
@@ -36,7 +36,7 @@
 				<listcell
 					label="@{user.userPwdExpire, converter='org.zkoss.zkplus.databind.DateFormatConverter'}"
 					self="@{format(yyyy-MM-dd)}" />
-				<listcell label="@{user.userHypervisorId}" />	
+				<listcell label="@{user.userHypervisorId}" />
 				<listcell label="@{user.userVhdName}" />
 				<listcell label="@{user.userVhdQuota}" />
 				<listcell
