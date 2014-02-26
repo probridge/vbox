@@ -42,6 +42,9 @@ public class DispatchServlet extends HttpServlet {
 		landingNotRequired.add("register");
 		landingNotRequired.add("login");
 		landingNotRequired.add("logout");
+		landingNotRequired.add("tutorial");
+		landingNotRequired.add("about");
+		landingNotRequired.add("contact");
 	}
 
 	/**
