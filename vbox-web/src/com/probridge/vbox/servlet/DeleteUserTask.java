@@ -46,7 +46,6 @@ public class DeleteUserTask extends VMTask {
 			VMExample exp = new VMExample();
 			exp.createCriteria().andVmOwnerEqualTo(user.getUserName());
 			List<VM> relatedVMList = mapper.selectByExample(exp);
-			session.close();
 			//
 			String vmmUrl = null;
 			for (VM eachVM : relatedVMList) {
@@ -61,18 +60,17 @@ public class DeleteUserTask extends VMTask {
 				ops.setMsg("正在删除：" + eachVM.getVmName());
 				logger.debug("Deleting " + eachVM.getVmId());
 				vm.destroy();
-				session = VBoxConfig.sqlSessionFactory.openSession();
 				VMMapper mapper2 = session.getMapper(VMMapper.class);
 				mapper2.deleteByPrimaryKey(eachVM.getVmId());
 				session.commit();
-				session.close();
 			}
 			ops.setMsg("所有关联的vBox均已删除");
 			logger.debug("All vBox Deleted for " + user.getUserName());
 
 			ops.setMsg("正在检查数据文件状态");
 			String vhdFileName = user.getUserVhdName();
-			wmServiceLocator = new WindowsManagementServiceLocator(vmmUrl);
+			wmServiceLocator = new WindowsManagementServiceLocator(
+					HyperVVMM.hypervisors[user.getUserHypervisorId()].url);
 
 			boolean fileExists = wmServiceLocator.fileExists(VBoxConfig.dataDrive, VBoxConfig.userDataDirectory,
 					vhdFileName.substring(0, vhdFileName.lastIndexOf(".")), "vhd");
@@ -88,7 +86,6 @@ public class DeleteUserTask extends VMTask {
 					vhdFileName.substring(0, vhdFileName.lastIndexOf(".")), "vhd");
 
 			ops.setMsg("正在保存设置");
-			session = VBoxConfig.sqlSessionFactory.openSession();
 			UsersMapper mapper3 = session.getMapper(UsersMapper.class);
 			mapper3.deleteByPrimaryKey(user.getUserName());
 			session.commit();
@@ -96,7 +93,7 @@ public class DeleteUserTask extends VMTask {
 			ops.setMsg("操作完成");
 			logger.debug("Finished");
 			ops.setRetval(0);
-		} catch (JIException | VirtualServiceException | UnknownHostException e) {
+		} catch (Exception e) {
 			ops.setMsg("操作失败:" + e.getMessage());
 			ops.setRetval(1);
 			logger.error("error while deleting user " + user.getUserName(), e);
