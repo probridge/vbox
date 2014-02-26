@@ -15,8 +15,8 @@
 		<listbox model="@{winVboxList$composer.vmLists}" id="lbVMLists"
 			mold="paging" pageSize="10" emptyMessage="没有定义任何vBox。">
 			<listhead>
-				<listheader label="标题" width="200px"/>
-				<listheader label="用户"/>
+				<listheader label="标题"/>
+				<listheader label="用户" width="200px"/>
 				<listheader label="课程代码" width="80px" />
 				<listheader label="类型" width="60px" />
 				<listheader label="激活" width="60px" />
