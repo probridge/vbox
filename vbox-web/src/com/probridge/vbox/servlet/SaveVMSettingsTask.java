@@ -102,7 +102,7 @@ public class SaveVMSettingsTask extends VMTask {
 			ops.setMsg("操作完成");
 			logger.debug("Finished");
 			ops.setRetval(0);
-		} catch (VirtualServiceException | NumberFormatException | JIException e) {
+		} catch (Exception e) {
 			ops.setMsg("操作失败:" + e.getMessage());
 			ops.setRetval(1);
 			logger.error("error saving vm setting " + vm.getVmName(), e);

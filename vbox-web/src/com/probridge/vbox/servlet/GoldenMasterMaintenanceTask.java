@@ -160,7 +160,7 @@ public class GoldenMasterMaintenanceTask extends VMTask {
 			}
 			logger.debug("Finished");
 			ops.setRetval(0);
-		} catch (VirtualServiceException | JIException | InterruptedException | UnknownHostException e) {
+		} catch (Exception e) {
 			ops.setMsg("操作失败:" + e.getMessage());
 			ops.setRetval(1);
 			logger.error(

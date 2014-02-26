@@ -74,7 +74,7 @@ public class DuplicateGoldenMasterTask extends VMTask {
 			ops.setMsg("操作完成");
 			logger.debug("Finished");
 			ops.setRetval(0);
-		} catch (VirtualServiceException | JIException | UnknownHostException e) {
+		} catch (Exception e) {
 			ops.setMsg("操作失败:" + e.getMessage());
 			ops.setRetval(1);
 			logger.error("error cloning images to " + newFileName, e);
