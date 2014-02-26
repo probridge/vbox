@@ -35,8 +35,8 @@ public class DeleteUserTask extends VMTask {
 	@Override
 	public void run() {
 		super.run();
-		logger.debug("Starting to save user setting..");
-		ops.setMsg("保存用户设置");
+		logger.debug("Starting to delete user..");
+		ops.setMsg("删除用户");
 
 		try {
 			ops.setMsg("准备关闭和删除所有关联的vBox");
