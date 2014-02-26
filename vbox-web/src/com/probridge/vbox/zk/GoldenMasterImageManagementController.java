@@ -193,6 +193,25 @@ public class GoldenMasterImageManagementController extends SelectorComposer<Wind
 		getSelf().appendChild(win);
 	}
 
+	
+	@Listen("onClick = #btnSync")
+	public void syncFile(Event e) {
+		Listitem thisListItem = lbImageList.getSelectedItem();
+		if (thisListItem == null)
+			return;
+		GMImage thisImage = (GMImage) thisListItem.getValue();
+		if (!"2".equals(thisImage.getGmImageLock())) {
+			Messagebox.show("母盘必须为未同步状态！", "信息", Messagebox.OK, null);
+			return;
+		}
+		Map<String, Object> arg = new HashMap<String, Object>();
+		arg.put("image", thisImage);
+		arg.put("parentController", this);
+		Window win = (Window) Executions.createComponents("/management/golden_master_maint.zul", getSelf(), arg);
+		getSelf().appendChild(win);
+		return;
+	}
+
 	@Listen("onClick = #btnAddImage")
 	public void createImage(Event event) {
 		for (GMImage eachExistingImage : imageList)
@@ -204,14 +223,13 @@ public class GoldenMasterImageManagementController extends SelectorComposer<Wind
 		image.setGmImageFilename(bdNewImageFileName.getValue());
 		image.setGmImageDescription(tbNewImageDescription.getValue());
 		// TODO: check existance
-		image.setGmImageLock("1");
+		image.setGmImageLock("2");
 		//
 		SqlSession session = VBoxConfig.sqlSessionFactory.openSession();
 		try {
 			GMImageMapper mapper = session.getMapper(GMImageMapper.class);
 			mapper.insertSelective(image);
 			session.commit();
-			//
 		} finally {
 			session.close();
 		}
