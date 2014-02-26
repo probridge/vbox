@@ -27,6 +27,7 @@
 	<logger name="com.probridge.vbox.fileupload" level="DEBUG" />
 	<logger name="com.probridge.vbox.vmm" level="DEBUG" />
 	<logger name="org.apache.ibatis" level="WARN" />
+	<logger name="org.zkoss" level="INFO" />
 	<root level="DEBUG">
 		<appender-ref ref="FILE" />
 	</root>
