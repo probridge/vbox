@@ -82,7 +82,7 @@ public class FixVboxTask extends VMTask {
 			ops.setMsg("vBox正在重新启动，请稍等其可用状态。");
 			logger.debug("Finished");
 			ops.setRetval(0);
-		} catch (VirtualServiceException | JIException e) {
+		} catch (Exception e) {
 			ops.setMsg("操作失败:" + e.getMessage());
 			ops.setRetval(1);
 			logger.error("error fixing vbox " + uuid, e);

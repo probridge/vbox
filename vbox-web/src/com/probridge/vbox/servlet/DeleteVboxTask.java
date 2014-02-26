@@ -59,7 +59,7 @@ public class DeleteVboxTask extends VMTask {
 			ops.setMsg("vBox已经删除");
 			logger.debug("Finished");
 			ops.setRetval(0);
-		} catch (VirtualServiceException e) {
+		} catch (Exception e) {
 			ops.setMsg("操作失败:" + e.getMessage());
 			ops.setRetval(1);
 			logger.error("error deleting vbox " + uuid, e);

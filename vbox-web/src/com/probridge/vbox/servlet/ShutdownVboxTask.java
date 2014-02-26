@@ -45,7 +45,7 @@ public class ShutdownVboxTask extends VMTask {
 			ops.setMsg("vBox:" + vm.getName() + "已关闭");
 			logger.debug("Finished");
 			ops.setRetval(0);
-		} catch (VirtualServiceException e) {
+		} catch (Exception e) {
 			ops.setMsg("操作失败：" + e.getMessage());
 			ops.setRetval(1);
 			logger.error("error shutting down vBox " + uuid, e);
