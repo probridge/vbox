@@ -5,7 +5,7 @@
 		<toolbarbutton id="btnProcess" label="处理审核" />
 	</toolbar>
 	<listbox model="@{divUserApproval$composer.userList}"
-		id="lbUserList" mold="paging" pageSize="15">
+		id="lbUserList" mold="paging" pageSize="10">
 		<listhead>
 			<listheader label="用户名" width="150px" />
 			<listheader label="分组" width="150px" />

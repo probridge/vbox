@@ -5,29 +5,23 @@
 		form-error-page to ask for a login again. -->
 	<html style="color:red"
 		if="${not empty requestScope.loginFailure}">
-		<![CDATA[ 登录失败，请重试！<br/> ]]>				
+		
+		<![CDATA[ 登录失败，请重试！<br/> ]]>
+		
     </html>
 	<groupbox>
 		<caption>登录</caption>
 		<h:form id="f" name="loginform" action="" method="POST"
 			xmlns:h="native">
-			<grid>
-				<rows>
-					<row>
-						用户名:
-						<textbox id="u" name="user" />
-					</row>
-					<row>
-						密码:
-						<textbox id="p" type="password" name="pass" />
-					</row>
-					<row spans="2">
-						<hbox >
-							<h:input type="submit" value="登录" />
-						</hbox>
-					</row>
-				</rows>
-			</grid>
+			<vbox hflex="true">
+				用户名:
+				<textbox id="u" name="user" hflex="true" />
+				密码:
+				<textbox id="p" type="password" name="pass"
+					hflex="true" />
+				<separator />
+				<h:input type="submit" value="登录" />
+			</vbox>
 		</h:form>
 	</groupbox>
 </window>
