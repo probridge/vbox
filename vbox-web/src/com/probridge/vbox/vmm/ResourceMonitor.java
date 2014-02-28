@@ -159,7 +159,7 @@ public class ResourceMonitor implements Runnable {
 						break;
 					} catch (UnknownHostException | JIException e1) {
 						logger.error("Error retreiving monitor data again.", e1);
-						logger.info("Next attempt to retry in 60s...");
+						logger.info("Next attempt to retry in 15s...");
 					} catch (InterruptedException e1) {
 						logger.warn("Interruptted, resource Monitor exiting.");
 						break;
