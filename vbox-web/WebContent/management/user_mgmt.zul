@@ -1,7 +1,6 @@
 <?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./winUserList"?>
 <window apply="com.probridge.vbox.zk.UserManagementController"
-	id="winUserList" title="用户管理" border="normal" width="100%"
-	vflex="true">
+	id="winUserList" title="用户管理" border="normal" width="100%">
 	<toolbar>
 		<toolbarbutton id="btnNewUser" label="新建用户" />
 		<toolbarbutton id="btnEditUser" label="编辑" />

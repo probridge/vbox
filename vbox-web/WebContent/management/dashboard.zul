@@ -1,4 +1,4 @@
-<div hflex="true" vflex="true" id="divDashboard"
+<div hflex="true" id="divDashboard"
 	apply="com.probridge.vbox.zk.DashboardController"
 	style="padding: 10px">
 	<vlayout>

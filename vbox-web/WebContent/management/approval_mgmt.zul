@@ -1,5 +1,4 @@
-<window id="winApproval" title="审核和批准" border="normal" width="100%"
-	vflex="true">
+<window id="winApproval" title="审核和批准" border="normal" width="100%">
 	<vlayout>
 		<tabbox>
 			<tabs>
