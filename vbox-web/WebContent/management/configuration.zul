@@ -1,5 +1,4 @@
-<div id="divSystemConfiguration" width="100%" vflex="true"
-	apply="com.probridge.vbox.zk.SystemConfigurationController">
+<div id="divSystemConfiguration" width="100%" apply="com.probridge.vbox.zk.SystemConfigurationController">
 	<vlayout>
 		<tabbox>
 			<tabs>

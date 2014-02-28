@@ -1,7 +1,6 @@
 <?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./winCourseList"?>
 <window apply="com.probridge.vbox.zk.CourseManagementController"
-	id="winCourseList" title="课程管理" border="normal" width="100%"
-	vflex="true">
+	id="winCourseList" title="课程管理" border="normal" width="100%">
 	<toolbar>
 		<toolbarbutton label="新增课程" id="btnAddCourse" />
 		<toolbarbutton label="修改课程" id="btnEditCourse" />

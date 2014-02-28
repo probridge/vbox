@@ -1,8 +1,7 @@
 <?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./divGoldenMasterImage"?>
 <window
 	apply="com.probridge.vbox.zk.GoldenMasterImageManagementController"
-	id="divGoldenMasterImage" title="母盘管理" border="normal" width="100%"
-	vflex="true">
+	id="divGoldenMasterImage" title="母盘管理" border="normal" width="100%">
 	<toolbar>
 		<toolbarbutton label="删除" id="btnDeleteImage" />
 		<toolbarbutton label="克隆" id="btnDuplicateImage" />
