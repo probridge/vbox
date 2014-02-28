@@ -7,9 +7,9 @@
 	</toolbar>
 	<vlayout>
 		<listbox model="@{divCourseApproval$composer.requestList}"
-			id="lbRequestList" mold="paging" pageSize="15">
+			id="lbRequestList" mold="paging" pageSize="10">
 			<listhead>
-				<listheader label="用户" width="100px" />
+				<listheader label="用户" width="200px" />
 				<listheader label="课程编号" width="100px" />
 				<listheader label="申请理由" />
 				<listheader label="申请状态" width="80px" />

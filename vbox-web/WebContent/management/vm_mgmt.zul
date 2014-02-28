@@ -13,27 +13,23 @@
 	</toolbar>
 	<vlayout>
 		<listbox model="@{winVboxList$composer.vmLists}" id="lbVMLists"
-			mold="paging" pageSize="15" emptyMessage="没有定义任何vBox。">
+			mold="paging" pageSize="10" emptyMessage="没有定义任何vBox。">
 			<listhead>
-				<listheader label="内部名称" />
-				<listheader label="标题" width="140px" />
-				<listheader label="用户" width="90px" />
+				<listheader label="标题"/>
+				<listheader label="用户" width="200px"/>
 				<listheader label="课程代码" width="80px" />
 				<listheader label="类型" width="60px" />
 				<listheader label="激活" width="60px" />
-				<listheader label="创建日期" width="80px" />
-				<listheader label="系统配置" width="100px" />
+				<listheader label="创建日期" width="100px" />
+				<listheader label="系统配置" width="110px" />
 				<listheader label="节点" width="50px" />
 				<listheader label="网络" width="50px" />
 				<listheader label="分配" width="50px" />
-				<listheader label="状态" width="90px" />
+				<listheader label="状态" width="110px" />
 				<listheader label="心跳" width="60px" />
-				<listheader label="IP地址" width="90px" />
-				<listheader label="最后更新" width="130px" />
+				<listheader label="最后更新" width="150px" />
 			</listhead>
 			<listitem self="@{each='vm'}" value="@{vm}">
-				<listcell label="@{vm.vmName}"
-					tooltiptext="@{vm.vmName}" />
 				<listcell label="@{vm.vmTitle }"
 					tooltiptext="@{vm.vmDescription}" />
 				<listcell label="@{vm.vmOwner}" />
@@ -60,7 +56,6 @@
 					label="@{vm.vmStatus, converter='com.probridge.vbox.zk.converter.VboxStatusConverter'}" />
 				<listcell
 					label="@{vm.vmHeartbeat, converter='com.probridge.vbox.zk.converter.VboxHeartbeatConverter'}" />
-				<listcell label="@{vm.vmIpAddress}" />
 				<listcell
 					label="@{vm.vmLastUpdateTimestamp, converter='org.zkoss.zkplus.databind.DateFormatConverter'}"
 					self="@{format('yyyy-MM-dd HH:mm:ss')}" />
