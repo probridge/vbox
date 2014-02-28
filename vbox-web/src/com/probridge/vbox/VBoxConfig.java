@@ -83,7 +83,7 @@ public class VBoxConfig {
 
 	public static int vBoxStatusChangeTimeout = 180;
 
-	public static String systemVersion = "vBox云计算平台 v2.0.4 build 20140210 (C) ProBridge, 2013 - 2014";
+	public static String systemVersion = "vBox云计算平台 v3.1.0 build 20140228 (C) ProBridge, 2013 - 2014";
 
 	public static SmbFilenameFilter fileFilter = new SmbFilenameFilter() {
 		@Override

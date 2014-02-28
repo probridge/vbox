@@ -3,66 +3,40 @@
 	mode="overlapped"
 	apply="com.probridge.vbox.zk.GoldenMasterImageMaintController"
 	id="winImageMaint">
-	<grid>
-		<columns>
-			<column width="100px" />
-			<column />
-		</columns>
-		<rows>
-			<row>
-				<cell colspan="2">
-					母盘现在的状态是：
-					<label id="lbStatus"
-						value="@{winImageMaint$composer.image.gmImageLock, converter='com.probridge.vbox.zk.converter.GoldenMasterReadyStatusConverter'}" />
-				</cell>
-			</row>
-			<row>
-				<cell colspan="2">
-					维护状态会临时关闭和禁用使用本母盘的所有vBox,并且将母盘加载到管理vBox用于管理员的维护操作。
-				</cell>
-			</row>
-			<row>
-				<cell colspan="2">
-					对母盘更新完成后，必须关机然后切换回为就绪状态。就绪时最新的母盘文件会同步复制到所有节点，所有vBox会重置和连接到修改后的母盘，即可恢复使用。
-				</cell>
-			</row>
-			<row>
-				<cell colspan="2">
-					<vlayout>
-						连接到当前母盘的vBox包括：
-						<listbox mold="paging" pageSize="10"
-							model="@{winImageMaint$composer.vmList}" id="lbVMList">
-							<listitem self="@{each='eachVM'}"
-								value="@{eachVM}">
-								<listcell label="@{ eachVM.vmName }" />
-							</listitem>
-						</listbox>
-					</vlayout>
-				</cell>
-			</row>
-			<row id="progressRow" visible="false"
-				style="text-align: center">
-				<cell colspan="2">
-					<vlayout>
-						<label id="progressInfo" hflex="true"
-							value="准备开始" />
-						<progressmeter id="progressBar" hflex="100%" />
-					</vlayout>
-				</cell>
-			</row>
-			<row style="text-align: center">
-				<cell colspan="2">
-					<hlayout>
-						<button label="就绪" id="btnReady" disabled="true"
-							tabindex="15" />
-						<button label="维护" id="btnMaint" disabled="true"
-							tabindex="15" />
-						<button label="关闭" id="btnCancel" tabindex="16" />
-					</hlayout>
-				</cell>
-			</row>
-		</rows>
-	</grid>
-	<timer id="timer" delay="2000" repeats="true" running="false">
-	</timer>
+	<vbox hflex="true">
+		<hbox>
+			母盘现在的状态是：
+			<label id="lbStatus"
+				value="@{winImageMaint$composer.image.gmImageLock, converter='com.probridge.vbox.zk.converter.GoldenMasterReadyStatusConverter'}" />
+		</hbox>
+		维护状态会临时关闭和禁用使用本母盘的所有vBox,并且将母盘加载到管理vBox用于管理员的维护操作。
+		<separator/>
+		对母盘更新完成后，必须关闭维护机然后切换回为就绪状态。就绪时最新的母盘文件会自动同步到所有节点，所有相关vBox会重置和连接到修改后的母盘，即可恢复使用。
+		<separator/>
+		<vlayout>
+			连接到当前母盘的vBox包括：
+			<listbox mold="paging" pageSize="10"
+				model="@{winImageMaint$composer.vmList}" id="lbVMList">
+				<listitem self="@{each='eachVM'}" value="@{eachVM}">
+					<listcell label="@{ eachVM.vmName }" />
+				</listitem>
+			</listbox>
+		</vlayout>
+		手工同步选项会将处于未同步状态新母盘直接同步至所有节点，并且直接就绪可用。
+		<separator/>
+		<vlayout id="progressRow" visible="false">
+			<label id="progressInfo" hflex="true" value="准备开始" />
+			<progressmeter id="progressBar" hflex="100%" />
+		</vlayout>
+		<hlayout style="text-align: center">
+			<button label="就绪" id="btnReady" disabled="true"
+				tabindex="15" />
+			<button label="维护" id="btnMaint" disabled="true"
+				tabindex="15" />
+			<button label="同步" id="btnSync" disabled="true"
+				tabindex="15" />
+			<button label="关闭" id="btnCancel" tabindex="16" />
+		</hlayout>
+	</vbox>
+	<timer id="timer" delay="2000" repeats="true" running="false" />
 </window>

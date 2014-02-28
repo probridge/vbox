@@ -8,6 +8,10 @@
 		<name>org.zkoss.zul.progressbox.position</name>
 		<value>center,center</value>
 	</library-property>
+	<library-property>
+		<name>org.zkoss.theme.preferred</name>
+		<value>atlantic</value>
+	</library-property>
 	<session-config>
 		<timer-keep-alive>true</timer-keep-alive>
 	</session-config>

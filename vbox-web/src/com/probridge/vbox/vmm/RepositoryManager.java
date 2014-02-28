@@ -42,6 +42,16 @@ public class RepositoryManager {
 		return goldenMasterList;
 	}
 
+	public static boolean fileExists(String drive, String path, String fileName, String extension) throws JIException,
+			VirtualServiceException, UnknownHostException {
+		WindowsManagementServiceLocator wmServiceLocator = new WindowsManagementServiceLocator(
+				HyperVVMM.hypervisors[VBoxConfig.repositoryLocation].url);
+		boolean fileExists = wmServiceLocator.fileExists(drive, path, fileName, extension);
+		wmServiceLocator.destroySession();
+		logger.info("File[" + drive + path + fileName + "." +  extension + "] exists = " + fileExists);
+		return fileExists;
+	}
+
 	public static void clone(String srcFn, String destFn) throws JIException, VirtualServiceException,
 			UnknownHostException {
 		logger.info("Cloning repository file: " + srcFn + " ==> " + destFn);
@@ -72,6 +82,10 @@ public class RepositoryManager {
 						+ HyperVVMM.hypervisors[i].hypervisorName + "[" + i + "]...", e);
 			}
 		}
+	}
+	
+	public static boolean isSynced(String fileName) {
+		return false;
 	}
 
 	public static void syncFile(String fileName, OpStatus ops) {

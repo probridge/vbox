@@ -8,6 +8,7 @@ import com.probridge.vbox.VBoxConfig;
 import com.probridge.vbox.dao.VMMapper;
 import com.probridge.vbox.vmm.wmi.HyperVVM;
 import com.probridge.vbox.vmm.wmi.HyperVVMM;
+import com.probridge.vbox.vmm.wmi.VirtualMachine.HeartBeat;
 import com.probridge.vbox.vmm.wmi.VirtualMachine.VMState;
 import com.probridge.vbox.vmm.wmi.utils.VirtualServiceException;
 import com.probridge.vbox.zk.AdminTaskManager;
@@ -30,7 +31,13 @@ public class DeleteVboxTask extends VMTask {
 		try {
 			HyperVVM vm = HyperVVMM.locateVM(uuid);
 			ops.setMsg("正在关闭vBox");
-			vm.shutdown();
+			if (vm.getHeartBeat() == HeartBeat.OK) {
+				vm.shutdown();
+				ops.setMsg("正在等待vBox操作系统关闭状态");
+				if (!vm.waitFor(VMState.PoweredOff))
+					vm.powerOff();
+			} else
+				vm.powerOff();
 			// Wait powered off status
 			ops.setMsg("正在等待vBox关闭状态");
 			logger.debug("Waiting vm in stopped status");
@@ -52,7 +59,7 @@ public class DeleteVboxTask extends VMTask {
 			ops.setMsg("vBox已经删除");
 			logger.debug("Finished");
 			ops.setRetval(0);
-		} catch (VirtualServiceException e) {
+		} catch (Exception e) {
 			ops.setMsg("操作失败:" + e.getMessage());
 			ops.setRetval(1);
 			logger.error("error deleting vbox " + uuid, e);

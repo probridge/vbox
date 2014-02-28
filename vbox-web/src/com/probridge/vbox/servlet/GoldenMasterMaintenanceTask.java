@@ -1,10 +1,8 @@
 package com.probridge.vbox.servlet;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.jinterop.dcom.common.JIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,9 +15,9 @@ import com.probridge.vbox.model.VMExample;
 import com.probridge.vbox.vmm.RepositoryManager;
 import com.probridge.vbox.vmm.wmi.HyperVVM;
 import com.probridge.vbox.vmm.wmi.HyperVVMM;
-import com.probridge.vbox.vmm.wmi.WindowsManagementServiceLocator;
 import com.probridge.vbox.vmm.wmi.VirtualMachine.HeartBeat;
 import com.probridge.vbox.vmm.wmi.VirtualMachine.VMState;
+import com.probridge.vbox.vmm.wmi.WindowsManagementServiceLocator;
 import com.probridge.vbox.vmm.wmi.utils.VirtualServiceException;
 import com.probridge.vbox.zk.AdminTaskManager;
 
@@ -146,14 +144,25 @@ public class GoldenMasterMaintenanceTask extends VMTask {
 				session.commit();
 				//
 				ops.setMsg("操作完成");
+			} else if (mode == 2) { // sync only
+				ops.setMsg("正在向所有节点同步母盘文件，可能需要较长时间...");
+				RepositoryManager.syncFile(image.getGmImageFilename(), ops);
+				ops.setMsg("文件同步完成");
+				// set image maintenance mode
+				GMImageMapper mapper = session.getMapper(GMImageMapper.class);
+				image.setGmImageLock("0");
+				mapper.updateByPrimaryKey(image);
+				session.commit();
+				//
+				ops.setMsg("同步完成");
 			}
 			logger.debug("Finished");
 			ops.setRetval(0);
-		} catch (VirtualServiceException | JIException | InterruptedException | UnknownHostException e) {
+		} catch (Exception e) {
 			ops.setMsg("操作失败:" + e.getMessage());
 			ops.setRetval(1);
 			logger.error(
-					"error maint/ready the golden master image " + image.getGmImageFilename() + " mode is " + mode, e);
+					"error maint/ready/sync the golden master image " + image.getGmImageFilename() + " mode is " + mode, e);
 		} finally {
 			session.close();
 			AdminTaskManager.getInstance().getThreadlist().remove(sid);

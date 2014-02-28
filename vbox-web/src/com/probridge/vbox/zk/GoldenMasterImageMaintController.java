@@ -15,6 +15,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Progressmeter;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Timer;
+import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
 import com.probridge.vbox.VBoxConfig;
@@ -33,10 +34,10 @@ public class GoldenMasterImageMaintController extends SelectorComposer<Window> {
 	Execution _execution;
 
 	@Wire
-	Button btnReady, btnMaint, btnCancel;
+	Button btnReady, btnMaint, btnSync, btnCancel;
 
 	@Wire
-	Row progressRow;
+	Vlayout progressRow;
 
 	@Wire
 	Timer timer;
@@ -76,6 +77,8 @@ public class GoldenMasterImageMaintController extends SelectorComposer<Window> {
 			btnMaint.setDisabled(false);
 		else if ("1".equals(gmImage.getGmImageLock()))
 			btnReady.setDisabled(false);
+		else if ("2".equals(gmImage.getGmImageLock()))
+			btnSync.setDisabled(false);
 		//
 		SqlSession session = VBoxConfig.sqlSessionFactory.openSession();
 		VMMapper vmapper = session.getMapper(VMMapper.class);
@@ -98,6 +101,7 @@ public class GoldenMasterImageMaintController extends SelectorComposer<Window> {
 		progressRow.setVisible(true);
 		btnReady.setDisabled(true);
 		btnMaint.setDisabled(true);
+		btnSync.setDisabled(true);
 		btnCancel.setDisabled(true);
 		//
 		String sid = SecurityUtils.getSubject().getSession().getId().toString();
@@ -117,11 +121,32 @@ public class GoldenMasterImageMaintController extends SelectorComposer<Window> {
 		progressRow.setVisible(true);
 		btnReady.setDisabled(true);
 		btnMaint.setDisabled(true);
+		btnSync.setDisabled(true);
 		btnCancel.setDisabled(true);
 		//
 		String sid = SecurityUtils.getSubject().getSession().getId().toString();
 		opid = String.valueOf(System.currentTimeMillis());
 		GoldenMasterMaintenanceTask t = new GoldenMasterMaintenanceTask(sid, opid, gmImage, 1);
+		//
+		if (AdminTaskManager.getInstance().submit(t) == null) {
+			progressRow.setVisible(true);
+			progressInfo.setValue("请等待之前操作完成");
+		} else {
+			timer.start();
+		}
+	}
+
+	@Listen("onClick = button#btnSync")
+	public void sync(Event event) {
+		progressRow.setVisible(true);
+		btnReady.setDisabled(true);
+		btnMaint.setDisabled(true);
+		btnSync.setDisabled(true);
+		btnCancel.setDisabled(true);
+		//
+		String sid = SecurityUtils.getSubject().getSession().getId().toString();
+		opid = String.valueOf(System.currentTimeMillis());
+		GoldenMasterMaintenanceTask t = new GoldenMasterMaintenanceTask(sid, opid, gmImage, 2);
 		//
 		if (AdminTaskManager.getInstance().submit(t) == null) {
 			progressRow.setVisible(true);

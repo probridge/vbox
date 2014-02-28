@@ -1,10 +1,8 @@
 package com.probridge.vbox.servlet;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.jinterop.dcom.common.JIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +15,8 @@ import com.probridge.vbox.model.VMExample;
 import com.probridge.vbox.vmm.wmi.HyperVVM;
 import com.probridge.vbox.vmm.wmi.HyperVVMM;
 import com.probridge.vbox.vmm.wmi.VirtualMachine.HeartBeat;
-import com.probridge.vbox.vmm.wmi.WindowsManagementServiceLocator;
 import com.probridge.vbox.vmm.wmi.VirtualMachine.VMState;
+import com.probridge.vbox.vmm.wmi.WindowsManagementServiceLocator;
 import com.probridge.vbox.vmm.wmi.utils.VirtualServiceException;
 import com.probridge.vbox.zk.AdminTaskManager;
 
@@ -125,7 +123,7 @@ public class SaveUserSettingsTask extends VMTask {
 			ops.setMsg("操作完成");
 			logger.debug("Finished");
 			ops.setRetval(0);
-		} catch (JIException | VirtualServiceException | UnknownHostException e) {
+		} catch (Exception e) {
 			ops.setMsg("操作失败:" + e.getMessage());
 			ops.setRetval(1);
 			logger.error("error saving user " + user.getUserName(), e);

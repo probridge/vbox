@@ -1,14 +1,13 @@
 <div hflex="true" vflex="true" id="divDashboard"
 	apply="com.probridge.vbox.zk.DashboardController"
 	style="padding: 10px">
-	<vlayout spacing="0px" vflex="true">
+	<vlayout>
 		<hlayout>
-		<label>请选择vBox节点：</label>
-		<radiogroup id="hypervisorList">
-		</radiogroup>
+			<label>请选择vBox节点：</label>
+			<radiogroup id="hypervisorList"></radiogroup>
 		</hlayout>
 		<hlayout spacing="10px">
-			<groupbox vflex="true" width="550px" closable="false">
+			<groupbox vflex="true" hflex="true" closable="false">
 				<caption>系统摘要</caption>
 				<vlayout>
 					<label id="lbOsInfo">操作系统版本</label>
@@ -17,23 +16,28 @@
 					<label id="lbMemDiskInfo">内存信息 / 磁盘信息</label>
 				</vlayout>
 			</groupbox>
-			<groupbox vflex="true" hflex="true" closable="false">
+			<groupbox width="250px" vflex="true" id="gbCores"
+				closable="false">
+				<caption>在线核心数</caption>
+			</groupbox>
+			<groupbox width="200px" vflex="true" closable="false">
 				<caption>vBox统计信息</caption>
 				<vlayout id="vBoxStatistic"></vlayout>
 			</groupbox>
 		</hlayout>
-		<hlayout spacing="10px">
-			<vlayout hflex="true">
-				<groupbox height="80px" id="gbCores" closable="false">
-					<caption>在线核心数</caption>
-				</groupbox>
-				<groupbox closable="false" hflex="true" height="140px">
-					<caption>磁盘响应时间(ms)</caption>
-					<flashchart type="line" height="100%" width="100%"
-						id="fDiskPerf">
-					</flashchart>
-				</groupbox>
-			</vlayout>
+		<groupbox hflex="true" closable="false" height="250px">
+			<caption>CPU使用率</caption>
+			<flashchart type="line" height="100%" id="fCpuUtils"
+				width="100%">
+			</flashchart>
+		</groupbox>
+		<hlayout spacing="10px" hflex="true">
+			<groupbox closable="false" hflex="true">
+				<caption>磁盘响应时间(ms)</caption>
+				<flashchart type="line" height="200px" width="100%"
+					id="fDiskPerf">
+				</flashchart>
+			</groupbox>
 			<groupbox closable="false">
 				<caption>内存使用(GB)</caption>
 				<flashchart type="pie" width="300px" height="200px"
@@ -44,14 +48,6 @@
 				<caption>磁盘空间(GB)</caption>
 				<flashchart type="pie" width="300px" height="200px"
 					id="fDiskUsage">
-				</flashchart>
-			</groupbox>
-		</hlayout>
-		<hlayout vflex="true" spacing="10px">
-			<groupbox hflex="true" closable="false" vflex="true">
-				<caption>CPU使用率</caption>
-				<flashchart type="line" height="100%" id="fCpuUtils"
-					width="100%">
 				</flashchart>
 			</groupbox>
 		</hlayout>

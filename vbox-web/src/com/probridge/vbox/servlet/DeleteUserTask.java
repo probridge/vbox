@@ -1,10 +1,8 @@
 package com.probridge.vbox.servlet;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.jinterop.dcom.common.JIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +14,8 @@ import com.probridge.vbox.model.VM;
 import com.probridge.vbox.model.VMExample;
 import com.probridge.vbox.vmm.wmi.HyperVVM;
 import com.probridge.vbox.vmm.wmi.HyperVVMM;
-import com.probridge.vbox.vmm.wmi.WindowsManagementServiceLocator;
 import com.probridge.vbox.vmm.wmi.VirtualMachine.VMState;
+import com.probridge.vbox.vmm.wmi.WindowsManagementServiceLocator;
 import com.probridge.vbox.vmm.wmi.utils.VirtualServiceException;
 import com.probridge.vbox.zk.AdminTaskManager;
 
@@ -35,8 +33,8 @@ public class DeleteUserTask extends VMTask {
 	@Override
 	public void run() {
 		super.run();
-		logger.debug("Starting to save user setting..");
-		ops.setMsg("保存用户设置");
+		logger.debug("Starting to delete user..");
+		ops.setMsg("删除用户");
 
 		try {
 			ops.setMsg("准备关闭和删除所有关联的vBox");
@@ -46,14 +44,12 @@ public class DeleteUserTask extends VMTask {
 			VMExample exp = new VMExample();
 			exp.createCriteria().andVmOwnerEqualTo(user.getUserName());
 			List<VM> relatedVMList = mapper.selectByExample(exp);
-			session.close();
 			//
-			String vmmUrl = null;
+
 			for (VM eachVM : relatedVMList) {
 				ops.setMsg("正在停止：" + eachVM.getVmName());
 				logger.debug("Stopping " + eachVM.getVmId());
 				HyperVVM vm = HyperVVMM.locateVM(eachVM.getVmId());
-				vmmUrl = vm.parent.url;
 				vm.powerOff();
 				boolean stateReached = vm.waitFor(VMState.PoweredOff);
 				if (!stateReached)
@@ -61,18 +57,17 @@ public class DeleteUserTask extends VMTask {
 				ops.setMsg("正在删除：" + eachVM.getVmName());
 				logger.debug("Deleting " + eachVM.getVmId());
 				vm.destroy();
-				session = VBoxConfig.sqlSessionFactory.openSession();
 				VMMapper mapper2 = session.getMapper(VMMapper.class);
 				mapper2.deleteByPrimaryKey(eachVM.getVmId());
 				session.commit();
-				session.close();
 			}
 			ops.setMsg("所有关联的vBox均已删除");
 			logger.debug("All vBox Deleted for " + user.getUserName());
 
 			ops.setMsg("正在检查数据文件状态");
 			String vhdFileName = user.getUserVhdName();
-			wmServiceLocator = new WindowsManagementServiceLocator(vmmUrl);
+			wmServiceLocator = new WindowsManagementServiceLocator(
+					HyperVVMM.hypervisors[user.getUserHypervisorId()].url);
 
 			boolean fileExists = wmServiceLocator.fileExists(VBoxConfig.dataDrive, VBoxConfig.userDataDirectory,
 					vhdFileName.substring(0, vhdFileName.lastIndexOf(".")), "vhd");
@@ -88,7 +83,6 @@ public class DeleteUserTask extends VMTask {
 					vhdFileName.substring(0, vhdFileName.lastIndexOf(".")), "vhd");
 
 			ops.setMsg("正在保存设置");
-			session = VBoxConfig.sqlSessionFactory.openSession();
 			UsersMapper mapper3 = session.getMapper(UsersMapper.class);
 			mapper3.deleteByPrimaryKey(user.getUserName());
 			session.commit();
@@ -96,7 +90,7 @@ public class DeleteUserTask extends VMTask {
 			ops.setMsg("操作完成");
 			logger.debug("Finished");
 			ops.setRetval(0);
-		} catch (JIException | VirtualServiceException | UnknownHostException e) {
+		} catch (Exception e) {
 			ops.setMsg("操作失败:" + e.getMessage());
 			ops.setRetval(1);
 			logger.error("error while deleting user " + user.getUserName(), e);

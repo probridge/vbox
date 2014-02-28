@@ -65,7 +65,7 @@ public class VMSwitchTask extends VMTask {
 			ops.setMsg("启动命令成功，请等待vBox可用状态");
 			logger.debug("Finished");
 			ops.setRetval(0);
-		} catch (VirtualServiceException e) {
+		} catch (Exception e) {
 			ops.setMsg("操作失败");
 			ops.setRetval(1);
 			logger.error("error switching vm to " + resume.get(0), e);
