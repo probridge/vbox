@@ -73,15 +73,14 @@ public class DeleteUserTask extends VMTask {
 					vhdFileName.substring(0, vhdFileName.lastIndexOf(".")), "vhd");
 
 			if (!fileExists) {
-				logger.debug("Personal VHD doesn't exist");
-				throw new VirtualServiceException("数据文件不存在");
+				logger.warn("Personal VHD doesn't exist" + user.getUserVhdName());
+				ops.setMsg("用户数据不存在");
+			} else {
+				ops.setMsg("正在删除用户数据");
+				logger.debug("Deleting file " + vhdFileName);
+				wmServiceLocator.deleteFile(VBoxConfig.dataDrive, VBoxConfig.userDataDirectory,
+						vhdFileName.substring(0, vhdFileName.lastIndexOf(".")), "vhd");
 			}
-			//
-			ops.setMsg("正在删除用户数据");
-			logger.debug("Deleting file " + vhdFileName);
-			wmServiceLocator.deleteFile(VBoxConfig.dataDrive, VBoxConfig.userDataDirectory,
-					vhdFileName.substring(0, vhdFileName.lastIndexOf(".")), "vhd");
-
 			ops.setMsg("正在保存设置");
 			UsersMapper mapper3 = session.getMapper(UsersMapper.class);
 			mapper3.deleteByPrimaryKey(user.getUserName());
