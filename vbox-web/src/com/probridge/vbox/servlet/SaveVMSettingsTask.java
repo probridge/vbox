@@ -64,7 +64,7 @@ public class SaveVMSettingsTask extends VMTask {
 				//
 				if (!thisVM.waitFor(VMState.PoweredOff))
 					throw new VirtualServiceException("无法关闭" + thisVM.getName() + "，请联系我们");
-				ops.setMsg("vBox:" + thisVM.getName() + "已关闭");
+				ops.setMsg(thisVM.getName() + "已关闭");
 				logger.debug("Powered off now");
 				//
 				if ("0".equals(vm.getVmVhdGmType()))
@@ -77,6 +77,11 @@ public class SaveVMSettingsTask extends VMTask {
 					vm.setVmVhdGmFilename(vm.getVmVhdGmImage());
 				//
 				if (saveConfig) {
+					if (!vm.getVmName().equals(thisVM.getName())) {
+						logger.debug("Renaming " + thisVM.getName() + " to " + vm.getVmName());
+						ops.setMsg("正在配置vBox");
+						thisVM.rename(vm.getVmName());
+					}
 					ops.setMsg("正在配置vBox处理资源");
 					thisVM.modifyConfiguration(vm.getVmCores(), vm.getVmMemory(), vm.getVmMemory());
 					ops.setMsg("正在初始化vBox网络");
