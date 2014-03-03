@@ -17,7 +17,7 @@ public class VMTask implements Runnable {
 
 	@Override
 	public void run() {
-		Thread.currentThread().setName("vBox Task Worker [" + opid + "] Thread");
+		Thread.currentThread().setName("vBox Task Worker Thread");
 		AdminTaskManager.getInstance().getThreadlist().put(sid, Thread.currentThread());
 		ops.setRetval(4);
 	}
