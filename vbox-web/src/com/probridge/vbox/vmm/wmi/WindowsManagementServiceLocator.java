@@ -85,9 +85,9 @@ public class WindowsManagementServiceLocator extends AbstractServiceLocator {
 		IJIComObject wimObject = comServer.createInstance();
 		IJIDispatch locatorDispatch = (IJIDispatch) JIObjectFactory.narrowObject((IJIComObject) wimObject
 				.queryInterface(IJIDispatch.IID));
-		Object[] params = new Object[] { new JIString(this.url), new JIString(namespace),
-				JIVariant.OPTIONAL_PARAM(), JIVariant.OPTIONAL_PARAM(), JIVariant.OPTIONAL_PARAM(),
-				JIVariant.OPTIONAL_PARAM(), new Integer(0), JIVariant.OPTIONAL_PARAM() };
+		Object[] params = new Object[] { new JIString(this.url), new JIString(namespace), JIVariant.OPTIONAL_PARAM(),
+				JIVariant.OPTIONAL_PARAM(), JIVariant.OPTIONAL_PARAM(), JIVariant.OPTIONAL_PARAM(), new Integer(0),
+				JIVariant.OPTIONAL_PARAM() };
 		JIVariant[] res = locatorDispatch.callMethodA(METHOD_CONNECT_SERVER, params);
 		service = (IJIDispatch) JIObjectFactory.narrowObject(res[0].getObjectAsComObject());
 	}
@@ -118,7 +118,8 @@ public class WindowsManagementServiceLocator extends AbstractServiceLocator {
 	 * @throws JIException
 	 * @throws VirtualServiceException
 	 */
-	public int deleteFile(String drive, String path, String fileName, String extension) throws JIException, VirtualServiceException {
+	public int deleteFile(String drive, String path, String fileName, String extension) throws JIException,
+			VirtualServiceException {
 		String query = "Select * From CIM_DataFile Where Drive='" + drive + "' And Path='"
 				+ path.toLowerCase().replace("\\", "\\\\") + "' And FileName='" + fileName + "' And Extension='"
 				+ extension + "'";
@@ -137,8 +138,8 @@ public class WindowsManagementServiceLocator extends AbstractServiceLocator {
 		return result;
 	}
 
-	public int copyFile(String drive, String path, String fileName, String extension, String newName) throws JIException,
-			VirtualServiceException {
+	public int copyFile(String drive, String path, String fileName, String extension, String newName)
+			throws JIException, VirtualServiceException {
 		String query = "Select * From CIM_DataFile Where Drive='" + drive + "' And Path='"
 				+ path.toLowerCase().replace("\\", "\\\\") + "' And FileName='" + fileName + "' And Extension='"
 				+ extension + "'";
@@ -267,7 +268,8 @@ public class WindowsManagementServiceLocator extends AbstractServiceLocator {
 
 	/**
 	 * @param drive
-	 * @return { secPerRead, secPerReadBase, secPerWrite, secPerWriteBase, timebase }
+	 * @return { secPerRead, secPerReadBase, secPerWrite, secPerWriteBase,
+	 *         timebase }
 	 * @throws JIException
 	 */
 	public long[] getDiskPerformance(String drive) throws JIException {
@@ -322,19 +324,21 @@ public class WindowsManagementServiceLocator extends AbstractServiceLocator {
 		JIVariant[][] summarySet = Utils.enumToJIVariantArray(res);
 		int numOfEntries = summarySet.length;
 		HashMap<String, Integer> summaryInfo = new HashMap<String, Integer>(11);
-		for (int i = 0; i < numOfEntries; i++) {
-			MyIJIDispatch entry = new MyIJIDispatch(summarySet[i][0]);
-			summaryInfo.put("正在运行", entry.getInt("Running"));
-			summaryInfo.put("已保存", entry.getInt("Saved"));
-			summaryInfo.put("已关机", entry.getInt("TurnedOff"));
-			summaryInfo.put("已暂停", entry.getInt("Paused"));
-			summaryInfo.put("正在保存", entry.getInt("Saving"));
-			summaryInfo.put("正在恢复", entry.getInt("Resuming"));
-			summaryInfo.put("正在开机", entry.getInt("Starting"));
-			summaryInfo.put("正在关机", entry.getInt("Stopping"));
-			summaryInfo.put("正在重启", entry.getInt("Resetting"));
-			summaryInfo.put("正在暂停", entry.getInt("Pausing"));
-			summaryInfo.put("等待启动", entry.getInt("WaitingtoStart"));
+		synchronized (summaryInfo) {
+			for (int i = 0; i < numOfEntries; i++) {
+				MyIJIDispatch entry = new MyIJIDispatch(summarySet[i][0]);
+				summaryInfo.put("正在运行", entry.getInt("Running"));
+				summaryInfo.put("已保存", entry.getInt("Saved"));
+				summaryInfo.put("已关机", entry.getInt("TurnedOff"));
+				summaryInfo.put("已暂停", entry.getInt("Paused"));
+				summaryInfo.put("正在保存", entry.getInt("Saving"));
+				summaryInfo.put("正在恢复", entry.getInt("Resuming"));
+				summaryInfo.put("正在开机", entry.getInt("Starting"));
+				summaryInfo.put("正在关机", entry.getInt("Stopping"));
+				summaryInfo.put("正在重启", entry.getInt("Resetting"));
+				summaryInfo.put("正在暂停", entry.getInt("Pausing"));
+				summaryInfo.put("等待启动", entry.getInt("WaitingtoStart"));
+			}
 		}
 		return summaryInfo;
 	}

@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Desktop;
-import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -77,7 +76,7 @@ public class DashboardController extends SelectorComposer<Div> {
 				@Override
 				public void onEvent(MouseEvent arg0) throws Exception {
 					loaddata();
-				}				
+				}
 			});
 			hypervisorList.appendChild(eachVmmRadio);
 		}
@@ -122,14 +121,16 @@ public class DashboardController extends SelectorComposer<Div> {
 				itrComp.remove();
 		//
 		HashMap<String, Integer> status = resMgr.getVmmStatus();
-		if (status != null) {
-			Iterator<String> itr = status.keySet().iterator();
-			while (itr.hasNext()) {
-				String entry = itr.next();
-				Integer val = status.get(entry);
-				if (val > 0) {
-					Label thisLabel = new Label(entry + " : " + val);
-					vBoxStatistic.appendChild(thisLabel);
+		synchronized (status) {
+			if (status != null) {
+				Iterator<String> itr = status.keySet().iterator();
+				while (itr.hasNext()) {
+					String entry = itr.next();
+					Integer val = status.get(entry);
+					if (val > 0) {
+						Label thisLabel = new Label(entry + " : " + val);
+						vBoxStatistic.appendChild(thisLabel);
+					}
 				}
 			}
 		}
