@@ -49,6 +49,7 @@ public class GoldenMasterMaintenanceTask extends VMTask {
 			//
 			HyperVVM maintainVm = HyperVVMM.locateVM(maintainVM.getVmId());
 			//
+			maintainVm.reloadStatus();
 			if (maintainVm.getState() != VMState.PoweredOff)
 				throw new VirtualServiceException("操作前请确保维护机为关机状态，请检查！");
 
