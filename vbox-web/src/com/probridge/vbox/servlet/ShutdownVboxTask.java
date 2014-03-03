@@ -42,7 +42,7 @@ public class ShutdownVboxTask extends VMTask {
 			//
 			if (!vm.waitFor(VMState.PoweredOff))
 				throw new VirtualServiceException("无法关闭vBox，请联系我们");
-			ops.setMsg("vBox:" + vm.getName() + "已关闭");
+			ops.setMsg(vm.getName() + "已关闭");
 			logger.debug("Finished");
 			ops.setRetval(0);
 		} catch (Exception e) {
