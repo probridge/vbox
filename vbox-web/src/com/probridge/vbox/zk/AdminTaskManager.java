@@ -53,14 +53,13 @@ public class AdminTaskManager {
 	}
 
 	public OpStatus queryStatus(String opid) {
-		logger.debug("getting op result for opid=" + opid);
 		OpStatus s = opResults.get(opid);
 		if (s == null) {
-			logger.debug("no operation found for opid=" + opid);
+			logger.debug("Operation not found opid=" + opid);
 			s = new OpStatus(opid, "请稍等");
 			s.setRetval(2);
 		} else {
-			logger.debug("got op for opid" + opid + s.toString());
+			logger.debug("Operation " + opid + " => " + s.toString());
 		}
 		//
 		return s;
