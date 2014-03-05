@@ -89,6 +89,28 @@ public class MsvmVirtualSystemManagementService {
 		}
 	}
 
+	public void modifyVirtualSystem(MyIJIDispatch vmDispatch, MyIJIDispatch vsgsdDefString) throws JIException,
+			VirtualServiceException {
+		String vmPath = vmDispatch.getDispatch("Path_").getString("Path");
+
+		JIVariant[] tmp = msvmVSMSDispatch.callMethodA("ModifyVirtualSystem", new Object[] { new JIString(vmPath),
+				new JIString(vsgsdDefString.getText_()), JIVariant.OPTIONAL_PARAM(), JIVariant.OPTIONAL_PARAM() });
+		//
+		int defRes = tmp[0].getObjectAsInt();
+		if (defRes == 0) {
+			logger.debug("System modified successfully..");
+		} else {
+			if (defRes == 4096) {
+				logger.debug("Modifying system...");
+				String jobPath = tmp[1].getObjectAsVariant().getObjectAsString2();
+				Utils.monitorJobState(jobPath, serviceLocator);
+			} else {
+				throw new VirtualServiceException("Cannot modify " + vsgsdDefString.getString("ElementName")
+						+ ". Error code " + defRes);
+			}
+		}
+	}
+
 	public void modifyVirtualSystemResources(MyIJIDispatch vmDispatch, ArrayList<MyIJIDispatch> toModify)
 			throws JIException {
 		String vmPath = vmDispatch.getDispatch("Path_").getString("Path");

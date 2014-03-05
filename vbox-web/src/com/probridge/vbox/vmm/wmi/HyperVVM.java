@@ -52,7 +52,8 @@ public class HyperVVM implements VirtualMachine, NotifierListener<HyperVVMM, Upd
 	 * The name of the virtual machine, and pieces of inforation used to connect
 	 * to remote Microsoft Server 2008 with Hyper-V Role enabled.
 	 */
-	private final String id, name;
+	private final String id;
+	private String name;
 	/**
 	 * The {@link HyperVVMM} that instantiated this virtual machine. This
 	 * reference is kept to be able to update network settings in case of
@@ -147,6 +148,7 @@ public class HyperVVM implements VirtualMachine, NotifierListener<HyperVVMM, Upd
 	 */
 	public boolean waitFor(VMState expectedState, int timeout) {
 		boolean stateReached = false;
+		logger.debug("Waiting for VM[" + name + "] status: " + expectedState.getName());
 		try {
 			int waitTimer = 0;
 			while (waitTimer < timeout) {
@@ -155,13 +157,13 @@ public class HyperVVM implements VirtualMachine, NotifierListener<HyperVVMM, Upd
 					stateReached = true;
 					break;
 				}
-				logger.debug("Waiting for VM[" + name + "] status: " + expectedState.getName());
 				Thread.sleep(1000);
 				waitTimer++;
 			}
 		} catch (VirtualServiceException | InterruptedException e) {
 			logger.error("error while waiting for status " + expectedState.getName() + "...", e);
 		}
+		logger.debug("VM[" + name + "] status " + expectedState.getName() + " reached = " + stateReached);
 		return stateReached;
 	}
 
@@ -413,6 +415,32 @@ public class HyperVVM implements VirtualMachine, NotifierListener<HyperVVMM, Upd
 			//
 			parent.registerVM(newVM);
 			return newVM;
+		} catch (JIException e) {
+			throw new VirtualServiceException(e, "Cannot create " + newName + ".");
+		}
+	}
+
+	public void rename(String newName) throws VirtualServiceException {
+		try {
+			testService();
+			// check if already exists
+			JIVariant[] tmp = service.execQuery("Select * From Msvm_VirtualSystemGlobalSettingData Where ElementName='"
+					+ newName + "'");
+			JIVariant[][] tmpSet = enumToJIVariantArray(tmp);
+			if (tmpSet.length > 0)
+				throw new VirtualServiceException("A vitual machine with the name " + newName + " already exists.");
+			//
+			tmp = service.execQuery("Select * From Msvm_VirtualSystemGlobalSettingData Where SystemName='" + id + "'");
+			tmpSet = enumToJIVariantArray(tmp);
+			if (tmpSet.length == 0)
+				throw new VirtualServiceException("VM Msvm_VirtualSystemGlobalSettingData not found");
+			//
+			MyIJIDispatch vsgsdClass = new MyIJIDispatch(tmpSet[0][0]);
+			vsgsdClass.put("ElementName", new JIVariant(new JIString(newName)));
+			// Get ManagementService instance and define new VirtualSystem
+			MsvmVirtualSystemManagementService vsmService = service.getVirtualSystemManagementService();
+			vsmService.modifyVirtualSystem(vmDispatch, vsgsdClass);
+			this.name = newName;
 		} catch (JIException e) {
 			throw new VirtualServiceException(e, "Cannot create " + newName + ".");
 		}
