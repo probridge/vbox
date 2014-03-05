@@ -12,6 +12,10 @@
 		<name>org.zkoss.theme.preferred</name>
 		<value>atlantic</value>
 	</library-property>
+	<library-property>
+		<name>org.zkoss.bind.DebuggerFactory.enable</name>
+		<value>true</value>
+	</library-property>
 	<session-config>
 		<timer-keep-alive>true</timer-keep-alive>
 	</session-config>

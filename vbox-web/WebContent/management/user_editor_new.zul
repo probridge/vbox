@@ -1,0 +1,145 @@
+<window title="用户设置" border="normal" width="500px" position="center"
+	mode="overlapped" id="winUserEditor"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('model') @init('com.probridge.vbox.zk.vmodel.UserEditor')"
+	visible="@load(model.visible)"
+	form="@id('form') @init(model.form) @load(model.user) @save(model.user, before='save')">
+	<vbox align="center">
+		<grid>
+			<columns>
+				<column label="" width="100px" />
+				<column label="设置" />
+			</columns>
+			<rows>
+				<row>
+					用户标识
+					<hlayout>
+						<textbox value="@bind(form.userName)" hflex="1"
+							readonly="@load(!model.newUser)" onChange="@command('reload')" />
+					</hlayout>
+				</row>
+				<row>
+					密码
+					<hlayout>
+						<textbox value="@bind(form.userPassword)"
+							hflex="1" />
+					</hlayout>
+				</row>
+				<row>
+					状态
+					<radiogroup
+						selectedItem="@bind(form.userEnabled)">
+						<radio label="启用" value="1" />
+						<radio label="禁用" value="0" />
+					</radiogroup>
+				</row>
+				<row>
+					用户类型
+					<radiogroup selectedItem="@bind(form.userType)">
+						<radio label="本地用户" value="0" />
+						<radio label="统一认证用户" value="1" />
+					</radiogroup>
+				</row>
+				<row>
+					所属组
+					<bandbox id="bdUserGroup" buttonVisible="true"
+						width="250px" mold="rounded" autodrop="true"
+						value="@bind(form.userGroup) @load(form.userGroup,after='reload')"
+						onChange="@command('reload')">
+						<bandpopup>
+							<vbox align="center">
+								<listbox width="250px" mold="default"
+									model="@load(model.groupList)"
+									selectedItem="@save(model.selectedGroup,before='reload')"
+									forward="onSelect=bdUserGroup.onChange">
+									<listhead>
+										<listheader label="选择组"
+											sort="auto" />
+									</listhead>
+									<template name="model">
+										<listitem>
+											<listcell label="${each}" />
+										</listitem>
+									</template>
+								</listbox>
+								<button label="关闭"
+									onClick="bdUserGroup.close()" />
+							</vbox>
+						</bandpopup>
+					</bandbox>
+				</row>
+				<row>
+					角色
+					<radiogroup selectedItem="@bind(form.userRole)">
+						<radio label="用户" value="ROLE_USER" />
+						<radio label="系统管理员" value="ROLE_ADMIN" />
+					</radiogroup>
+				</row>
+				<row>
+					数据空间配额
+					<hlayout>
+						<spinner value="@bind(form.userVhdQuota)"
+							step="1" constraint="@load(model.constrainQuota)" />
+						GB (创建后只可增加)
+					</hlayout>
+				</row>
+				<row>
+					用户数据文件
+					<textbox
+						value="@bind(form.userVhdName) @load(form.userVhdName,after='reload')"
+						hflex="1" readonly="true" />
+				</row>
+				<row>
+					所在节点
+					<hlayout>
+						<spinner tabindex="3"
+							value="@bind(form.userHypervisorId)" step="1"
+							readonly="@bind(!model.newUser)"
+							constraint="@load(model.constrainHypervisor)" />
+						(设置后不可修改)
+					</hlayout>
+				</row>
+				<row>
+					有效期
+					<datebox value="@bind(form.userExpiration)"
+						width="150px" />
+				</row>
+				<row>
+					密码过期
+					<radiogroup
+						selectedItem="@bind(model.userPwdExpire)"
+						onCheck="@command('reload')">
+						<radio label="每三个月" value="0" />
+						<radio label="永不过期" value="1" />
+						<radio label="立刻" value="2" />
+					</radiogroup>
+				</row>
+				<row>
+					描述
+					<vlayout>
+						<textbox rows="3"
+							value="@bind(form.userDescription)" hflex="1"
+							style="overflow: auto" />
+					</vlayout>
+				</row>
+			</rows>
+		</grid>
+		<label value="@bind(form.userPwdExpire)" visible="false" />
+		<vlayout id="progressRow" visible="@load(model.started)"
+			style="text-align: center">
+			<label id="progressInfo" hflex="true"
+				value="@load(model.progressMsg)" />
+			<progressmeter id="progressBar" hflex="100%"
+				value="@load(model.progress)" />
+		</vlayout>
+		<hlayout>
+			<button label="保存"
+				onClick="@command(model.started?'':'save')" autodisable="+self"
+				disabled="@load(!formStatus.dirty) @load(!formStatus.dirty,after='reload')" />
+			<button label="@load(model.closeBtnLabel)"
+				onClick="@command('close')" />
+		</hlayout>
+	</vbox>
+	<timer id="timer" delay="2000" repeats="true"
+		running="@load(model.running)" onTimer="@command('updateProgress')" />
+</window>

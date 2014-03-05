@@ -1,0 +1,27 @@
+<window title="vBox操作" border="normal" width="350px" position="center"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vmodel') @init('com.probridge.vbox.zk.vmodel.VboxShutdown')"
+	mode="overlapped" id="winVboxShutdown"
+	visible="@load(vmodel.visible)">
+	<vbox align="center" hflex="true">
+		确定要关闭这个vBox吗？
+		<separator />
+		<label value="@load(vmodel.vm.vmName)" />
+		<separator />
+		<vlayout id="progressRow" visible="@load(vmodel.started)"
+			style="text-align: center" hflex="true">
+			<label id="progressInfo" hflex="true"
+				value="@load(vmodel.progressMsg)" />
+			<progressmeter id="progressBar" hflex="100%"
+				value="@load(vmodel.progress)" />
+		</vlayout>
+		<hlayout>
+			<button label="确定" onClick="@command('shutdown')"
+				autodisable="+self" />
+			<button label="@load(vmodel.closeBtnLabel)"
+				onClick="@command('close')" />
+		</hlayout>
+	</vbox>
+	<timer id="timer" delay="2000" repeats="true"
+		running="@load(vmodel.running)" onTimer="@command('updateProgress')" />
+</window>

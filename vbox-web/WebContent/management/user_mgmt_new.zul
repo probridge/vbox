@@ -1,0 +1,102 @@
+<window id="winUserList" title="用户管理" border="normal" width="100%"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vmodel') @init('com.probridge.vbox.zk.vmodel.UserManagement')">
+	<toolbar>
+		<hlayout spacing="100px">
+			<div>
+				<toolbarbutton label="新建用户"
+					onClick="@command('newUser')" />
+				<toolbarbutton label="编辑用户"
+					onClick="@command('editUser')" />
+				<toolbarbutton label="删除用户"
+					onClick="@command('deleteUser')" />
+			</div>
+			<div>
+				<toolbarbutton label="刷新" onClick="@command('refresh')" />
+				<checkbox label="自动"
+					checked="@bind(vmodel.autoRefresh)" />
+			</div>
+		</hlayout>
+	</toolbar>
+	<vlayout>
+		<listbox model="@load(vmodel.userList)" mold="paging"
+			pageSize="10" emptyMessage="没有用户"
+			selectedItem="@bind(vmodel.selectedUser)">
+			<listhead sizable="true" menupopup="auto">
+				<listheader label="状态" width="45px" align="right" />
+				<listheader label="用户名" />
+				<listheader label="所在组" width="180px" />
+				<listheader label="角色" width="120px" />
+				<listheader label="认证方式" width="100px" align="center" />
+				<listheader label="用户过期" width="120px" />
+				<listheader label="节点" width="50px" align="center" />
+				<listheader label="配额(GB)" width="80px" align="center" />
+			</listhead>
+			<template name="model" var="user">
+				<listitem>
+					<listcell>
+						<image
+							src="@load(user) @converter('com.probridge.vbox.zk.converter.copy.UserStatusImageConverter')" />
+					</listcell>
+					<listcell label="@load(user.userName)"
+						tooltiptext="@load(user.userDescription)" />
+					<listcell label="@load(user.userGroup)" />
+					<listcell
+						label="@load(user.userRole) @converter('com.probridge.vbox.zk.converter.copy.UserRoleConverter')" />
+					<listcell
+						label="@load(user.userType) @converter('com.probridge.vbox.zk.converter.copy.UserTypeConverter')" />
+					<listcell
+						label="@load(user.userExpiration) @converter('formatedDate', format='yyyy-MM-dd')" />
+					<listcell label="@load(user.userHypervisorId)" />
+					<listcell label="@load(user.userVhdQuota)" />
+				</listitem>
+			</template>
+		</listbox>
+		<separator />
+		<grid visible="@bind(not empty vmodel.selectedUser)"
+			hflex="true">
+			<auxhead>
+				<auxheader label="用户详细信息" colspan="4" />
+			</auxhead>
+			<columns visible="false">
+				<column width="150px"></column>
+				<column></column>
+				<column width="150px"></column>
+				<column></column>
+			</columns>
+			<rows>
+				<row>
+					用户名
+					<label value="@load(vmodel.selectedUser.userName)" />
+					用户归属节点
+					<label
+						value="@load(vmodel.selectedUser.userHypervisorId)" />
+				</row>
+				<row>
+					密码过期日
+					<label
+						value="@load(vmodel.selectedUser.userPwdExpire) @converter('formatedDate', format='yyyy-MM-dd')" />
+					账号过期日
+					<label
+						value="@load(vmodel.selectedUser.userExpiration) @converter('formatedDate', format='yyyy-MM-dd')" />
+				</row>
+				<row>
+					用户VHD文件
+					<cell colspan="3">
+						<label
+							value="@load(vmodel.selectedUser.userVhdName)" />
+					</cell>
+				</row>
+				<row>
+					描述
+					<cell colspan="3">
+						<label
+							value="@load(vmodel.selectedUser.userDescription)" />
+					</cell>
+				</row>
+			</rows>
+		</grid>
+	</vlayout>
+	<timer id="timer" delay="10000" repeats="true"
+		running="@load(vmodel.autoRefresh)" onTimer="@command('refresh')" />
+</window>

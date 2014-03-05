@@ -1,0 +1,28 @@
+<window title="vBox重置" border="normal" width="350px" position="center"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vms') @init('com.probridge.vbox.zk.vmodel.VboxFix')"
+	mode="overlapped" id="winVboxFix" visible="@load(vms.visible)">
+	<vbox align="center" hflex="true">
+		确定要重置这个vBox吗？
+		<separator />
+		<label value="@load(vms.vm.vmId)" />
+		<separator />
+		<vlayout id="progressRow" visible="@load(vms.started)"
+			style="text-align: center" hflex="true">
+			<label id="progressInfo" hflex="true"
+				value="@load(vms.progressMsg)" />
+			<progressmeter id="progressBar" hflex="100%"
+				value="@load(vms.progress)" />
+		</vlayout>
+		<hlayout>
+			<button label="确定" onClick="@command('fix')"
+				autodisable="+self" />
+			<button label="@load(vms.closeBtnLabel)"
+				onClick="@command('close')" />
+		</hlayout>
+	</vbox>
+	<timer id="timer" delay="2000" repeats="true"
+		running="@load(vms.running)" onTimer="@command('updateProgress')" />
+</window>
+
+

@@ -1,0 +1,159 @@
+<window id="winVboxList" title="vBox管理" border="normal" width="100%"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vmodel') @init('com.probridge.vbox.zk.vmodel.VboxManagement')">
+	<toolbar>
+		<hlayout spacing="100px">
+			<div>
+				<toolbarbutton label="新建vBox"
+					onClick="@command('newVM')" />
+				<toolbarbutton label="修改配置"
+					onClick="@command('editVM')" />
+				<toolbarbutton label="删除"
+					onClick="@command('deleteVM')" />
+			</div>
+			<div>
+				<toolbarbutton label="开机"
+					onClick="@command('poweronVM')" />
+				<toolbarbutton label="关机"
+					onClick="@command('shutdownVM')" />
+				<toolbarbutton label="修复" onClick="@command('fixVM')" />
+			</div>
+			<div>
+				<toolbarbutton label="刷新" onClick="@command('refresh')" />
+				<checkbox label="自动"
+					checked="@bind(vmodel.autoRefresh)" />
+			</div>
+		</hlayout>
+	</toolbar>
+	<vlayout>
+		<listbox model="@load(vmodel.vmLists)" mold="paging"
+			pageSize="10" emptyMessage="没有定义任何vBox"
+			selectedItem="@bind(vmodel.selectedVM)">
+			<listhead sizable="true" menupopup="auto">
+				<listheader label="状态" width="45px" align="right" />
+				<listheader label="标题" />
+				<listheader label="用户" width="180px" />
+				<listheader label="类型" width="80px" align="center" />
+				<listheader label="激活" width="60px" align="center" />
+				<listheader label="创建日期" width="100px" align="center" />
+				<listheader label="系统配置" width="110px" align="center" />
+				<listheader label="节点" width="50px" align="center" />
+				<listheader label="网络" width="50px" align="center" />
+				<listheader label="分配" width="50px" align="center" />
+				<listheader label="最后更新" width="150px" align="center" />
+			</listhead>
+			<template name="model" var="vm">
+				<listitem>
+					<listcell>
+						<image
+							src="@load(vm.vmStatus) @converter('com.probridge.vbox.zk.converter.copy.VboxStatusImageConverter')" />
+						<image
+							src="@load(vm.vmHeartbeat) @converter('com.probridge.vbox.zk.converter.copy.VboxHeartbeatImageConverter')" />
+					</listcell>
+					<listcell label="@load(vm.vmTitle)"
+						tooltiptext="@load(vm.vmDescription)" />
+					<listcell label="@load(vm.vmOwner)" />
+					<listcell>
+						<label if="${vm.vmType eq '0'}"
+							value="@load(vm.vmCourseCode)" />
+						<label if="${vm.vmType eq '1'}"
+							value="@load(vm.vmType) @converter('com.probridge.vbox.zk.converter.copy.VboxTypeConverter')" />
+						<label if="${vm.vmType eq '2'}"
+							value="@load(vm.vmType) @converter('com.probridge.vbox.zk.converter.copy.VboxTypeConverter')" />
+					</listcell>
+					<listcell
+						label="@load(vm.vmDisabled) @converter('com.probridge.vbox.zk.converter.copy.VboxDisabledConverter')" />
+					<listcell
+						label="@load(vm.vmCreationTimestamp) @converter('formatedDate', format='yyyy-MM-dd')" />
+					<listcell>
+						<label value="@load(vm.vmCores)" />
+						核 /
+						<label value="@load(vm.vmMemory)" />
+						MB
+					</listcell>
+					<listcell label="@load(vm.vmHypervisorId)" />
+					<listcell
+						label="@load(vm.vmNetworkType) @converter('com.probridge.vbox.zk.converter.copy.VboxNetworkTypeConverter')" />
+					<listcell
+						label="@load(vm.vmPersistance) @converter('com.probridge.vbox.zk.converter.copy.VboxPersistanceConverter')" />
+					<listcell
+						label="@load(vm.vmLastUpdateTimestamp) @converter('formatedDate', format='yyyy-MM-dd HH:mm:ss')" />
+				</listitem>
+			</template>
+		</listbox>
+		<separator />
+		<grid visible="@bind(not empty vmodel.selectedVM)"
+			hflex="true">
+			<auxhead>
+				<auxheader label="vBox详细信息" colspan="4" />
+			</auxhead>
+			<columns visible="false">
+				<column width="150px"></column>
+				<column></column>
+				<column width="150px"></column>
+				<column></column>
+			</columns>
+			<rows>
+				<row>
+					状态
+					<label
+						value="@load(vmodel.selectedVM.vmStatus) @converter('com.probridge.vbox.zk.converter.copy.VboxStatusConverter')" />
+					操作系统状态
+					<label
+						value="@load(vmodel.selectedVM.vmHeartbeat) @converter('com.probridge.vbox.zk.converter.copy.VboxHeartbeatConverter')" />
+				</row>
+				<row>
+					系统名称
+					<label value="@load(vmodel.selectedVM.vmName)" />
+					唯一标识符
+					<label value="@load(vmodel.selectedVM.vmId)" />
+				</row>
+				<row>
+					网络地址
+					<label value="@load(vmodel.selectedVM.vmIpAddress)" />
+					用户密码
+					<label
+						value="@load(vmodel.selectedVM.vmGuestPassword)" />
+				</row>
+				<row>
+					所在节点
+					<label
+						value="@load(vmodel.selectedVM.vmHypervisorId)" />
+					母盘挂载方式
+					<label
+						value="@load(vmodel.selectedVM.vmVhdGmType)  @converter('com.probridge.vbox.zk.converter.copy.VboxVhdLinkModeConverter')" />
+				</row>
+				<row>
+					母盘文件
+					<cell colspan="3">
+						<label
+							value="@load(vmodel.selectedVM.vmVhdGmImage)" />
+					</cell>
+				</row>
+				<row>
+					系统卷VHD文件
+					<cell colspan="3">
+						<label
+							value="@load(vmodel.selectedVM.vmVhdGmFilename)" />
+					</cell>
+				</row>
+				<row>
+					用户卷VHD文件
+					<cell colspan="3">
+						<label
+							value="@load(vmodel.selectedVM.vmVhdUserFilename)" />
+					</cell>
+				</row>
+				<row>
+					描述
+					<cell colspan="3">
+						<label
+							value="@load(vmodel.selectedVM.vmDescription)" />
+					</cell>
+				</row>
+			</rows>
+		</grid>
+	</vlayout>
+	<timer id="timer" delay="10000" repeats="true"
+		running="@load(vmodel.autoRefresh)" onTimer="@command('refresh')" />
+</window>
