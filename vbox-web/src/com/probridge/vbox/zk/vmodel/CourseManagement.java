@@ -41,7 +41,6 @@ public class CourseManagement {
 	}
 
 	private List<Course> courseList = new ArrayList<Course>();
-	private boolean autoRefresh = true;
 
 	@WireVariable
 	private Page _page;
@@ -108,13 +107,5 @@ public class CourseManagement {
 	@NotifyChange({ "courseList", "selectedCourse" })
 	public void refresh() {
 		reloadCourseList();
-	}
-
-	public boolean isAutoRefresh() {
-		return autoRefresh;
-	}
-
-	public void setAutoRefresh(boolean autoRefresh) {
-		this.autoRefresh = autoRefresh;
 	}
 }

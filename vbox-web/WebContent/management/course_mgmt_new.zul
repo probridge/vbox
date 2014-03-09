@@ -18,8 +18,6 @@
 			</div>
 			<div>
 				<toolbarbutton label="刷新" onClick="@command('refresh')" />
-				<checkbox label="自动"
-					checked="@bind(vmodel.autoRefresh)" />
 			</div>
 		</hlayout>
 	</toolbar>
@@ -106,6 +104,4 @@
 			</rows>
 		</grid>
 	</vlayout>
-	<timer id="timer" delay="10000" repeats="true"
-		running="@load(vmodel.autoRefresh)" onTimer="@command('refresh')" />
 </window>
