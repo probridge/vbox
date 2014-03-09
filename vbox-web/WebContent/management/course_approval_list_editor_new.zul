@@ -1,0 +1,77 @@
+<window title="预批准名单设置" border="normal" width="500px" position="center"
+	mode="overlapped" id="winCourseApprovalEditor"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('model') @init('com.probridge.vbox.zk.vmodel.CourseApprovalEditor')"
+	visible="@load(model.visible)">
+	<vbox align="center">
+		<listbox model="@load(model.preApprovalUserList)" mold="paging"
+			pageSize="10" emptyMessage="没有用户"
+			selectedItems="@bind(model.pickedUsers)" checkmark="true"
+			multiple="true">
+			<listhead sizable="true" menupopup="auto">
+				<listheader label="用户名" width="250px" />
+				<listheader label="描述" />
+			</listhead>
+			<template name="model" var="user">
+				<listitem>
+					<listcell label="@load(user.userName)" />
+					<listcell label="@load(user.userDescription)" />
+				</listitem>
+			</template>
+			<listfoot>
+				<listfooter>
+					<bandbox id="bdUserList" buttonVisible="true"
+						mold="rounded" autodrop="true"
+						value="@load(empty model.selectedUser? '' :model.selectedUser.userName) @load(empty model.selectedUser? '' :model.selectedUser.userName,after='addUser')"
+						hflex="true">
+						<bandpopup>
+							<vbox align="center">
+								<listbox width="240px" mold="default"
+									model="@load(model.userList)"
+									selectedItem="@save(model.selectedUser) @load(model.selectedUser,after='addUser')"
+									forward="onClick=bdUserList.onChange">
+									<listhead>
+										<listheader label="选择用户"
+											sort="auto" />
+									</listhead>
+									<template name="model">
+										<listitem>
+											<listcell
+												label="${each.userName}" />
+										</listitem>
+									</template>
+								</listbox>
+								<button label="关闭"
+									onClick="bdUserList.close()" />
+							</vbox>
+						</bandpopup>
+					</bandbox>
+				</listfooter>
+				<listfooter>
+					<hlayout>
+						<button label="新增" onClick="@command('addUser')"
+							disabled="@load(empty model.selectedUser)" />
+						<button label="删除"
+							onClick="@command('removeUser')"
+							disabled="@load(empty model.pickedUsers)" />
+					</hlayout>
+				</listfooter>
+			</listfoot>
+		</listbox>
+		<vlayout id="progressRow" visible="@load(model.started)"
+			style="text-align: center">
+			<label id="progressInfo" hflex="true"
+				value="@load(model.progressMsg)" />
+			<progressmeter id="progressBar" hflex="100%"
+				value="@load(model.progress)" />
+		</vlayout>
+		<hlayout>
+			<button label="保存"
+				onClick="@command(model.started?'':'save')" autodisable="+self" />
+			<button label="@load(model.closeBtnLabel)"
+				onClick="@command('close')" />
+		</hlayout>
+	</vbox>
+	<timer id="timer" delay="2000" repeats="true"
+		running="@load(model.running)" onTimer="@command('updateProgress')" />
+</window>

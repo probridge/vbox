@@ -1,0 +1,111 @@
+<window id="winCourseList" title="课程管理" border="normal" width="100%"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vmodel') @init('com.probridge.vbox.zk.vmodel.CourseManagement')">
+	<toolbar>
+		<hlayout spacing="100px">
+			<div>
+				<toolbarbutton label="新增课程"
+					onClick="@command('createCourse')" />
+				<toolbarbutton label="修改课程"
+					onClick="@command('editCourse')"
+					disabled="@load(empty vmodel.selectedCourse)" />
+				<toolbarbutton label="删除课程"
+					onClick="@command('deleteCourse')"
+					disabled="@load(empty vmodel.selectedCourse)" />
+				<toolbarbutton label="管理学生名单"
+					onClick="@command('editPreApprovalList')"
+					disabled="@load(empty vmodel.selectedCourse)" />
+			</div>
+			<div>
+				<toolbarbutton label="刷新" onClick="@command('refresh')" />
+				<checkbox label="自动"
+					checked="@bind(vmodel.autoRefresh)" />
+			</div>
+		</hlayout>
+	</toolbar>
+	<vlayout>
+		<listbox model="@load(vmodel.courseList)" mold="paging"
+			pageSize="10" emptyMessage="没有课程"
+			selectedItem="@bind(vmodel.selectedCourse)">
+			<listhead sizable="true" menupopup="auto">
+				<listheader label="课程编码" width="80px" align="center" />
+				<listheader label="课程名称" width="180px" />
+				<listheader label="过期日" width="150px" align="center" />
+				<listheader label="课程vBox配置" width="160px"
+					align="center" />
+				<listheader label="母盘映像" />
+				<listheader label="预批准名单人数" width="120px"
+					align="center" />
+			</listhead>
+			<template name="model" var="course">
+				<listitem>
+					<listcell label="@load(course.courseId)" />
+					<listcell label="@load(course.courseName)"
+						tooltiptext="@load(course.courseDescription)" />
+					<listcell
+						label="@load(course.courseExpiration) @converter('formatedDate', format='yyyy-MM-dd')" />
+					<listcell>
+						<label
+							value="@load(course.courseVmCores) @converter('com.probridge.vbox.zk.converter.copy.VboxCoresConverter')" />
+						<label
+							value="@load(course.courseVmMemory) @converter('com.probridge.vbox.zk.converter.copy.VboxMemoryConverter')" />
+						<label
+							value="@load(course.courseVmNetwork) @converter('com.probridge.vbox.zk.converter.copy.VboxNetworkTypeConverter')" />
+					</listcell>
+					<listcell
+						label="@load(course.courseVmGoldenMaster)" />
+					<listcell
+						label="@load(course.coursePreapproveList) @converter('com.probridge.vbox.zk.converter.copy.CoursePreapprovalListConverter')" />
+				</listitem>
+			</template>
+		</listbox>
+		<separator />
+		<grid visible="@bind(not empty vmodel.selectedCourse)"
+			hflex="true">
+			<auxhead>
+				<auxheader label="课程预批准学生" colspan="4" />
+			</auxhead>
+			<columns visible="false">
+				<column width="150px"></column>
+				<column></column>
+				<column width="150px"></column>
+				<column></column>
+			</columns>
+			<rows>
+				<row>
+					课程名称
+					<label
+						value="@load(vmodel.selectedCourse.courseName)" />
+					课程编号
+					<label
+						value="@load(vmodel.selectedCourse.courseId)" />
+				</row>
+				<row>
+					课程母盘VHD文件
+					<cell colspan="3">
+						<label
+							value="@load(vmodel.selectedCourse.courseVmGoldenMaster)" />
+					</cell>
+				</row>
+				<row>
+					描述
+					<cell colspan="3">
+						<label
+							value="@load(vmodel.selectedCourse.courseDescription)" />
+					</cell>
+				</row>
+				<row>
+					<cell colspan="4">
+						<vlayout>
+							预批准学生：
+							<label
+								value="@load(vmodel.selectedCourse.coursePreapproveList)" />
+						</vlayout>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+	</vlayout>
+	<timer id="timer" delay="10000" repeats="true"
+		running="@load(vmodel.autoRefresh)" onTimer="@command('refresh')" />
+</window>

@@ -1,0 +1,127 @@
+<window title="课程设置" border="normal" width="500px" position="center"
+	mode="overlapped" id="winCourseEditor"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('model') @init('com.probridge.vbox.zk.vmodel.CourseEditor')"
+	visible="@load(model.visible)"
+	form="@id('form') @init(model.form) @load(model.course) @save(model.course, before='save')">
+	<vbox align="center">
+		<grid>
+			<columns>
+				<column label="" width="100px" />
+				<column label="设置" />
+			</columns>
+			<rows>
+				<row>
+					课程编号
+					<hlayout>
+						<textbox value="@bind(form.courseId)"
+							width="80px" readonly="@load(not empty form.courseId)" />
+						<a label="自动生成"
+							onClick="@command('generateCourseId')"
+							visible="@load(empty form.courseId)" />
+					</hlayout>
+				</row>
+				<row>
+					课程名称
+					<textbox value="@bind(form.courseName)" hflex="1" />
+				</row>
+				<row>
+					有效期
+					<datebox value="@bind(form.courseExpiration)"
+						width="150px" />
+				</row>
+				<row>
+					课程描述
+					<vlayout>
+						<textbox rows="3"
+							value="@bind(form.courseDescription)" hflex="1"
+							style="overflow: auto" />
+					</vlayout>
+				</row>
+				<row>
+					<cell colspan="2" style="text-align: center">
+						课程vBox模板设置
+					</cell>
+				</row>
+				<row>
+					处理器
+					<hlayout>
+						<spinner
+							value="@bind(form.courseVmCores) @load(form.courseVmCores,after='reload')"
+							disabled="@load(model.defaultCores)" constraint="min 1 max 4" />
+						核
+						<checkbox label="默认"
+							checked="@bind(model.defaultCores)" onCheck="@command('reload')" />
+					</hlayout>
+				</row>
+				<row>
+					内存
+					<hlayout>
+						<spinner
+							value="@bind(form.courseVmMemory) @load(form.courseVmMemory,after='reload')"
+							disabled="@load(model.defaultMemory)" step="512"
+							constraint="min 512 max 4096" />
+						MB
+						<checkbox label="默认"
+							checked="@bind(model.defaultMemory)"
+							onCheck="@command('reload')" />
+					</hlayout>
+				</row>
+				<row>
+					网络接入
+					<radiogroup
+						selectedItem="@bind(form.courseVmNetwork)">
+						<radio label="外网" value="1" />
+						<radio label="内网" value="0" />
+						<radio label="默认" value="" />
+					</radiogroup>
+				</row>
+				<row>
+					母盘映像
+					<bandbox id="courseGoldenImage" buttonVisible="true"
+						readonly="true" mold="rounded" autodrop="true" width="250px"
+						value="@bind(form.courseVmGoldenMaster) @load(form.courseVmGoldenMaster,after={'updategm','reload'})"
+						onChange="@command('updategm')">
+						<bandpopup>
+							<vbox align="center">
+								<listbox mold="paging" autopaging="true"
+									width="250px" model="@load(model.imageList)"
+									selectedItem="@save(model.selectedImage,before='updategm')"
+									forward="onSelect=courseGoldenImage.onChange">
+									<listhead>
+										<listheader label="选择母盘映象" />
+									</listhead>
+									<template name="model">
+										<listitem>
+											<listcell
+												label="${each.gmImageFilename}"
+												tooltiptext="${each.gmImageDescription}" />
+										</listitem>
+									</template>
+								</listbox>
+								<button label="关闭"
+									onClick="courseGoldenImage.close()" />
+							</vbox>
+						</bandpopup>
+					</bandbox>
+				</row>
+			</rows>
+		</grid>
+		<vlayout id="progressRow" visible="@load(model.started)"
+			style="text-align: center">
+			<label id="progressInfo" hflex="true"
+				value="@load(model.progressMsg)" />
+			<progressmeter id="progressBar" hflex="100%"
+				value="@load(model.progress)" />
+		</vlayout>
+		<hlayout>
+			<button label="保存"
+				onClick="@command(model.started?'':'save')" autodisable="+self"
+				disabled="@bind(!formStatus.dirty) @load(!formStatus.dirty,after='reload')" />
+			<button label="@load(model.closeBtnLabel)"
+				onClick="@command('close')" />
+		</hlayout>
+	</vbox>
+	<timer id="timer" delay="2000" repeats="true"
+		running="@load(model.running)" onTimer="@command('updateProgress')" />
+</window>
