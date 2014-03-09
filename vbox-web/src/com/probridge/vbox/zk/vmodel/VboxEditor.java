@@ -124,7 +124,7 @@ public class VboxEditor extends ProgressViewModel {
 	}
 
 	@Command
-	@NotifyChange({ "progress", "progressMsg", "started", "running" })
+	@NotifyChange({ "progress", "progressMsg", "started", "running", "closeBtnLabel" })
 	public void save() {
 		boolean vmConfigDirty = form.isFieldDirty("vmCores") || form.isFieldDirty("vmMemory")
 				|| form.isFieldDirty("vmName") || form.isFieldDirty("vmNetworkType");

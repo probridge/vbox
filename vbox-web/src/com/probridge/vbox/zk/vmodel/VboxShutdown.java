@@ -17,7 +17,7 @@ public class VboxShutdown extends ProgressViewModel {
 	}
 
 	@Command
-	@NotifyChange({ "progress", "progressMsg", "started", "running" })
+	@NotifyChange({ "progress", "progressMsg", "started", "running", "closeBtnLabel" })
 	public void shutdown() {
 		ShutdownVboxTask t = new ShutdownVboxTask(getSid(), getOpId(), vm.getVmId());
 		submit(t);

@@ -17,7 +17,7 @@ public class VboxPowerOn extends ProgressViewModel {
 	}
 
 	@Command
-	@NotifyChange({ "progress", "progressMsg", "started", "running" })
+	@NotifyChange({ "progress", "progressMsg", "started", "running", "closeBtnLabel" })
 	public void poweron() {
 		PowerOnVboxTask t = new PowerOnVboxTask(getSid(), getOpId(), vm.getVmId());
 		submit(t);

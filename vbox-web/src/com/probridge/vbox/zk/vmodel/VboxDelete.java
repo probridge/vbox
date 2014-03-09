@@ -17,7 +17,7 @@ public class VboxDelete extends ProgressViewModel {
 	}
 
 	@Command
-	@NotifyChange({ "progress", "progressMsg", "started", "running" })
+	@NotifyChange({ "progress", "progressMsg", "started", "running", "closeBtnLabel" })
 	public void delete() {
 		DeleteVboxTask t = new DeleteVboxTask(getSid(), getOpId(), vm.getVmId());
 		submit(t);

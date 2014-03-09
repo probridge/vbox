@@ -104,7 +104,7 @@ public class UserEditor extends ProgressViewModel {
 	}
 
 	@Command
-	@NotifyChange({ "progress", "progressMsg", "started", "running" })
+	@NotifyChange({ "progress", "progressMsg", "started", "running", "closeBtnLabel" })
 	public void save() {
 		//
 		boolean modifyStorage = form.isFieldDirty("userVhdQuota") || newUser;
