@@ -7,9 +7,11 @@
 				<toolbarbutton label="新建用户"
 					onClick="@command('newUser')" />
 				<toolbarbutton label="编辑用户"
-					onClick="@command('editUser')" />
+					onClick="@command('editUser')"
+					disabled="@load(empty vmodel.selectedUser)" />
 				<toolbarbutton label="删除用户"
-					onClick="@command('deleteUser')" />
+					onClick="@command('deleteUser')"
+					disabled="@load(empty vmodel.selectedUser)" />
 			</div>
 			<div>
 				<toolbarbutton label="刷新" onClick="@command('refresh')" />

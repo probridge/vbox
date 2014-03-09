@@ -6,17 +6,20 @@
 			<div>
 				<toolbarbutton label="新建vBox"
 					onClick="@command('newVM')" />
-				<toolbarbutton label="修改配置"
-					onClick="@command('editVM')" />
-				<toolbarbutton label="删除"
-					onClick="@command('deleteVM')" />
+				<toolbarbutton label="修改配置" onClick="@command('editVM')"
+					disabled="@load(empty vmodel.selectedVM)" />
+				<toolbarbutton label="删除" onClick="@command('deleteVM')"
+					disabled="@load(empty vmodel.selectedVM)" />
 			</div>
 			<div>
 				<toolbarbutton label="开机"
-					onClick="@command('poweronVM')" />
+					onClick="@command('poweronVM')"
+					disabled="@load(empty vmodel.selectedVM)" />
 				<toolbarbutton label="关机"
-					onClick="@command('shutdownVM')" />
-				<toolbarbutton label="修复" onClick="@command('fixVM')" />
+					onClick="@command('shutdownVM')"
+					disabled="@load(empty vmodel.selectedVM)" />
+				<toolbarbutton label="修复" onClick="@command('fixVM')"
+					disabled="@load(empty vmodel.selectedVM)" />
 			</div>
 			<div>
 				<toolbarbutton label="刷新" onClick="@command('refresh')" />
