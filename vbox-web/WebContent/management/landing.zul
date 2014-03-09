@@ -1,0 +1,76 @@
+<window id="winLanding" title="欢迎进入vBox管理控制台" border="normal"
+	width="100%" hflex="true" vflex="true">
+	<div align="center">
+		<hlayout width="560px" spacing="100px">
+			<vlayout spacing="10px">
+				<div height="120px" width="120px">
+					<a href="#fn1">
+						<image src="../imgs/management/Dashboard.png"
+							sclass="menuicon" />
+					</a>
+				</div>
+				<label value="仪表盘" />
+				<div height="120px" width="120px">
+					<a href="#fn4">
+						<image src="../imgs/management/Courses.png"
+							sclass="menuicon" />
+					</a>
+				</div>
+				<label value="课程管理" />
+				<div height="120px" width="120px">
+					<a href="#fn7">
+						<image src="../imgs/management/Settings.png"
+							sclass="menuicon" />
+					</a>
+				</div>
+				<label value="系统设置" />
+			</vlayout>
+			<vlayout spacing="10px">
+				<div height="120px" width="120px">
+					<a href="#fn2">
+						<image src="../imgs/management/vBox.png"
+							sclass="menuicon" />
+					</a>
+				</div>
+				<label value="vBox管理" />
+				<div height="120px" width="120px">
+					<a href="#fn5">
+						<image src="../imgs/management/Images.png"
+							sclass="menuicon" />
+					</a>
+				</div>
+				<label value="母盘管理" />
+				<div height="120px" width="120px">
+					<a href="#fn8">
+						<image src="../imgs/management/World.png"
+							sclass="menuicon" />
+					</a>
+				</div>
+				<label value="控制台" />
+			</vlayout>
+			<vlayout spacing="10px">
+				<div height="120px" width="120px">
+					<a href="#fn3">
+						<image src="../imgs/management/Users.png"
+							sclass="menuicon" />
+					</a>
+				</div>
+				<label value="用户管理" />
+				<div height="120px" width="120px">
+					<a href="#fn6">
+						<image src="../imgs/management/Review.png"
+							sclass="menuicon" />
+					</a>
+				</div>
+				<label value="审核中心" />
+				<div height="120px" width="120px">
+					<a href="../logout.do?mgmt=1">
+						<image src="../imgs/management/Logout.png"
+							sclass="menuicon" />
+					</a>
+				</div>
+				<label value="安全退出" />
+			</vlayout>
+		</hlayout>
+	</div>
+</window>

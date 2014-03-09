@@ -124,19 +124,20 @@ public class DashboardController extends SelectorComposer<Div> {
 			return;
 		//
 		HashMap<String, Integer> status = resMgr.getVmmStatus();
-		synchronized (status) {
-			if (status != null) {
-				Iterator<String> itr = status.keySet().iterator();
-				while (itr.hasNext()) {
-					String entry = itr.next();
-					Integer val = status.get(entry);
-					if (val > 0) {
-						Label thisLabel = new Label(entry + " : " + val);
-						vBoxStatistic.appendChild(thisLabel);
+		if (status != null)
+			synchronized (status) {
+				if (status != null) {
+					Iterator<String> itr = status.keySet().iterator();
+					while (itr.hasNext()) {
+						String entry = itr.next();
+						Integer val = status.get(entry);
+						if (val > 0) {
+							Label thisLabel = new Label(entry + " : " + val);
+							vBoxStatistic.appendChild(thisLabel);
+						}
 					}
 				}
 			}
-		}
 		//
 		itrComp = gbCores.getChildren().iterator();
 		while (itrComp.hasNext())

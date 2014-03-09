@@ -1,25 +1,26 @@
 .banner {
-	background-color:#ffffff;
+	background-color: #ffffff;
 	color: gray;
 	padding: 5px 10px;
 }
 
-.banner-head{
+.banner-head {
 	font-size: 2.4em;
 }
-.banner .logout{
+
+.banner .logout {
 	text-decoration: underline;
 	cursor: pointer;
-} 
+}
 
 .footer {
-	background-color:#ffffff;
+	background-color: #ffffff;
 	color: gray;
 	padding-top: 5px;
 }
 
 .footer a,.footer a:VISITED {
-	color: gray;	
+	color: gray;
 }
 
 .sidebar a,.sidebar a:VISITED {
@@ -27,42 +28,53 @@
 	text-decoration: none;
 }
 
-.sidebar-fn{
+.sidebar-fn {
 	cursor: pointer;
 }
 
-.head1{
+.head1 {
 	font-size: large;
 }
-.head2{
+
+.head2 {
 	font-size: medium;
 }
 
-.row-title .z-label{
+.row-title .z-label {
 	font-weight: bold;
-	color:#636363;
+	color: #636363;
 }
 
-.fn-caption .z-caption-l{
+.fn-caption .z-caption-l {
 	font-weight: bold;
 	font-size: medium;
 	color: #636363;
 }
 
-.complete-todo .z-label{
+.complete-todo .z-label {
 	text-decoration: line-through;
 }
 
-.warn{
-	color:red;
+.warn {
+	color: red;
 }
 
-.demo-main a,.demo-main a:VISITED{
-	color:#636363;
+.demo-main a,.demo-main a:VISITED {
+	color: #636363;
 	text-decoration: underline;
-	font-size: smaller;	
+	font-size: smaller;
 }
 
 .todo-box {
-	padding-right:4px;
+	padding-right: 4px;
+}
+
+.menuicon {
+	width: 100px;
+	vertical-align: middle;
+}
+
+.menuicon:hover {
+	width: 120px;
+	vertical-align: middle;
 }
