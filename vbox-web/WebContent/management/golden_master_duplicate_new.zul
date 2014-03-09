@@ -1,0 +1,37 @@
+<window title="母盘维护" border="normal" width="500px" position="center"
+	mode="overlapped" id="winImageDuplicate"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('model') @init('com.probridge.vbox.zk.vmodel.ImageDuplicate')"
+	visible="@load(model.visible)">
+	<vbox align="center">
+		本操作将新建一个所选母盘的完整克隆。
+		<separator />
+		稍等克隆成功后，母盘为不同步状态。可以将其置为维护状态，安装新软件然后就绪同步等。新生成的母盘与原母盘没有链接关系完全独立。
+		<separator />
+		注意：请确认克隆后的母盘必须为同步的状态后才可使用。
+		<separator />
+		操作时间根据母盘大小一般需要几分钟到几十分钟不等，请耐心等待。
+		<separator />
+		请输入新的VHD文件名：
+		<textbox hflex="true" value="@bind(model.newImageFileName)" />
+		<separator />
+		请输入新的母盘描述：
+		<textbox hflex="true" value="@bind(model.newImageDescription)" />
+		<separator />
+		<vlayout id="progressRow" visible="@load(model.started)"
+			style="text-align: center">
+			<label id="progressInfo" hflex="true"
+				value="@load(model.progressMsg)" />
+			<progressmeter id="progressBar" hflex="100%"
+				value="@load(model.progress)" />
+		</vlayout>
+		<hlayout>
+			<button label="克隆"
+				onClick="@command(model.started?'':'save')" autodisable="+self" />
+			<button label="@load(model.closeBtnLabel)"
+				onClick="@command('close')" />
+		</hlayout>
+	</vbox>
+	<timer id="timer" delay="2000" repeats="true"
+		running="@load(model.running)" onTimer="@command('updateProgress')" />
+</window>

@@ -8,6 +8,7 @@ import com.probridge.vbox.VBoxConfig;
 import com.probridge.vbox.dao.GMImageMapper;
 import com.probridge.vbox.model.GMImage;
 import com.probridge.vbox.vmm.RepositoryManager;
+import com.probridge.vbox.vmm.wmi.HyperVVMM;
 import com.probridge.vbox.vmm.wmi.utils.VirtualServiceException;
 import com.probridge.vbox.zk.AdminTaskManager;
 
@@ -57,7 +58,12 @@ public class DuplicateGoldenMasterTask extends VMTask {
 			ops.setMsg("克隆完成，正在保存");
 			//
 			image.setGmImageId(null);
-			image.setGmImageLock("2");
+			//
+			if (HyperVVMM.hypervisors.length > 1)
+				image.setGmImageLock("2");
+			else
+				image.setGmImageLock("0");
+			//
 			image.setGmImageDescription(desc);
 			image.setGmImageFilename(newFileName);
 			image.setGmImageCreationDate(null);

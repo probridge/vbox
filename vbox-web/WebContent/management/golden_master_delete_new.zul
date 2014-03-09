@@ -1,0 +1,26 @@
+<window title="母盘删除" border="normal" width="350px" position="center"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('model') @init('com.probridge.vbox.zk.vmodel.ImageDelete')"
+	mode="overlapped" id="winImageDelete" visible="@load(model.visible)">
+	<vbox align="center" hflex="true">
+		确认要删除这个母盘吗？所选母盘文件及其所有服务器上的副本也会完全被删除且无法恢复！
+		<separator />
+		<label value="@load(model.image.gmImageFilename)" />
+		<separator />
+		<vlayout id="progressRow" visible="@load(model.started)"
+			style="text-align: center" hflex="true">
+			<label id="progressInfo" hflex="true"
+				value="@load(model.progressMsg)" />
+			<progressmeter id="progressBar" hflex="100%"
+				value="@load(model.progress)" />
+		</vlayout>
+		<hlayout>
+			<button label="确定" onClick="@command('delete')"
+				autodisable="+self" />
+			<button label="@load(model.closeBtnLabel)"
+				onClick="@command('close')" />
+		</hlayout>
+	</vbox>
+	<timer id="timer" delay="2000" repeats="true"
+		running="@load(model.running)" onTimer="@command('updateProgress')" />
+</window>

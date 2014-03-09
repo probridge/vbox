@@ -1,0 +1,52 @@
+<window title="母盘维护" border="normal" width="500px" position="center"
+	mode="overlapped" id="winImageMaintenance"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('model') @init('com.probridge.vbox.zk.vmodel.ImageMaintenance')"
+	visible="@load(model.visible)">
+	<vbox align="center">
+		<hbox>
+			母盘现在的状态是：
+			<label
+				value="@load(model.image.gmImageLock) @converter('com.probridge.vbox.zk.converter.copy.GoldenMasterReadyStatusConverter')" />
+		</hbox>
+		维护状态会临时关闭和禁用使用本母盘的所有vBox,并且将母盘加载到管理vBox用于管理员的维护操作。
+		<separator />
+		对母盘更新完成后，必须关闭维护机然后切换回为就绪状态。就绪时最新的母盘文件会自动同步到所有节点，所有相关vBox会重置和连接到修改后的母盘，即可恢复使用。
+		<separator />
+		<vlayout if="${not model.allowSync}">
+			连接到当前母盘的vBox包括：
+			<listbox mold="paging" pageSize="10"
+				model="@load(model.vmList)">
+				<template name="model">
+					<listitem>
+						<listcell label="${each.vmName}" />
+					</listitem>
+				</template>
+			</listbox>
+		</vlayout>
+		手工同步选项会将处于未同步状态新母盘直接同步至所有节点，并且直接就绪可用。
+		<separator />
+		<vlayout id="progressRow" visible="@load(model.started)"
+			style="text-align: center">
+			<label id="progressInfo" hflex="true"
+				value="@load(model.progressMsg)" />
+			<progressmeter id="progressBar" hflex="100%"
+				value="@load(model.progress)" />
+		</vlayout>
+		<hlayout>
+			<button label="维护" disabled="@load(not model.allowMaint)"
+				autodisable="+self"
+				onClick="@command(model.started?'':'maintImage')" />
+			<button label="就绪" disabled="@load(not model.allowReady)"
+				autodisable="+self"
+				onClick="@command(model.started?'':'readyImage')" />
+			<button label="同步" disabled="@load(not model.allowSync)"
+				autodisable="+self"
+				onClick="@command(model.started?'':'syncImage')" />
+			<button label="@load(model.closeBtnLabel)"
+				onClick="@command('close')" />
+		</hlayout>
+	</vbox>
+	<timer id="timer" delay="2000" repeats="true"
+		running="@load(model.running)" onTimer="@command('updateProgress')" />
+</window>

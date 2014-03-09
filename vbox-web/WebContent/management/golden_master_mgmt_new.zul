@@ -1,0 +1,87 @@
+<window id="winImageList" title="母盘管理" border="normal" width="100%"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vmodel') @init('com.probridge.vbox.zk.vmodel.ImageManagement')">
+	<toolbar>
+		<hlayout spacing="100px">
+			<div>
+				<toolbarbutton label="删除"
+					onClick="@command('deleteImage')"
+					disabled="@load(empty vmodel.selectedImage)" />
+				<toolbarbutton label="克隆"
+					onClick="@command('duplicateImage')"
+					disabled="@load(empty vmodel.selectedImage)" />
+				<toolbarbutton label="维护"
+					onClick="@command('maintImage')"
+					disabled="@load(empty vmodel.selectedImage)" />
+				<toolbarbutton label="就绪"
+					onClick="@command('readyImage')"
+					disabled="@load(empty vmodel.selectedImage)" />
+				<toolbarbutton label="同步"
+					onClick="@command('syncImage')"
+					disabled="@load(empty vmodel.selectedImage)" />
+			</div>
+			<div>
+				<toolbarbutton label="刷新" onClick="@command('refresh')" />
+			</div>
+		</hlayout>
+	</toolbar>
+	<vlayout>
+		<listbox model="@load(vmodel.imageList)" mold="paging"
+			pageSize="10" emptyMessage="没有母盘"
+			selectedItem="@bind(vmodel.selectedImage)">
+			<listhead sizable="true" menupopup="auto">
+				<listheader label="母盘映象文件名" width="250px" />
+				<listheader label="描述" />
+				<listheader label="创建日期" width="100px" />
+				<listheader label="状态" width="80px" />
+			</listhead>
+			<template name="model" var="image">
+				<listitem>
+					<listcell label="@load(image.gmImageFilename)" />
+					<listcell label="@load(image.gmImageDescription)" />
+					<listcell
+						label="@load(image.gmImageCreationDate)  @converter('formatedDate', format='yyyy-MM-dd')" />
+					<listcell
+						label="@load(image.gmImageLock) @converter('com.probridge.vbox.zk.converter.copy.GoldenMasterReadyStatusConverter')" />
+				</listitem>
+			</template>
+			<listfoot>
+				<listfooter>
+					<bandbox id="imageFile" buttonVisible="true"
+						readonly="true" mold="rounded" autodrop="true" hflex="true"
+						value="@load(vmodel.selectedImage.gmImageFilename) @save(vmodel.selectedFile,before='saveImage') @load(vmodel.selectedFile,after='reload')"
+						onChange="@command('reload')">
+						<bandpopup>
+							<vbox align="center">
+								<listbox mold="paging" autopaging="true"
+									width="250px" model="@load(vmodel.imageFileList)"
+									selectedItem="@save(vmodel.selectedFile,before='reload')"
+									forward="onSelect=imageFile.onChange">
+									<listhead>
+										<listheader label="选择母盘映象" />
+									</listhead>
+									<template name="model">
+										<listitem>
+											<listcell label="${each}" />
+										</listitem>
+									</template>
+								</listbox>
+								<button label="关闭"
+									onClick="imageFile.close()" />
+							</vbox>
+						</bandpopup>
+					</bandbox>
+				</listfooter>
+				<listfooter>
+					<textbox
+						value="@load(vmodel.selectedImage.gmImageDescription) @save(vmodel.newDescription,before='saveImage')  @load(vmodel.newDescription,after='reload')"
+						hflex="true" />
+				</listfooter>
+				<listfooter>
+					<button label="保存" onClick="@command('saveImage')"
+						disabled="@load(empty vmodel.selectedFile and empty vmodel.selectedImage)" />
+				</listfooter>
+			</listfoot>
+		</listbox>
+	</vlayout>
+</window>
