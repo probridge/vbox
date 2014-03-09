@@ -3,7 +3,6 @@ package com.probridge.vbox.vmm.wmi;
 import static com.probridge.vbox.vmm.wmi.utils.Utils.enumToJIVariantArray;
 import static org.jinterop.dcom.impls.JIObjectFactory.narrowObject;
 
-import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -95,6 +94,8 @@ public class HyperVVMM extends NotifierAdapter<HyperVVMM, UpdateServiceEvent> im
 
 	public int vmmId;
 
+	public boolean connected = false;
+
 	public String hypervisorName = null;
 
 	private HyperVVM templateVM = null;
@@ -113,7 +114,14 @@ public class HyperVVMM extends NotifierAdapter<HyperVVMM, UpdateServiceEvent> im
 			this.vmmId = vmmId;
 			this.consoleUrl = consoleUrl;
 			this.url = url;
-			service = new VirtualizationServiceLocator(this.url);
+			try {
+				service = new VirtualizationServiceLocator(this.url);
+			} catch (Exception e) {
+				logger.error("Hypervisor[" + vmmId + "] not connected.", e);
+				return;
+			}
+			//
+			connected = true;
 			//
 			JIVariant[] vmEnum = service.execQuery("Select * From Msvm_ComputerSystem Where ProcessID=NULL");
 			JIVariant[][] vmSet = enumToJIVariantArray(vmEnum);
@@ -138,7 +146,7 @@ public class HyperVVMM extends NotifierAdapter<HyperVVMM, UpdateServiceEvent> im
 				managedVms.put(service, thisVm);
 			}
 			logger.info("Hypervisor[" + vmmId + ":" + hypervisorName + "], " + managedVmList.size() + " VM registered");
-		} catch (JIException | UnknownHostException e) {
+		} catch (JIException e) {
 			throw new VirtualServiceException(e, "Initializing VMM failed.");
 		}
 	}

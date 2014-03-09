@@ -19,8 +19,7 @@ import com.probridge.vbox.vmm.wmi.utils.Utils;
 public class ResourceMonitor implements Runnable {
 
 	public static ResourceMonitor[] instances;
-	private static final Logger logger = LoggerFactory
-			.getLogger(ResourceMonitor.class);
+	private static final Logger logger = LoggerFactory.getLogger(ResourceMonitor.class);
 
 	public static void initialize() {
 		logger.info("Resource Monitor starting.");
@@ -43,40 +42,35 @@ public class ResourceMonitor implements Runnable {
 	private Map<Long, Long> diskReadRespHistory;
 	private HashMap<String, Integer> vmmStatus;
 	private AtomicBoolean isInterruptted = new AtomicBoolean(false);
+	public boolean connected = false;
 
 	private ResourceMonitor(HyperVVMM vmm) {
 		this.vmm = vmm;
 		pollInterval = VBoxConfig.monitorPoolingInterval;
-		cpuUtilHistory = Collections
-				.synchronizedMap(new LinkedHashMap<Long, Integer>() {
-					private static final long serialVersionUID = 1L;
+		cpuUtilHistory = Collections.synchronizedMap(new LinkedHashMap<Long, Integer>() {
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					protected boolean removeEldestEntry(
-							Map.Entry<Long, Integer> eldest) {
-						return this.size() > VBoxConfig.cpuMaxHistory;
-					}
-				});
-		diskReadRespHistory = Collections
-				.synchronizedMap(new LinkedHashMap<Long, Long>() {
-					private static final long serialVersionUID = 1L;
+			@Override
+			protected boolean removeEldestEntry(Map.Entry<Long, Integer> eldest) {
+				return this.size() > VBoxConfig.cpuMaxHistory;
+			}
+		});
+		diskReadRespHistory = Collections.synchronizedMap(new LinkedHashMap<Long, Long>() {
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					protected boolean removeEldestEntry(
-							Map.Entry<Long, Long> eldest) {
-						return this.size() > VBoxConfig.cpuMaxHistory;
-					}
-				});
-		diskWriteRespHistory = Collections
-				.synchronizedMap(new LinkedHashMap<Long, Long>() {
-					private static final long serialVersionUID = 1L;
+			@Override
+			protected boolean removeEldestEntry(Map.Entry<Long, Long> eldest) {
+				return this.size() > VBoxConfig.cpuMaxHistory;
+			}
+		});
+		diskWriteRespHistory = Collections.synchronizedMap(new LinkedHashMap<Long, Long>() {
+			private static final long serialVersionUID = 1L;
 
-					@Override
-					protected boolean removeEldestEntry(
-							Map.Entry<Long, Long> eldest) {
-						return this.size() > VBoxConfig.cpuMaxHistory;
-					}
-				});
+			@Override
+			protected boolean removeEldestEntry(Map.Entry<Long, Long> eldest) {
+				return this.size() > VBoxConfig.cpuMaxHistory;
+			}
+		});
 		// initialize
 		Long timestamp = System.currentTimeMillis();
 		cpuUtilHistory.put(timestamp, 0);
@@ -86,8 +80,7 @@ public class ResourceMonitor implements Runnable {
 
 	@Override
 	public void run() {
-		Thread.currentThread().setName(
-				"vBox Hypervisor Performance Collection Thread.");
+		Thread.currentThread().setName("vBox Hypervisor Performance Collection Thread.");
 		logger.info("Resource Monitor[" + vmm.vmmId + "] started.");
 		// one time info fetch
 		try {
@@ -97,7 +90,9 @@ public class ResourceMonitor implements Runnable {
 			sysInfo = VBoxConfig.systemVersion;
 		} catch (UnknownHostException | JIException e1) {
 			logger.error("error getting system information.", e1);
+			return;
 		}
+		connected = true;
 		while (true) {
 			// keep polling
 			try {
@@ -119,8 +114,7 @@ public class ResourceMonitor implements Runnable {
 				saved = vmmStatus.get("已保存");
 				paused = vmmStatus.get("已暂停");
 
-				cpuUtilHistory.put(System.currentTimeMillis(),
-						win.getCombinedCpuUtilization());
+				cpuUtilHistory.put(System.currentTimeMillis(), win.getCombinedCpuUtilization());
 				//
 				long[] diskPerf1 = win.getDiskPerformance(VBoxConfig.dataDrive);
 				//
@@ -132,8 +126,8 @@ public class ResourceMonitor implements Runnable {
 				long readDelayMs = 0, writeDelayMs = 0;
 				readDelayMs = (diskPerf2[1] == diskPerf1[1]) ? 0
 						: ((diskPerf2[0] - diskPerf1[0]) * 1000 / diskPerf1[4] / (diskPerf2[1] - diskPerf1[1]));
-				writeDelayMs = (diskPerf2[3] == diskPerf1[3]) ? 0
-						: ((diskPerf2[2] - diskPerf1[2]) * 1000 / diskPerf1[4] / (diskPerf2[3] - diskPerf1[3]));
+				writeDelayMs = (diskPerf2[3] == diskPerf1[3]) ? 0 : ((diskPerf2[2] - diskPerf1[2]) * 1000
+						/ diskPerf1[4] / (diskPerf2[3] - diskPerf1[3]));
 				//
 				if (readDelayMs < 0)
 					readDelayMs = 0l;

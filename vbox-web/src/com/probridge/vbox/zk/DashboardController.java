@@ -120,6 +120,9 @@ public class DashboardController extends SelectorComposer<Div> {
 			if (itrComp.next() != null)
 				itrComp.remove();
 		//
+		if (!resMgr.connected)
+			return;
+		//
 		HashMap<String, Integer> status = resMgr.getVmmStatus();
 		synchronized (status) {
 			if (status != null) {
