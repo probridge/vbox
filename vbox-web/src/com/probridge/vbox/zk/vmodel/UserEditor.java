@@ -29,7 +29,7 @@ public class UserEditor extends ProgressViewModel {
 	private VBoxForm form = new VBoxForm();
 
 	private String constrainHypervisor = "min 0 max " + (HyperVVMM.hypervisors.length - 1);
-	private String constrainQuota = "";
+	private String constrainQuota = "min 5";
 	private String initUserPwdExpire;
 
 	@Init
@@ -38,7 +38,7 @@ public class UserEditor extends ProgressViewModel {
 		globalCommandName = "reloadUserList";
 		newUser = (user.getUserName() == null);
 		//
-		if (!newUser)
+		if (!newUser && user.getUserVhdQuota()!=null)
 			constrainQuota = "min " + user.getUserVhdQuota();
 		//
 		SqlSession session = null;

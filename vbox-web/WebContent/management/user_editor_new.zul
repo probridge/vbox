@@ -79,7 +79,8 @@
 					数据空间配额
 					<hlayout>
 						<spinner value="@bind(form.userVhdQuota)"
-							step="1" constraint="@load(model.constrainQuota)" />
+							step="1" constraint="@load(model.constrainQuota)"
+							readonly="@load(form.userVhdQuota le 0)" />
 						GB (创建后只可增加)
 					</hlayout>
 				</row>
