@@ -14,7 +14,7 @@
 	</library-property>
 	<library-property>
 		<name>org.zkoss.bind.DebuggerFactory.enable</name>
-		<value>true</value>
+		<value>false</value>
 	</library-property>
 	<session-config>
 		<timer-keep-alive>true</timer-keep-alive>
