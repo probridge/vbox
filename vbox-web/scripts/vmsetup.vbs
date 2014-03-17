@@ -10,7 +10,7 @@ DiskPartExtendScript = "diskpart.script"
 Main
 WScript.Quit(0)
 
-'END OF EXECUTION
+'END OF EXECUTION - v3.1.1 build 20140317
 
 Function Main
     On Error Resume Next
@@ -18,7 +18,7 @@ Function Main
     Dim strCurrentUserName, strCurrentDomainName, strFullUserName
     Dim strComputerName, copyResult
     Dim WshShell, strHostName, strVMName, objRegEx
-	Dim logger
+	Dim logger, count
 
     Set WshShell = WScript.CreateObject("WScript.Shell")
     Set objNetwork = WScript.CreateObject("WScript.Network")
@@ -30,10 +30,16 @@ Function Main
     logger.write "Deleting previous password" & VbCrLf
     WshShell.RegDelete "HKLM\SOFTWARE\Microsoft\Virtual Machine\Guest\vBoxGuestOSPassword"
 
-    logger.write "Waiting 10sec for integration service" & VbCrLf
-
-    WScript.Sleep 10000
-
+	count = 0
+	Do While count < 10
+		WScript.Sleep 1000
+		count = count + 1
+		strVMName = WshShell.RegRead("HKLM\SOFTWARE\Microsoft\Virtual Machine\Guest\Parameters\VirtualMachineName")
+		logger.write "Waiting for integration service..." & count & "..." & VbCrLf
+		If strVMName <> "" Then Exit Do
+	Loop
+    logger.write "VM Name: " & strVMName & VbCrLf
+	
     strCurrentUserName = objNetwork.UserName
     strCurrentDomainName = objNetwork.UserDomain
     strComputerName = objNetwork.ComputerName
@@ -42,8 +48,6 @@ Function Main
     logger.write "Computer Name: " & strComputerName & VbCrLf
     logger.write "Running under: " & strFullUserName & VbCrLf
     
-    strVMName = WshShell.RegRead("HKLM\SOFTWARE\Microsoft\Virtual Machine\Guest\Parameters\VirtualMachineName")
-    logger.write "VM Name: " & strVMName & VbCrLf
 
     strShortVMName = Mid(strVMName,6,15)
 
@@ -54,11 +58,11 @@ Function Main
     logger.write "Short VM Name: " & strShortVMName & VbCrLf
 
     If StrComp(strComputerName,strShortVMName,vbTextCompare)<>0 Then
-	changeHostName strShortVMName
+		changeHostName strShortVMName
         logger.write "Setting Computer Name to " & strShortVMName & ", and reboot." & VbCrLf
         logger.close
-	rebootSystem
-	WScript.Quit(255)
+		rebootSystem
+		WScript.Quit(255)
     End If
     logger.write "Hostname OK, no Reboot Required" & VbCrLf
 
