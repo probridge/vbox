@@ -40,9 +40,9 @@ public class SaveCourseTask extends VMTask {
 			ops.setRetval(1);
 			logger.error("error saving course", e);
 		} finally {
+			AdminTaskManager.getInstance().getThreadlist().remove(sid);
 			if (session!=null)
 				session.close();
-			AdminTaskManager.getInstance().getThreadlist().remove(sid);
 		}
 	}
 }

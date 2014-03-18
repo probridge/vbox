@@ -35,11 +35,11 @@ public class DeleteUserTask extends VMTask {
 		super.run();
 		logger.debug("Starting to delete user..");
 		ops.setMsg("删除用户");
-
+		SqlSession session = null;
 		try {
 			ops.setMsg("准备关闭和删除所有关联的vBox");
 
-			SqlSession session = VBoxConfig.sqlSessionFactory.openSession();
+			session = VBoxConfig.sqlSessionFactory.openSession();
 			VMMapper mapper = session.getMapper(VMMapper.class);
 			VMExample exp = new VMExample();
 			exp.createCriteria().andVmOwnerEqualTo(user.getUserName());
@@ -85,7 +85,6 @@ public class DeleteUserTask extends VMTask {
 			UsersMapper mapper3 = session.getMapper(UsersMapper.class);
 			mapper3.deleteByPrimaryKey(user.getUserName());
 			session.commit();
-			session.close();
 			ops.setMsg("操作完成");
 			logger.debug("Finished");
 			ops.setRetval(0);
@@ -94,9 +93,11 @@ public class DeleteUserTask extends VMTask {
 			ops.setRetval(1);
 			logger.error("error while deleting user " + user.getUserName(), e);
 		} finally {
+			AdminTaskManager.getInstance().getThreadlist().remove(sid);
+			if (session != null)
+				session.close();
 			if (wmServiceLocator != null)
 				wmServiceLocator.destroySession();
-			AdminTaskManager.getInstance().getThreadlist().remove(sid);
 		}
 	}
 }

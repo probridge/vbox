@@ -58,9 +58,9 @@ public class DeleteImageTask extends VMTask {
 			ops.setRetval(1);
 			logger.error("error while deleting image " + image.getGmImageFilename(), e);
 		} finally {
+			AdminTaskManager.getInstance().getThreadlist().remove(sid);
 			if (session != null)
 				session.close();
-			AdminTaskManager.getInstance().getThreadlist().remove(sid);
 		}
 	}
 }

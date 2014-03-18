@@ -29,6 +29,7 @@ public class FixVboxTask extends VMTask {
 		super.run();
 		logger.debug("Starting to process fixvbox..");
 		ops.setMsg("开始重置vBox");
+		SqlSession session = null;
 		try {
 			HyperVVM vm = HyperVVMM.locateVM(uuid);
 			ops.setMsg("正在关闭vBox的操作系统");
@@ -47,7 +48,7 @@ public class FixVboxTask extends VMTask {
 			//
 			logger.debug("Powered off now");
 			//
-			SqlSession session = VBoxConfig.sqlSessionFactory.openSession();
+			session = VBoxConfig.sqlSessionFactory.openSession();
 			VMMapper mapper = session.getMapper(VMMapper.class);
 			VM thisVM = mapper.selectByPrimaryKey(uuid);
 			session.close();
@@ -74,7 +75,6 @@ public class FixVboxTask extends VMTask {
 			mapper.updateByPrimaryKeySelective(thisVM);
 			//
 			session.commit();
-			session.close();
 			// restart vm
 			ops.setMsg("正在重新开启vBox");
 			vm.powerOn();
@@ -87,6 +87,8 @@ public class FixVboxTask extends VMTask {
 			logger.error("error fixing vbox " + uuid, e);
 		} finally {
 			AdminTaskManager.getInstance().getThreadlist().remove(sid);
+			if (session != null)
+				session.close();
 		}
 	}
 }

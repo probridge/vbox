@@ -37,6 +37,7 @@ public class SaveVMSettingsTask extends VMTask {
 		super.run();
 		logger.debug("Starting to save vm setting..");
 		ops.setMsg("保存vBox设置");
+		SqlSession session = null;
 		try {
 			if (saveConfig || saveStorage) {
 				HyperVVMM vmm = null;
@@ -95,13 +96,12 @@ public class SaveVMSettingsTask extends VMTask {
 				}
 			}
 			ops.setMsg("正在保存vBox设置");
-			SqlSession session = VBoxConfig.sqlSessionFactory.openSession();
+			session = VBoxConfig.sqlSessionFactory.openSession();
 			VMMapper mapper = session.getMapper(VMMapper.class);
 			if (mapper.updateByPrimaryKey(vm) == 0)
 				mapper.insert(vm);
 			//
 			session.commit();
-			session.close();
 			//
 			ops.setMsg("操作完成");
 			logger.debug("Finished");
@@ -112,6 +112,8 @@ public class SaveVMSettingsTask extends VMTask {
 			logger.error("error saving vm setting " + vm.getVmName(), e);
 		} finally {
 			AdminTaskManager.getInstance().getThreadlist().remove(sid);
+			if (session != null)
+				session.close();
 		}
 	}
 }

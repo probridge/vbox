@@ -31,6 +31,7 @@ public class DuplicateGoldenMasterTask extends VMTask {
 		super.run();
 		logger.debug("Start gm cloning");
 		ops.setMsg("开始母盘克隆作业");
+		SqlSession session = null;
 		//
 		try {
 			//
@@ -68,11 +69,10 @@ public class DuplicateGoldenMasterTask extends VMTask {
 			image.setGmImageFilename(newFileName);
 			image.setGmImageCreationDate(null);
 
-			SqlSession session = VBoxConfig.sqlSessionFactory.openSession();
+			session = VBoxConfig.sqlSessionFactory.openSession();
 			GMImageMapper mapper = session.getMapper(GMImageMapper.class);
 			mapper.insertSelective(image);
 			session.commit();
-			session.close();
 			//
 			ops.setMsg("操作完成");
 			logger.debug("Finished");
@@ -83,6 +83,8 @@ public class DuplicateGoldenMasterTask extends VMTask {
 			logger.error("error cloning images to " + newFileName, e);
 		} finally {
 			AdminTaskManager.getInstance().getThreadlist().remove(sid);
+			if (session != null)
+				session.close();
 		}
 	}
 }
