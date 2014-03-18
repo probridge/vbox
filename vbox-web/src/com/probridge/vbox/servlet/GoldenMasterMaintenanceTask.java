@@ -162,11 +162,12 @@ public class GoldenMasterMaintenanceTask extends VMTask {
 		} catch (Exception e) {
 			ops.setMsg("操作失败:" + e.getMessage());
 			ops.setRetval(1);
-			logger.error(
-					"error maint/ready/sync the golden master image " + image.getGmImageFilename() + " mode is " + mode, e);
+			logger.error("error maint/ready/sync the golden master image " + image.getGmImageFilename() + " mode is "
+					+ mode, e);
 		} finally {
-			session.close();
 			AdminTaskManager.getInstance().getThreadlist().remove(sid);
+			if (session != null)
+				session.close();
 		}
 	}
 

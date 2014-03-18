@@ -35,7 +35,8 @@ public class PreAppoveTask extends VMTask {
 		super.run();
 		logger.debug("Starting to process Preapprove");
 		ops.setMsg("开始创建资源");
-
+		SqlSession session = null;
+		
 		String identity = null;
 		if (cmdMap.get("identity") != null)
 			identity = (String) cmdMap.get("identity");
@@ -84,11 +85,10 @@ public class PreAppoveTask extends VMTask {
 				newUser.setUserVhdName(userVhdFileName);
 				newUser.setUserHypervisorId(hypervisorId);
 				//
-				SqlSession session = VBoxConfig.sqlSessionFactory.openSession();
+				session = VBoxConfig.sqlSessionFactory.openSession();
 				UsersMapper umapper = session.getMapper(UsersMapper.class);
 				umapper.updateByPrimaryKeySelective(newUser);
 				session.commit();
-				session.close();
 				ops.setMsg("分配用户存储空间完成");
 			}
 
@@ -113,8 +113,11 @@ public class PreAppoveTask extends VMTask {
 			ops.setRetval(1);
 			logger.error("error preapproving task" + e);
 		} finally {
-			wmServiceLocator.destroySession();
 			AdminTaskManager.getInstance().getThreadlist().remove(sid);
+			if (session != null)
+				session.close();
+			if (wmServiceLocator != null)
+				wmServiceLocator.destroySession();
 		}
 	}
 

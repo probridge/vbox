@@ -40,7 +40,7 @@ public class SaveUserSettingsTask extends VMTask {
 		super.run();
 		logger.debug("Starting to save user setting..");
 		ops.setMsg("保存用户设置");
-
+		SqlSession session = null;
 		try {
 			if (updateStorage) {
 				HyperVVMM vmm = HyperVVMM.hypervisors[user.getUserHypervisorId()];
@@ -55,7 +55,7 @@ public class SaveUserSettingsTask extends VMTask {
 						throw new VirtualServiceException("数据文件不存在");
 					ops.setMsg("正在关闭所有关联的vBox");
 
-					SqlSession session = VBoxConfig.sqlSessionFactory.openSession();
+					session = VBoxConfig.sqlSessionFactory.openSession();
 					VMMapper mapper = session.getMapper(VMMapper.class);
 					VMExample exp = new VMExample();
 					exp.createCriteria().andVmVhdUserFilenameEqualTo(user.getUserVhdName());
@@ -111,7 +111,7 @@ public class SaveUserSettingsTask extends VMTask {
 				}
 			}
 			ops.setMsg("正在保存设置");
-			SqlSession session = VBoxConfig.sqlSessionFactory.openSession();
+			session = VBoxConfig.sqlSessionFactory.openSession();
 			UsersMapper mapper = session.getMapper(UsersMapper.class);
 			if (newUser) {
 				mapper.insert(user);
@@ -119,7 +119,6 @@ public class SaveUserSettingsTask extends VMTask {
 				mapper.updateByPrimaryKey(user);
 			}
 			session.commit();
-			session.close();
 			ops.setMsg("操作完成");
 			logger.debug("Finished");
 			ops.setRetval(0);
@@ -128,9 +127,11 @@ public class SaveUserSettingsTask extends VMTask {
 			ops.setRetval(1);
 			logger.error("error saving user " + user.getUserName(), e);
 		} finally {
+			AdminTaskManager.getInstance().getThreadlist().remove(sid);
+			if (session != null)
+				session.close();
 			if (wmServiceLocator != null)
 				wmServiceLocator.destroySession();
-			AdminTaskManager.getInstance().getThreadlist().remove(sid);
 		}
 	}
 }
