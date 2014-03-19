@@ -39,9 +39,9 @@ public class DeleteCourseTask extends VMTask {
 			ops.setRetval(1);
 			logger.error("error deleting course", e);
 		} finally {
+			AdminTaskManager.getInstance().getThreadlist().remove(sid);
 			if (session != null)
 				session.close();
-			AdminTaskManager.getInstance().getThreadlist().remove(sid);
 		}
 	}
 }

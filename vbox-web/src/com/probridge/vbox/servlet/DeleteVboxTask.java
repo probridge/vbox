@@ -28,6 +28,7 @@ public class DeleteVboxTask extends VMTask {
 		super.run();
 		logger.debug("Starting to process delete vbox..");
 		ops.setMsg("开始删除vBox");
+		SqlSession session = null;
 		try {
 			HyperVVM vm = HyperVVMM.locateVM(uuid);
 			ops.setMsg("正在关闭vBox");
@@ -50,11 +51,10 @@ public class DeleteVboxTask extends VMTask {
 			logger.debug("vBox Deleted");
 			ops.setMsg("正在保存设置");
 
-			SqlSession session = VBoxConfig.sqlSessionFactory.openSession();
+			session = VBoxConfig.sqlSessionFactory.openSession();
 			VMMapper mapper = session.getMapper(VMMapper.class);
 			mapper.deleteByPrimaryKey(uuid);
 			session.commit();
-			session.close();
 			//
 			ops.setMsg("vBox已经删除");
 			logger.debug("Finished");
@@ -65,6 +65,8 @@ public class DeleteVboxTask extends VMTask {
 			logger.error("error deleting vbox " + uuid, e);
 		} finally {
 			AdminTaskManager.getInstance().getThreadlist().remove(sid);
+			if (session != null)
+				session.close();
 		}
 	}
 }
