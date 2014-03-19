@@ -26,50 +26,58 @@ public class JAccountAction implements Action {
 	private static final Logger logger = LoggerFactory.getLogger(JAccountAction.class);
 
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
-		logger.debug("entering jaccount processing");
-		JAccountManager jam = new JAccountManager(VBoxConfig.jAccountSiteId, VBoxConfig.configPath);
-		@SuppressWarnings("rawtypes")
-		Hashtable ht = jam.checkLogin(request, response, request.getSession(), request.getRequestURI());
-		if (ht != null && ht.get("uid") != null) {
-			// check user db - insert user
-			String uid = ht.get("uid").toString().toLowerCase() + VBoxConfig.jAccountSuffix;
-			String userDesc = ht.get("dept") + " " + ht.get("chinesename");
-			//
-			SqlSession session = VBoxConfig.sqlSessionFactory.openSession();
-			UsersMapper mapper = session.getMapper(UsersMapper.class);
-			Users thisUser = mapper.selectByPrimaryKey(uid);
-			String encodedPwd = new Sha512Hash(uid, "jaccount_salt").toHex().substring(0, 20);
-			if (thisUser == null) {
-				thisUser = new Users();
-				thisUser.setUserName(uid);
-				thisUser.setUserEnabled("1");
-				thisUser.setUserDescription(userDesc);
-				thisUser.setUserExpiration(null);
-				thisUser.setUserPassword(encodedPwd);
-				thisUser.setUserPwdExpire(null);
-				thisUser.setUserRole("ROLE_USER");
-				thisUser.setUserType("1");
-				thisUser.setUserVhdName(null);
-				thisUser.setUserVhdQuota(null);
-				thisUser.setUserHypervisorId(null);
-				mapper.insert(thisUser);
-				session.commit();
+		try {
+			logger.debug("entering jaccount processing");
+			JAccountManager jam = new JAccountManager(VBoxConfig.jAccountSiteId, VBoxConfig.configPath);
+			@SuppressWarnings("rawtypes")
+			Hashtable ht = jam.checkLogin(request, response, request.getSession(), request.getRequestURI());
+			if (ht != null && ht.get("uid") != null) {
+				// check user db - insert user
+				String uid = ht.get("uid").toString().toLowerCase() + VBoxConfig.jAccountSuffix;
+				String userDesc = ht.get("dept") + " " + ht.get("chinesename");
+				//
+				SqlSession session = VBoxConfig.sqlSessionFactory.openSession();
+				UsersMapper mapper = session.getMapper(UsersMapper.class);
+				Users thisUser = mapper.selectByPrimaryKey(uid);
+				String encodedPwd = new Sha512Hash(uid, "jaccount_salt").toHex().substring(0, 20);
+				if (thisUser == null) {
+					thisUser = new Users();
+					thisUser.setUserName(uid);
+					thisUser.setUserEnabled("1");
+					thisUser.setUserDescription(userDesc);
+					thisUser.setUserExpiration(null);
+					thisUser.setUserPassword(encodedPwd);
+					thisUser.setUserPwdExpire(null);
+					thisUser.setUserRole("ROLE_USER");
+					thisUser.setUserType("1");
+					thisUser.setUserVhdName(null);
+					thisUser.setUserVhdQuota(null);
+					thisUser.setUserHypervisorId(null);
+					mapper.insert(thisUser);
+					session.commit();
+				}
+				//
+				logger.info("jAccount user " + uid + " registered, desc=" + userDesc);
+				//
+				UsernamePasswordToken loginToken = new UsernamePasswordToken(uid, encodedPwd);
+				loginToken.setRememberMe(true);
+				Subject currentUser = SecurityUtils.getSubject();
+				try {
+					currentUser.login(loginToken);
+				} catch (Exception e) {
+					request.setAttribute("error", "登录发生错误，请联系我们。" + e.getMessage());
+					return ERROR;
+				}
+				// perform login
+				return SUCCEED;
+			} else {
+				jam.logout(request, response, request.getRequestURI());
+				return null;
 			}
-			//
-			UsernamePasswordToken loginToken = new UsernamePasswordToken(uid, encodedPwd);
-			loginToken.setRememberMe(true);
-			Subject currentUser = SecurityUtils.getSubject();
-			try {
-				currentUser.login(loginToken);
-			} catch (Exception e) {
-				request.setAttribute("error", "登录发生错误，请联系我们。" + e.getMessage());
-				return ERROR;
-			}
-			// perform login
-			return SUCCEED;
-		} else {
-			jam.logout(request, response, request.getRequestURI());
-			return null;
+		} catch (Exception e) {
+			logger.error("Error while performing jaccount login.." + e);
+			request.setAttribute("error", "登录发生错误，请联系我们。" + e.getMessage());
+			return ERROR;
 		}
 	}
 }
