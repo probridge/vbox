@@ -30,6 +30,10 @@ public class VBoxConfig {
 
 	public static long vmShutdownDelay = 60000;
 	public static long monitorPoolingInterval = 10000;
+	public static int vmStatusMonitorIntervalActive = 10;
+	public static int vmStatusMonitorIntervalNormal = 60;
+	public static int vmDaemonInterval = 30;
+
 	public static int CourseRequestPerUserLimit = 5;
 	public static int cpuMaxHistory = 120;
 	public static int[] quotaSettings = { 5, 10, 20, 50 };
@@ -78,12 +82,12 @@ public class VBoxConfig {
 	public static int repositoryLocation = 0;
 	public static String repositoryShareName = "";
 	public static String vmMaintLandingZone = "";
-	
+
 	public static String smbClientBufferSize = "";
 
 	public static int vBoxStatusChangeTimeout = 180;
 
-	public static String systemVersion = "vBox云计算平台 v3.1.1 build 20140318 (C) ProBridge, 2013 - 2014";
+	public static String systemVersion = "vBox云计算平台 v3.1.3 build 20160210 (C) ProBridge, 2013 - 2016";
 
 	public static SmbFilenameFilter fileFilter = new SmbFilenameFilter() {
 		@Override
@@ -134,6 +138,12 @@ public class VBoxConfig {
 			vmShutdownDelay = Integer.parseInt(spMapper.selectByPrimaryKey("vmShutdownDelay").getSysparamValue());
 			monitorPoolingInterval = Integer.parseInt(spMapper.selectByPrimaryKey("monitorPoolingInterval")
 					.getSysparamValue());
+			vmStatusMonitorIntervalActive = Integer.parseInt(spMapper.selectByPrimaryKey(
+					"vmStatusMonitorIntervalActive").getSysparamValue());
+			vmStatusMonitorIntervalNormal = Integer.parseInt(spMapper.selectByPrimaryKey(
+					"vmStatusMonitorIntervalNormal").getSysparamValue());
+			vmDaemonInterval = Integer.parseInt(spMapper.selectByPrimaryKey("vmDaemonInterval").getSysparamValue());
+
 			CourseRequestPerUserLimit = Integer.parseInt(spMapper.selectByPrimaryKey("CourseRequestPerUserLimit")
 					.getSysparamValue());
 
@@ -194,7 +204,7 @@ public class VBoxConfig {
 
 			vBoxStatusChangeTimeout = Integer.parseInt(spMapper.selectByPrimaryKey("vBoxStatusChangeTimeout")
 					.getSysparamValue());
-			
+
 			logger.info("System parameters initialized.");
 		} catch (IOException e) {
 			logger.error("DB Connection Failed.", e);

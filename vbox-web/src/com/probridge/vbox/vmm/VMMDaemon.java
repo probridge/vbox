@@ -72,11 +72,11 @@ public class VMMDaemon implements Runnable {
 						}
 					}
 				}
-				Utils.sleepCheck(30, isInterrupted);
+				Utils.sleepCheck(VBoxConfig.vmDaemonInterval, isInterrupted);
 			} catch (VirtualServiceException e) {
 				logger.error("error while deamon is scanning the VMs, retrying in 30sec", e);
 				try {
-					Utils.sleepCheck(30, isInterrupted);
+					Utils.sleepCheck(VBoxConfig.vmDaemonInterval, isInterrupted);
 				} catch (InterruptedException e1) {
 					logger.info("Daemon interrupted during retry period, shutting down thread pool.");
 					shutdownDaemon();

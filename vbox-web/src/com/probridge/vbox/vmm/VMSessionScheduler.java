@@ -41,11 +41,9 @@ public class VMSessionScheduler {
 			return;
 		}
 	}
-
-	public List<String> getMonitorList() {
-		synchronized (mutex) {
-			return new ArrayList<String>(relationships.values());
-		}
+	
+	public boolean isVmUserActive(String vmid) {
+		return relationships.containsValue(vmid);
 	}
 
 	public void markShutdown(String sessionID) {

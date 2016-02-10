@@ -71,7 +71,10 @@ public class VMMonitor implements Runnable {
 					previousState = state;
 					previousGuestState = guestState;
 				} else { // nothing changed
-					Utils.sleepCheck(10, interruptted);
+					if (VMSessionScheduler.getInstance().isVmUserActive(vmid))
+						Utils.sleepCheck(VBoxConfig.vmStatusMonitorIntervalActive, interruptted);
+					else
+						Utils.sleepCheck(VBoxConfig.vmStatusMonitorIntervalNormal, interruptted);
 					continue;
 				}
 			}
