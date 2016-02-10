@@ -14,6 +14,7 @@ public class ActionFactory {
 
 	static {
 		urimap.put("index", new IndexAction());
+		urimap.put("index-en", new IndexEnAction());
 		urimap.put("home", new HomeAction());
 		urimap.put("jaccount", new JAccountAction());
 		urimap.put("register", new RegisterAction());

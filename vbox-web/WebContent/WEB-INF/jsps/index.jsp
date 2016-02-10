@@ -13,6 +13,14 @@
 }
 </style>
 </jsp:attribute>
+<jsp:attribute name="jscode">
+<script language="JavaScript">
+	var lang = navigator.languages? navigator.languages[0] : (navigator.language || navigator.userLanguage);
+	if (lang.substring(0, 2) != "zh") {
+		document.location.href = 'index-en.do';
+	}
+</script>
+</jsp:attribute>
 	<jsp:body>
 		<c:if test="${ not empty requestScope.globalNotice }">
 		<div class="row"><div class="col-lg-12"><div class="alert alert-dismissable alert-warning">

@@ -37,6 +37,7 @@ public class DispatchServlet extends HttpServlet {
 		landingNotRequired.add("landing");
 		landingNotRequired.add("jaccount");
 		landingNotRequired.add("index");
+		landingNotRequired.add("index-en");
 		landingNotRequired.add("problem");
 		landingNotRequired.add("expired");
 		landingNotRequired.add("register");
