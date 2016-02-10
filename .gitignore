@@ -6,3 +6,5 @@
 *.ear
 
 !/vbox-web/lib
+
+context*.xml
