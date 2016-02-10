@@ -7,4 +7,5 @@
 
 !/vbox-web/lib
 
-context*.xml
+/vbox-web/WebContent/META-INF/context*.xml
+/vbox-web/WebContent/WEB-INF/jakey/jaantaicloud131015_desede.key
